@@ -1,0 +1,154 @@
+a,a:hover {
+    cursor: pointer;
+    text-decoration: none;
+    color: #337ab7;
+}
+table td,
+table th {
+    vertical-align: middle!important;
+}
+.page-content .panel {
+    border-radius: 5px;
+}
+.table > thead > tr > th {
+    padding: 8px;
+    border-bottom: 1px solid #eaeff0;
+    color:#222;
+}
+.table.not-bg > thead > tr {
+    background: none;
+}
+.treeview .list-group-item {
+    cursor: pointer;
+}
+.list-group .list-group-item:hover,
+.list-group .list-group-item.act{
+    background: #f3f3f3;
+}
+
+.boxtitle{
+    color: #1b809e;
+    display: block;
+    overflow: hidden;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.clred{
+    color: #ff0000;
+}
+.table.bg-head-table > thead > tr > th:last-child{
+    border: 1px solid #ddd;
+}
+.line{
+    display: inline-block;
+    clear: both;
+    width: 100%;
+}
+.panel-content h4 {
+    font-size: 15px;
+    font-weight: 700;
+}
+a i.fa{
+    opacity: 0.8;
+}
+a:hover i.fa{
+    opacity: 1;
+}
+.page-content h4 {
+    font-size: 15px;
+    font-weight: 700;
+}
+.mgt3{
+    margin-top: 3px;
+}
+.treeview span.indent {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.treeview .list-group-item > .badge {
+    float: none;
+    position: absolute;
+    right: 5px;
+    top:8px;
+}
+#orgname{
+    font-weight: bold;
+}
+span.lbl {
+    color: #1b809e;
+}
+.txt-bold{
+    font-weight: bold;
+}
+.mgt10{
+    margin-top: 10px;
+}
+.importExcelDefine {
+    margin: 0 14px;
+    display: inline-block;
+    min-width: 30%;
+    background: #ddd;
+    padding: 9px;
+    border-radius: 2px;
+}
+.importExcelDefine .btn{
+    margin-top: 5px;
+}
+/*Load page*/
+#loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    height: 100%;
+    text-align: center;
+    background: #fff;
+    opacity: 0.5;
+    display: none;
+    z-index: 999999;
+}
+#loading .sts {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    background: url(../img/ajax-loader.gif) no-repeat center center;
+    top: 20%;
+    position: relative;
+}
+#sys_show_image_one{
+    margin: 5px 0;
+    position: relative;
+    display: inline-block;
+}
+#sys_show_image_one img{
+    border: 1px solid #ddd;
+}
+#sys_show_image_one .remove_file.one{
+    color: #ff0000;
+    position: absolute;
+    right: 2%;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 999;
+}
+#sys_show_file {
+     margin-top: 15px;
+ }
+
+#sys_show_file .item-file{
+    margin-bottom: 5px;
+}
+#sys_show_file .item-file a {
+    font-size: 15px;
+}
+.remove_file {
+    color: #ff0000;
+    font-size: 20px;
+    margin-left: 5px;
+    font-style: italic;
+    cursor: pointer;
+}
