@@ -13,7 +13,7 @@ use App\Library\AdminFunction\FunctionLib;
 
 class CategoryNew extends BaseModel
 {
-    protected $table = Define::TABLE_WEB_CATEGORY;
+    protected $table = Define::TABLE_NEW_CATEGORY;
     protected $primaryKey = 'category_id';
     public $timestamps = false;
 

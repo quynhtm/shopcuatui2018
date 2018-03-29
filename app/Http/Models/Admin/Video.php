@@ -8,11 +8,11 @@ use App\library\AdminFunction\Define;
 use Illuminate\Support\Facades\Cache;
 
 class Video extends BaseModel{
-    protected $table = Define::TABLE_WEB_VIDEO;
+    protected $table = Define::TABLE_VIDEO;
     protected $primaryKey = 'video_id';
     public $timestamps = false;
 
-    protected $fillable = array('video_name','video_name_alias', 'video_sort_desc', 'video_content',
+    protected $fillable = array('video_project','video_name','video_name_alias', 'video_sort_desc', 'video_content',
         'video_link', 'video_file', 'video_img', 'video_img_temp', 'video_status', 'video_view',
         'video_hot','video_time_creater','video_category','type_language','video_time_update','video_meta_title','video_meta_keyword','video_meta_description');
 

@@ -7,7 +7,7 @@ use App\library\AdminFunction\Define;
 use Illuminate\Support\Facades\Cache;
 
 class InfoSite extends BaseModel{
-    protected $table = Define::TABLE_WEB_INFO;
+    protected $table = Define::TABLE_INFO;
     protected $primaryKey = 'info_id';
     public $timestamps = false;
 

@@ -2,8 +2,7 @@
 Auth::routes();
 
 const Admin = "Admin";
-const Site = "Site";
-const News = "News";
+const HResources = "Hr";
 
 // Used for dev by Quynh
 $isDev = Request::get('is_debug','');
@@ -16,21 +15,11 @@ if(Session::has('is_debug_of_tech')){
 }
 
 //Quan tri CMS cho admin
-Route::get('/quantri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@getLogin'));
-Route::match(['GET','POST'], '/quantri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@postLogin'));
+Route::get('/quan-tri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@getLogin'));
+Route::match(['GET','POST'], 'quan-tri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@postLogin'));
 
 Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 	require __DIR__.'/admin.php';
-});
-
-//News
-Route::group(array('prefix' => 'manager', 'before' => ''), function(){
-	require __DIR__.'/news.php';
-});
-
-//Router Api
-Route::group(array('prefix' => '/', 'before' => ''), function () {
-    require __DIR__.'/site.php';
 });
 
 //Router Api
@@ -38,7 +27,14 @@ Route::group(array('prefix' => 'api', 'before' => ''), function () {
     require __DIR__.'/api.php';
 });
 
+//Router Api
+Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
+    require __DIR__.'/cronjob.php';
+});
+
 //Router Ajax
 Route::group(array('prefix' => 'ajax', 'before' => ''), function () {
     Route::post('upload', array('as' => 'ajax.upload','uses' => 'AjaxUploadController@upload'));
 });
+
+Route::get('sentmail/mail',array('as' => 'admin.mail','uses' => 'MailSendController@sentEmail'));

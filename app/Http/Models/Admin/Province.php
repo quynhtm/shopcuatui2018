@@ -5,14 +5,14 @@ use App\Http\Models\BaseModel;
 
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
-
+use Illuminate\Support\Facades\Cache;
 
 class Province extends BaseModel{
     protected $table = Define::TABLE_PROVINCE;
     protected $primaryKey = 'province_id';
     public $timestamps = false;
 
-    protected $fillable = array('province_name', 'province_position', 'province_status', 'province_area');
+    protected $fillable = array('province_name', 'province_position', 'province_status', 'province_area', 'province_area_ship');
 
     /**
      * @param $name
@@ -61,6 +61,24 @@ class Province extends BaseModel{
     public static function getListAllProvince() {
         $item = Province::where('province_status', '>', 0)->lists('province_name','province_id');
         return $item ? $item : array();
+    }
+
+    public static function getAllProvince() {
+        $data = Cache::get(Define::CACHE_ALL_PROVINCE);
+        if (sizeof($data) == 0) {
+            $result = Province::where('province_id', '>', 0)
+                ->where('province_status',Define::STATUS_SHOW)
+                ->orderBy('province_position','asc')->get();
+            if($result){
+                foreach($result as $itm) {
+                    $data[$itm['province_id']] = $itm['province_name'];
+                }
+            }
+            if(!empty($data)){
+                Cache::put(Define::CACHE_ALL_PROVINCE, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+            }
+        }
+        return $data;
     }
 
     public static function createItem($data)

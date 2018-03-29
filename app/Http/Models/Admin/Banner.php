@@ -7,11 +7,11 @@ use App\library\AdminFunction\Define;
 use Illuminate\Support\Facades\Cache;
 
 class Banner extends BaseModel{
-    protected $table = Define::TABLE_WEB_BANNER;
+    protected $table = Define::TABLE_BANNER;
     protected $primaryKey = 'banner_id';
     public $timestamps = false;
 
-    protected $fillable = array('banner_name','banner_image', 'banner_image_temp', 'banner_link',
+    protected $fillable = array('banner_project','banner_name','banner_image', 'banner_image_temp', 'banner_link',
         'banner_order', 'banner_total_click', 'banner_time_click', 'banner_is_target', 'banner_is_rel', 'banner_type',
         'banner_page','banner_category_id','banner_status','banner_is_run_time',
         'banner_start_time','banner_end_time','banner_is_shop','banner_shop_id','banner_create_time','banner_update_time');

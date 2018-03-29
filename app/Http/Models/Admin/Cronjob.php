@@ -2,7 +2,7 @@
 /**
  * QuynhTM
  */
-namespace App\Http\Models\News;
+namespace App\Http\Models\Admin;
 use App\Http\Models\BaseModel;
 
 use Illuminate\Support\Facades\Cache;
@@ -10,22 +10,21 @@ use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 
-class News extends BaseModel
+class Cronjob extends BaseModel
 {
-    protected $table = Define::TABLE_NEWS;
-    protected $primaryKey = 'news_id';
+    protected $table = Define::TABLE_CRONJOB;
+    protected $primaryKey = 'cronjob_id';
     public $timestamps = false;
 
-    protected $fillable = array('news_project','news_title', 'news_desc_sort', 'news_content', 'news_image', 'news_image_other',
-        'news_type', 'news_category','news_category_name','news_status', 'news_order_no'
-    ,'news_hot','meta_title','meta_keywords','meta_description ','news_create','news_user_create','news_update','news_user_update');
+    protected $fillable = array('cronjob_project', 'cronjob_name', 'cronjob_router', 'cronjob_type', 'cronjob_date_run',
+        'cronjob_number_plan', 'cronjob_number_running', 'cronjob_status', 'cronjob_result');
 
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $checkData = new News();
+            $checkData = new Cronjob();
             $fieldInput = $checkData->checkField($data);
-            $item = new News();
+            $item = new Cronjob();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
@@ -34,45 +33,46 @@ class News extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->news_id,$item);
-            return $item->news_id;
+            self::removeCache($item->cronjob_id,$item);
+            return $item->cronjob_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
+
+    public static function updateItem($id,$data){
+        try {
+            DB::connection()->getPdo()->beginTransaction();
+            $checkData = new Cronjob();
+            $fieldInput = $checkData->checkField($data);
+            $item = Cronjob::find($id);
+            foreach ($fieldInput as $k => $v) {
+                $item->$k = $v;
+            }
+            $item->update();
+            DB::connection()->getPdo()->commit();
+            self::removeCache($item->cronjob_id,$item);
+            return true;
+        } catch (PDOException $e) {
+            DB::connection()->getPdo()->rollBack();
+            throw new PDOException();
+        }
+    }
+
     public static function getItemById($id=0){
-        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_NEWS_ID . $id) : array();
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_CRONJOB_ID_ . $id) : array();
         try {
             if (empty($result)) {
-                $result = News::where('news_id', $id)->first();
+                $result = Cronjob::where('cronjob_id', $id)->first();
                 if ($result && Define::CACHE_ON) {
-                    Cache::put(Define::CACHE_NEWS_ID . $id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                    Cache::put(Define::CACHE_CRONJOB_ID_ . $id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
         } catch (PDOException $e) {
             throw new PDOException();
         }
         return $result;
-    }
-    public static function updateItem($id,$data){
-        try {
-            DB::connection()->getPdo()->beginTransaction();
-            $checkData = new News();
-            $fieldInput = $checkData->checkField($data);
-            $item = News::find($id);
-            foreach ($fieldInput as $k => $v) {
-                $item->$k = $v;
-            }
-            $item->update();
-            DB::connection()->getPdo()->commit();
-            self::removeCache($item->news_id,$item);
-            return true;
-        } catch (PDOException $e) {
-            //var_dump($e->getMessage());
-            DB::connection()->getPdo()->rollBack();
-            throw new PDOException();
-        }
     }
 
     public function checkField($dataInput) {
@@ -92,12 +92,12 @@ class News extends BaseModel
         if($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $item = News::find($id);
+            $item = Cronjob::find($id);
             if($item){
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->news_id,$item);
+            self::removeCache($item->cronjob_id,$item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -108,23 +108,23 @@ class News extends BaseModel
 
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            Cache::forget(Define::CACHE_NEWS_ID.$id);
+            Cache::forget(Define::CACHE_CRONJOB_ID_.$id);
         }
     }
 
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
-            $query = News::where('news_id','>',0);
-            if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name','LIKE', '%' . $dataSearch['menu_name'] . '%');
+            $query = Cronjob::where('cronjob_id','>',0);
+            if (isset($dataSearch['cronjob_name']) && $dataSearch['cronjob_name'] != '') {
+                $query->where('cronjob_name','LIKE', '%' . $dataSearch['cronjob_name'] . '%');
             }
-            if (isset($dataSearch['news_category']) && $dataSearch['news_category'] > 0) {
-                $query->where('news_category',$dataSearch['news_category']);
+            if (isset($dataSearch['cronjob_status']) && $dataSearch['cronjob_status'] != -1) {
+                $query->where('cronjob_status', $dataSearch['cronjob_status']);
             }
-            $total = $query->count();
-            $query->orderBy('news_id', 'desc');
 
-            //get field can lay du lieu
+            $total = $query->count();
+            $query->orderBy('cronjob_id', 'desc');
+
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
             if(!empty($fields)){
                 $result = $query->take($limit)->skip($offset)->get($fields);

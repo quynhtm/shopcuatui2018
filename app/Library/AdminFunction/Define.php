@@ -17,24 +17,30 @@ class Define
     //local
     const DB_HOST = 'localhost';
     const DB_PORT = '3306';
-    const DB_DATABASE = 'nhansu';
-    const DB_USERNAME = 'root';
+    const DB_DATABASE = '';
+    const DB_USERNAME = '';
     const DB_PASSWORD = '';
     //server
 
-    const TABLE_USER = 'web_user';
-    const TABLE_GROUP_USER = 'web_group_user';
-    const TABLE_PERMISSION = 'web_permission';
-    const TABLE_MENU_SYSTEM = 'web_menu_system';
-    const TABLE_ROLE_MENU = 'web_role_menu';
-    const TABLE_ROLE = 'web_role';
-    const TABLE_GROUP_USER_PERMISSION = 'web_group_user_permission';
-    const TABLE_WEB_CATEGORY = 'web_category';
-    const TABLE_WEB_BANNER = 'web_banner';
-    const TABLE_WEB_CONTACT = 'web_contact';
-    const TABLE_WEB_NEW = 'web_news';
-    const TABLE_WEB_VIDEO = 'web_video';
-    const TABLE_WEB_INFO = 'web_info';
+    const TABLE_USER = 'shop_user';
+    const TABLE_MEMBER = 'shop_member';
+    const TABLE_GROUP_USER = 'shop_group_user';
+    const TABLE_PERMISSION = 'shop_permission';
+    const TABLE_MENU_SYSTEM = 'shop_menu_system';
+    const TABLE_ROLE_MENU = 'shop_role_menu';
+    const TABLE_ROLE = 'shop_role';
+    const TABLE_VIDEO = 'shop_video';
+    const TABLE_INFO = 'shop_info';
+    const TABLE_BANNER = 'shop_banner';
+    const TABLE_CRONJOB = 'shop_cronjob';
+    const TABLE_CONTACT = 'shop_contact';
+    const TABLE_PROVINCE = 'shop_province';
+    const TABLE_WARDS = 'shop_wards';
+    const TABLE_DISTRICTS = 'shop_districts';
+    const TABLE_GROUP_USER_PERMISSION = 'shop_group_user_permission';
+
+    const TABLE_NEW_CATEGORY = 'shop_category_new';
+    const TABLE_NEWS= 'shop_news';
 
 
     /***************************************************************************************************************
@@ -66,6 +72,9 @@ class Define
 
     const CACHE_OPTION_ROLE = 'cache_option_role';
 
+    const CACHE_MEMBER_LIST = 'cache_member_list';
+    const CACHE_OPTION_MEMBER = 'cache_member_member';
+
     //danh mục tin tức
     const CACHE_CATEGORY_NEWS = 'cache_category_news';
     const CACHE_CATEGORY_PRODUCT = 'cache_category_product';
@@ -85,6 +94,8 @@ class Define
     const CACHE_CATEGORY_ID = 'cache_category_id_';
     const CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID = 'cache_all_child_category_by_parent_id_';
     const CACHE_NEWS_ID = 'cache_news_id_';
+
+
     /***************************************************************************************************************
      * //Define
      ***************************************************************************************************************/
@@ -98,19 +109,6 @@ class Define
     const STATUS_HIDE = 0;
     const STATUS_BLOCK = -2;
 
-    const BONUS_KHEN_THUONG = 1;
-    const BONUS_DANH_HIEU = 2;
-    const BONUS_KY_LUAT = 3;
-
-    const CURRICULUMVITAE_DAO_TAO = 1;
-    const CURRICULUMVITAE_CHUNG_CHI_KHAC = 2;
-    const CURRICULUMVITAE_CONG_TAC = 3;
-    const CURRICULUMVITAE_HOAT_DONG_DANG = 4;
-
-    const QUITJOB_THOI_VIEC = 1;
-    const QUITJOB_CHUYEN_CONGTAC = 2;
-    const QUITJOB_CHUYEN_PHONG_BAN = 3;
-
     //SuperAdmin, Admin, Customer
     const ROLE_TYPE_SUPER_ADMIN = 6;
     const ROLE_TYPE_ADMIN = 7;
@@ -119,94 +117,6 @@ class Define
         Define::ROLE_TYPE_SUPER_ADMIN => 'SuperAdmin',
         Define::ROLE_TYPE_ADMIN => 'Admin',
         Define::ROLE_TYPE_CUSTOMER => 'Customer');
-
-    //Type define trong bảng define
-    const chuc_vu = 1;
-    const hoc_ham = 2;
-    const hoc_vi = 3;
-    const nghach_bac = 4;
-    const trinh_do_ql_nghe_nghiep = 5;
-    const trinh_do_ly_luan = 6;
-    const loai_phong_ban = 7;
-    const chuc_danh_nghe_nghiep = 8;
-    const chuc_danh_khoa_hoc_cong_nghe = 9;
-    const cap_uy = 10;
-    const dan_toc = 11;
-    const ton_giao = 12;
-    const thanh_phan_gia_dinh = 13;
-    const quan_ham = 14;
-    const trinh_do_hoc_van = 15;
-    const ly_luan_chinh_tri = 16;
-    const ngoai_ngu = 17;
-    const thang_bang_luong = 18;
-    const ngach_cong_chuc = 19;
-    const bac_luong = 20;
-    const danh_hieu = 21;
-    const khen_thuong = 22;
-    const ky_luat = 23;
-    const tinh_trang_suc_khoe = 24;
-    const nhom_mau = 25;
-    const hang_thuong_binh = 26;
-    const trinh_do_tin_hoc = 27;
-    const loai_hop_dong = 28;
-    const loai_dao_tao = 29;
-    const van_bang_chung_chi = 30;
-    const chuc_vu_doan_dang = 31;
-    const quan_he_gia_dinh = 32;
-    const loai_phu_cap = 33;
-    const loai_donvi_phongban = 34;
-    const loai_thiet_bi = 35;
-    const che_do_thanh_toan = 36;
-    const hinh_thuc_hoc = 37;
-    const chuyen_nghanh_dao_tao = 38;
-    //Phan loai van ban
-    const co_quan_ban_hanh = 39;
-    const loai_van_ban = 40;
-    const linh_vuc = 41;
-
-    static $arrOptionDefine = array(
-        Define::chuc_vu => 'Chức vụ',
-        Define::hoc_ham => 'Học hàm',
-        Define::hoc_vi => 'Học vị',
-        Define::nghach_bac => 'Ngạch bậc',
-        Define::trinh_do_ql_nghe_nghiep => 'Trình độ quản lý nghề nghiệp',
-        Define::trinh_do_ly_luan => 'Trình độ lý luận',
-        Define::loai_phong_ban => 'Loại phòng ban',
-        Define::chuc_danh_nghe_nghiep => 'Chức danh nghề nghiệp',
-        Define::chuc_danh_khoa_hoc_cong_nghe => 'Chức danh khoa học công nghệ',
-        Define::cap_uy => 'Cấp ủy',
-        Define::dan_toc => 'Dân tộc',
-        Define::ton_giao => 'Tôn giáo',
-        Define::thanh_phan_gia_dinh => 'Thành phần gia đình',
-        Define::quan_ham => 'Quân hàm',
-        Define::trinh_do_hoc_van => 'Trình độ học vấn',
-        Define::ly_luan_chinh_tri => 'Lý luận chính trị',
-        Define::ngoai_ngu => 'Ngoại ngữ',
-        Define::thang_bang_luong => 'Thang bảng lương',
-        Define::ngach_cong_chuc => 'Ngạch công chức',
-        Define::bac_luong => 'Bậc lương',
-        Define::danh_hieu => 'Danh hiệu',
-        Define::khen_thuong => 'Khen thưởng',
-        Define::ky_luat => 'Kỷ luật',
-        Define::tinh_trang_suc_khoe => 'Tình trang sức khỏe',
-        Define::nhom_mau => 'Nhóm máu',
-        Define::hang_thuong_binh => 'Hạng thương binh',
-        Define::trinh_do_tin_hoc => 'Trình độ tin học',
-        Define::loai_hop_dong => 'Loại hợp đồng',
-        Define::loai_dao_tao => 'Loại đào tạo',
-        Define::van_bang_chung_chi => 'Văn bằng chứng chỉ',
-        Define::chuc_vu_doan_dang => 'Chức vụ Đoàn/Đảng',
-        Define::quan_he_gia_dinh => 'Quan hệ gia đình',
-        Define::loai_phu_cap => 'Loại phụ cấp',
-        Define::loai_donvi_phongban => 'Loại đơn vị / phòng ban',
-        Define::loai_thiet_bi => 'Loại thiết bị',
-        Define::che_do_thanh_toan => 'Chế độ thanh toán',
-        Define::hinh_thuc_hoc => 'Hình thức học',
-        Define::chuyen_nghanh_dao_tao => 'Chuyên nghành đào tạo',
-        Define::co_quan_ban_hanh => 'Cơ quan ban hành',
-        Define::loai_van_ban => 'Loại văn bản',
-        Define::linh_vuc => 'Lĩnh vực',
-    );
 
     //type upload
     const TYPE_UPLOAD_NEWS = 1;
