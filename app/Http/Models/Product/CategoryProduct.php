@@ -2,7 +2,7 @@
 /**
  * QuynhTM
  */
-namespace App\Http\Models\News;
+namespace App\Http\Models\Product;
 use App\Http\Models\BaseModel;
 
 use App\Library\AdminFunction\CGlobal;
@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 
-class CategoryNew extends BaseModel
+class CategoryProduct extends BaseModel
 {
-    protected $table = Define::TABLE_NEW_CATEGORY;
+    protected $table = Define::TABLE_PRO_CATEGORY;
     protected $primaryKey = 'category_id';
     public $timestamps = false;
 
@@ -24,9 +24,9 @@ class CategoryNew extends BaseModel
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $checkData = new CategoryNew();
+            $checkData = new CategoryProduct();
             $fieldInput = $checkData->checkField($data);
-            $item = new CategoryNew();
+            $item = new CategoryProduct();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
@@ -46,9 +46,9 @@ class CategoryNew extends BaseModel
     public static function updateItem($id,$data){
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $checkData = new CategoryNew();
+            $checkData = new CategoryProduct();
             $fieldInput = $checkData->checkField($data);
-            $item = CategoryNew::find($id);
+            $item = CategoryProduct::find($id);
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
@@ -80,7 +80,7 @@ class CategoryNew extends BaseModel
         if($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $item = CategoryNew::find($id);
+            $item = CategoryProduct::find($id);
             if($item){
                 $item->delete();
             }
@@ -96,17 +96,17 @@ class CategoryNew extends BaseModel
 
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            Cache::forget(Define::CACHE_CATEGORY_ID.$id);
+            Cache::forget(Define::CACHE_PRO_CATEGORY_ID.$id);
         }
-        Cache::forget(Define::CACHE_ALL_PARENT_CATEGORY);
-        Cache::forget(Define::CACHE_ALL_PARENT_CATEGORY.'_'.$data->category_type);
-        Cache::forget(Define::CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID.$data->category_parent_id);
-        Cache::forget(Define::CACHE_CATEGORY_NEWS);
+        Cache::forget(Define::CACHE_ALL_PARENT_CATEGORY_PRO);
+        Cache::forget(Define::CACHE_ALL_PARENT_CATEGORY_PRO.'_'.$data->category_type);
+        Cache::forget(Define::CACHE_ALL_CHILD_CATEGORY_PRO_BY_PARENT_ID.$data->category_parent_id);
+        Cache::forget(Define::CACHE_CATEGORY_PRODUCT);
     }
 
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
-            $query = CategoryNew::where('category_id','>',0);
+            $query = CategoryProduct::where('category_id','>',0);
             if (isset($dataSearch['category_name']) && $dataSearch['category_name'] != '') {
                 $query->where('category_name','LIKE', '%' . $dataSearch['category_name'] . '%');
             }if (isset($dataSearch['category_type']) && $dataSearch['category_type'] >0) {
@@ -135,16 +135,16 @@ class CategoryNew extends BaseModel
     }
     public static function getOptionAllCategory() {
         $data = array();
-        $category = CategoryNew::where('category_id','>',0)->orderBy('category_id','asc')->get();
+        $category = CategoryProduct::where('category_id','>',0)->orderBy('category_id','asc')->get();
         foreach($category as $itm) {
             $data[$itm['category_id']] = $itm['category_name'];
         }
         return $data;
     }
     public static function getAllParentCategoryId() {
-        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_PARENT_CATEGORY) : array();
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_PARENT_CATEGORY_PRO) : array();
         if (sizeof($data) == 0) {
-            $category = CategoryNew::where('category_id', '>', 0)
+            $category = CategoryProduct::where('category_id', '>', 0)
                 ->where('category_parent_id',0)
                 ->where('category_status',CGlobal::status_show)
                 ->orderBy('category_order','asc')->get();
@@ -154,15 +154,15 @@ class CategoryNew extends BaseModel
                 }
             }
             if($data && Define::CACHE_ON){
-                Cache::put(Define::CACHE_ALL_PARENT_CATEGORY, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Define::CACHE_ALL_PARENT_CATEGORY_PRO, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
 			}
 		}
 	}	
 
-    public static function getCategoryNews(){
-        $data = Cache::get(Define::CACHE_CATEGORY_NEWS);
+    public static function getCategoryProducts(){
+        $data = Cache::get(Define::CACHE_CATEGORY_PRODUCT);
         if (sizeof($data) == 0) {
-            $result = CategoryNew::where('category_id', '>', 0)
+            $result = CategoryProduct::where('category_id', '>', 0)
                 ->whereIn('category_type',array(Define::Category_News_Menu,Define::Category_News_News,Define::Category_News_Note))
                 ->where('category_status',Define::STATUS_SHOW)
                 ->orderBy('category_order','asc')->get();
@@ -172,15 +172,15 @@ class CategoryNew extends BaseModel
                 }
             }
             if(!empty($data)){
-                Cache::put(Define::CACHE_CATEGORY_NEWS, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Define::CACHE_CATEGORY_PRODUCT, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
             }
         }
         return $data;
     }
     public static function getAllParentCateWithType($category_type) {
-        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_PARENT_CATEGORY.'_'.$category_type) : array();
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_PARENT_CATEGORY_PRO.'_'.$category_type) : array();
         if (sizeof($data) == 0) {
-            $category = CategoryNew::where('category_id', '>', 0)
+            $category = CategoryProduct::where('category_id', '>', 0)
                 ->where('category_parent_id',0)
                 ->where('category_status',CGlobal::status_show)
                 ->where('category_type',$category_type)
@@ -191,15 +191,15 @@ class CategoryNew extends BaseModel
                 }
             }
             if($data && Define::CACHE_ON){
-                Cache::put(Define::CACHE_ALL_PARENT_CATEGORY.'_'.$category_type, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Define::CACHE_ALL_PARENT_CATEGORY_PRO.'_'.$category_type, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
             }
         }
         return $data;
     }
     public static function getAllChildCategoryIdByParentId($parentId = 0) {
-        $data = (Memcache::CACHE_ON)? Cache::get(Define::CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID.$parentId) : array();
+        $data = (Memcache::CACHE_ON)? Cache::get(Define::CACHE_ALL_CHILD_CATEGORY_PRO_BY_PARENT_ID.$parentId) : array();
         if (sizeof($data) == 0 && $parentId > 0) {
-            $category = CategoryNew::where('category_id' ,'>', 0)
+            $category = CategoryProduct::where('category_id' ,'>', 0)
                 ->where('category_parent_id','=',$parentId)
                 ->where('category_status',CGlobal::status_show)
                 ->orderBy('category_order','asc')->get();
@@ -209,14 +209,14 @@ class CategoryNew extends BaseModel
                 }
             }
             if($data && Define::CACHE_ON){
-                Cache::put(Define::CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID.$parentId, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Define::CACHE_ALL_CHILD_CATEGORY_PRO_BY_PARENT_ID.$parentId, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
 			}
 		}
 	}	
     public static function getCategoryProduct(){
         $data = Cache::get(Define::CACHE_CATEGORY_PRODUCT);
         if (sizeof($data) == 0) {
-            $result = CategoryNew::where('category_id', '>', 0)
+            $result = CategoryProduct::where('category_id', '>', 0)
                 ->whereIn('category_type',array(Define::Category_News_Product))
                 ->where('category_status',Define::STATUS_SHOW)
                 ->orderBy('category_order','asc')->get();
@@ -234,12 +234,12 @@ class CategoryNew extends BaseModel
 
     public static function buildTreeCategory($category_type = 0){
         if($category_type > 0){
-            $categories = CategoryNew::where('category_id', '>', 0)
+            $categories = CategoryProduct::where('category_id', '>', 0)
                 ->where('category_status', '=', CGlobal::status_show)
                 ->where('category_type', '=', $category_type)
                 ->get();
         }else{
-            $categories = CategoryNew::where('category_id', '>', 0)
+            $categories = CategoryProduct::where('category_id', '>', 0)
                 ->where('category_status', '=', CGlobal::status_show)
                 ->get();
         }

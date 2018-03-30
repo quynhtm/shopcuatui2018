@@ -39,8 +39,14 @@ class Define
     const TABLE_DISTRICTS = 'shop_districts';
     const TABLE_GROUP_USER_PERMISSION = 'shop_group_user_permission';
 
-    const TABLE_NEW_CATEGORY = 'shop_category_new';
-    const TABLE_NEWS= 'shop_news';
+    const TABLE_NEW_CATEGORY = 'new_category';
+    const TABLE_NEWS= 'new_news';
+
+    const TABLE_PRODUCT = 'pro_product';
+    const TABLE_PRO_CATEGORY = 'pro_category';
+    const TABLE_PRO_DEPARTMENT = 'pro_department';
+    const TABLE_ORDER = 'pro_order';
+    const TABLE_ORDER_ITEM = 'pro_order_item';
 
 
     /***************************************************************************************************************
@@ -61,10 +67,18 @@ class Define
     const CACHE_ALL_PARENT_MENU = 'cache_all_parent_menu_';
     const CACHE_TREE_MENU = 'cache_tree_menu_';
     const CACHE_LIST_MENU_PERMISSION = 'cache_list_menu_permission';
-    const CACHE_ALL_PARENT_CATEGORY = 'cache_all_parent_category_';
+
     const CACHE_USER_NAME = 'haianhem';
     const CACHE_USER_KEY = 'admin!@133';
     const CACHE_EMAIL_NAME = 'manager@gmail.com';
+
+    //category new
+    const CACHE_ALL_PARENT_CATEGORY = 'cache_all_parent_category_';
+    const CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID = 'cache_all_child_category_by_parent_id_';
+    const CACHE_CATEGORY_NEWS = 'cache_category_news';
+    const CACHE_CATEGORY_ID = 'cache_category_id_';
+
+    const CACHE_NEWS_ID = 'cache_news_id_';
 
     const CACHE_INFO_USER = 'cache_info_user';
     const CACHE_OPTION_USER = 'cache_option_user';
@@ -75,9 +89,12 @@ class Define
     const CACHE_MEMBER_LIST = 'cache_member_list';
     const CACHE_OPTION_MEMBER = 'cache_member_member';
 
-    //danh mục tin tức
-    const CACHE_CATEGORY_NEWS = 'cache_category_news';
+    //danh mục Product
     const CACHE_CATEGORY_PRODUCT = 'cache_category_product';
+    const CACHE_PRO_CATEGORY_ID = 'cache_pro_category_id_';
+    const CACHE_ALL_PARENT_CATEGORY_PRO = 'cache_all_parent_category_pro_';
+    const CACHE_ALL_CHILD_CATEGORY_PRO_BY_PARENT_ID = 'cache_all_child_category_pro_by_parent_id_';
+
     //Hr nhân sự
     const CACHE_PERSON = 'cache_info_person_id_';
 
@@ -91,10 +108,6 @@ class Define
     const CACHE_DEVICE_ID = 'cache_device_id_';
     const CACHE_HR_DOCUMENT_ID = 'cache_hr_document_id_';
     const CACHE_HR_MAIL_ID = 'cache_hr_mail_id_';
-    const CACHE_CATEGORY_ID = 'cache_category_id_';
-    const CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID = 'cache_all_child_category_by_parent_id_';
-    const CACHE_NEWS_ID = 'cache_news_id_';
-
 
     /***************************************************************************************************************
      * //Define
