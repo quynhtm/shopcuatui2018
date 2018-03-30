@@ -49,5 +49,27 @@ Route::get('menu/edit/{id?}', array('as' => 'admin.menuEdit','uses' => Admin.'\A
 Route::post('menu/edit/{id?}', array('as' => 'admin.menuEdit','uses' => Admin.'\AdminManageMenuController@postItem'));
 Route::post('menu/deleteMenu', array('as' => 'admin.deleteMenu','uses' => Admin.'\AdminManageMenuController@deleteMenu'));//ajax
 
+/*thông tin video */
+Route::get('video/view',array('as' => 'admin.videoView','uses' => Admin.'\AdminVideoController@view'));
+Route::get('video/edit/{id?}', array('as' => 'admin.videoEdit','uses' => Admin.'\AdminVideoController@getItem'));
+Route::post('video/edit/{id?}', array('as' => 'admin.videoEdit','uses' => Admin.'\AdminVideoController@postItem'));
+Route::post('video/deleteVideo', array('as' => 'admin.deleteVideo','uses' => Admin.'\AdminVideoController@deleteVideo'));//ajax
 
+/*thông tin banner */
+Route::get('baner/view',array('as' => 'admin.bannerView','uses' => Admin.'\AdminBannerController@view'));
+Route::get('baner/edit/{id?}', array('as' => 'admin.bannerEdit','uses' => Admin.'\AdminBannerController@getItem'));
+Route::post('baner/edit/{id?}', array('as' => 'admin.bannerEdit','uses' => Admin.'\AdminBannerController@postItem'));
+Route::post('baner/deleteBanner', array('as' => 'admin.deleteBanner','uses' => Admin.'\AdminBannerController@deleteBanner'));//ajax
+
+/*thong tin contact*/
+Route::get('contact/view',array('as' => 'admin.contactView','uses' => Admin.'\AdminContactController@view'));
+Route::get('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@getItem'));
+Route::post('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@postItem'));
+Route::post('contact/deleteContact', array('as' => 'admin.deleteContact','uses' => Admin.'\AdminContactController@deleteContact'));//ajax
+
+/*thong tin chung*/
+Route::get('info/view',array('as' => 'admin.infoView','uses' => Admin.'\AdminInfoController@view'));
+Route::get('info/edit/{id?}', array('as' => 'admin.infoEdit','uses' => Admin.'\AdminInfoController@getItem'));
+Route::post('info/edit/{id?}', array('as' => 'admin.infoEdit','uses' => Admin.'\AdminInfoController@postItem'));
+Route::post('info/deleteInfo', array('as' => 'admin.deleteInfo','uses' => Admin.'\AdminInfoController@deleteInfo'));//ajax
 

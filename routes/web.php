@@ -3,6 +3,8 @@ Auth::routes();
 
 const Admin = "Admin";
 const HResources = "Hr";
+const News = "News";
+const Product = "Product";
 
 // Used for dev by Quynh
 $isDev = Request::get('is_debug','');
@@ -18,8 +20,19 @@ if(Session::has('is_debug_of_tech')){
 Route::get('/quan-tri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@getLogin'));
 Route::match(['GET','POST'], 'quan-tri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@postLogin'));
 
+//Router Admin
 Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 	require __DIR__.'/admin.php';
+});
+
+//Router News
+Route::group(array('prefix' => 'manager', 'before' => ''), function(){
+    require __DIR__.'/news.php';
+});
+
+//Router Product
+Route::group(array('prefix' => 'manager', 'before' => ''), function(){
+    require __DIR__.'/product.php';
 });
 
 //Router Api
@@ -27,7 +40,7 @@ Route::group(array('prefix' => 'api', 'before' => ''), function () {
     require __DIR__.'/api.php';
 });
 
-//Router Api
+//Router Cronjob
 Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
     require __DIR__.'/cronjob.php';
 });
