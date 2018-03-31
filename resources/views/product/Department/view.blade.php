@@ -23,13 +23,13 @@
                     {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                     <div style="margin-top: 10px">
                         <div class="col-sm-4" >
-                            <input @if(isset($search['role_name'])) value="{{$search['role_name']}}" @endif placeholder="Tên Role" name="role_name_s" class="form-control" id="role_name_s">
+                            <input @if(isset($search['department_name'])) value="{{$search['department_name']}}" @endif placeholder="Tên depart" name="department_name_s" class="form-control" id="department_name_s">
                         </div>
                         <div class="form-group pull-left">
                             <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1">
                                 <i class="fa fa-search"></i> {{FunctionLib::viewLanguage('search')}}
                             </button>
-                            <a class="btn btn-warning btn-sm" onclick="HR.editItem('{{FunctionLib::inputId(0)}}', WEB_ROOT + '/manager/role/ajaxLoadForm')" title="Thêm mới">Thêm mới</a>
+                            <a class="btn btn-warning btn-sm" onclick="HR.editItem('{{FunctionLib::inputId(0)}}', WEB_ROOT + '/manager/proDepart/ajaxLoadFormDepart')" title="Thêm mới">Thêm mới</a>
                         </div>
                     </div>
                     {{ Form::close() }}
@@ -39,7 +39,7 @@
                                 <thead class="thin-border-bottom">
                                 <tr class="">
                                     <th width="5%" class="text-center center">STT</th>
-                                    <th width="55%">Tên role</th>
+                                    <th width="55%">Tên depart</th>
                                     <th width="15%">Trạng thái</th>
                                     <th width="10%" class="center">Order</th>
                                     <th width="15%" class="center">Thao tác</th>
@@ -49,16 +49,16 @@
                                 @foreach ($data as $key => $item)
                                     <tr>
                                         <td class="text-center middle">{{$key+1 }}</td>
-                                        <td>{{$item['role_name']}}</td>
-                                        <td>@if(isset($arrStatus[$item['role_status']])) {{$arrStatus[$item['role_status']]}} @endif</td>
-                                        <td>{{ $item['role_order'] }}
+                                        <td>{{$item['department_name']}}</td>
+                                        <td>@if(isset($arrStatus[$item['department_status']])) {{$arrStatus[$item['department_status']]}} @endif</td>
+                                        <td>{{ $item['department_order'] }}
                                         </td>
                                         <td class="center">
                                             @if($is_root || $permission_edit)
-                                                <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['role_id'])}}', WEB_ROOT + '/manager/role/ajaxLoadForm')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
+                                                <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['department_id'])}}', WEB_ROOT + '/manager/proDepart/ajaxLoadFormDepart')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
                                             @endif
                                             @if($is_boss || $permission_delete)
-                                                <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['role_id'])}}', WEB_ROOT + '/manager/role/deleteRole')"><i class="fa fa-trash fa-2x"></i></a>
+                                                <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['department_id'])}}', WEB_ROOT + '/manager/proDepart/deleteProDepart')"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
                                     </tr>

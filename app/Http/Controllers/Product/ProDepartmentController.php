@@ -57,7 +57,7 @@ class ProDepartmentController extends BaseAdminController{
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
         $page_no = (int) Request::get('page_no',1);
-        $search['role_name'] = addslashes(Request::get('role_name_s',''));
+        $search['department_name'] = addslashes(Request::get('department_name_s',''));
         $limit = 0;
         $total = 0;
         $offset = ($page_no - 1) * $limit;
@@ -87,7 +87,7 @@ class ProDepartmentController extends BaseAdminController{
         $id_hiden = (int)Request::get('id', 0);
         $data = $_POST;
         unset($data['id']);
-        $data['role_order'] = (int)($data['role_order']);
+        $data['department_order'] = (int)($data['department_order']);
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden: $id;
             if($id > 0) {
@@ -103,7 +103,7 @@ class ProDepartmentController extends BaseAdminController{
     }
     public function deleteItem(){
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_delete,$this->permission)){
-            return Redirect::route('admin.roleView');
+            return Redirect::route('admin.proDepartView');
         }
         $id = isset($_GET['id'])?FunctionLib::outputId($_GET['id']):0;
         if($id > 0) {
@@ -130,7 +130,7 @@ class ProDepartmentController extends BaseAdminController{
     }
     private function valid($data=array()) {
         if(!empty($data)) {
-            if(isset($data['role_name']) && trim($data['role_name']) == '') {
+            if(isset($data['department_name']) && trim($data['department_name']) == '') {
                 $this->error[] = 'Null';
             }
         }

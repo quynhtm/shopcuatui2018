@@ -103,8 +103,8 @@ class DepartmentProduct extends BaseModel
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = DepartmentProduct::where('department_id','>',0);
-            if (isset($dataSearch['product_name']) && $dataSearch['product_name'] != '') {
-                $query->where('product_name','LIKE', '%' . $dataSearch['product_name'] . '%');
+            if (isset($dataSearch['department_name']) && $dataSearch['department_name'] != '') {
+                $query->where('department_name','LIKE', '%' . $dataSearch['department_name'] . '%');
             }
 
             $total = $query->count();
