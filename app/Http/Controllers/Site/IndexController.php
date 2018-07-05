@@ -16,12 +16,10 @@ class IndexController extends BaseSiteController{
 		parent::__construct();
 	}
 	public function index(){
+		echo "Index";
 		$this->header();
+		$this->slider();
 		$this->footer();
-		$this->master();
-        return view('site_itomedic.home',[
-                'user'=>array()]
-        );
 	}
     public function actionRouter($catname, $catid){
         

@@ -39,7 +39,8 @@
                                 <thead class="thin-border-bottom">
                                 <tr class="">
                                     <th width="5%" class="text-center center">STT</th>
-                                    <th width="55%">Tên role</th>
+                                    <th width="20%">Tên role</th>
+                                    <th width="35%">Member</th>
                                     <th width="15%">Trạng thái</th>
                                     <th width="10%" class="center">Order</th>
                                     <th width="15%" class="center">Thao tác</th>
@@ -50,6 +51,7 @@
                                     <tr>
                                         <td class="text-center middle">{{$key+1 }}</td>
                                         <td>{{$item['role_name']}}</td>
+                                        <td>@if(isset($arrMember[$item['role_project']])){{$arrMember[$item['role_project']]}}@else -- @endif</td>
                                         <td>@if(isset($arrStatus[$item['role_status']])) {{$arrStatus[$item['role_status']]}} @endif</td>
                                         <td>{{ $item['role_order'] }}
                                         </td>
@@ -88,6 +90,12 @@
                             <div class="form-group">
                                 <label for="role_order">Thứ tự hiển thị</label>
                                 <input type="text" name="role_order" title="Thứ tự hiển thị" class="form-control input-required" id="role_order">
+                            </div>
+                            <div class="form-group">
+                                <label for="role_status">Thuộc member</label>
+                                <select class="form-control input-sm" name="role_project" id="role_project">
+                                    {!! $optionMember !!}
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="role_status">Trạng thái</label>

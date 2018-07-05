@@ -8,7 +8,7 @@
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li class="active">Quản lý cronjobs</li>
         </ul>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="panel-footer text-right">
                         <span class="">
-                            <a class="btn btn-danger btn-sm" href="{{URL::route('cr.CronjobEdit',array('id' => FunctionLib::inputId(0)))}}">
+                            <a class="btn btn-danger btn-sm" href="{{URL::route('admin.CronjobEdit',array('id' => FunctionLib::inputId(0)))}}">
                                 <i class="ace-icon fa fa-plus-circle"></i>
                                 Thêm mới
                             </a>
@@ -77,8 +77,8 @@
                                     @if(isset($arrStatus[$item['cronjob_status']])) {{$arrStatus[$item['cronjob_status']]}} @endif
                                 </td>
                                 <td class="text-center middle" align="center">
-                                    <a href="{{URL::route('cr.CronjobEdit',array('id' => FunctionLib::inputId($item['cronjob_id'])))}}" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>&nbsp;&nbsp;&nbsp;
-                                    <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['cronjob_id'])}}', WEB_ROOT + '/cronjob/cronjob/deleteCronjob')"><i class="fa fa-trash fa-2x"></i></a>
+                                    <a href="{{URL::route('admin.CronjobEdit',array('id' => FunctionLib::inputId($item['cronjob_id'])))}}" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>&nbsp;&nbsp;&nbsp;
+                                    <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['cronjob_id'])}}', WEB_ROOT + '/manager/cronjob/deleteCronjob')"><i class="fa fa-trash fa-2x"></i></a>
                                 </td>
                             </tr>
                         @endforeach

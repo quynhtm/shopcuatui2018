@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-header">
-                    <h3 class="box-title" style="text-align: center;">{{CGlobal::web_name}} </h3>
+                    <h3 class="box-title" style="text-align: center; color:#438eb9">{{CGlobal::web_title_dashboard}} </h3>
                 </div>
                 @if(isset($error) && !empty($error))
                     <div class="alert alert-danger" role="alert">
@@ -54,10 +54,67 @@
                             @endif
                         @endforeach
                     @endif
-                 </div>
-            </div>
-            <div class="col-xs-12">
 
+                    <div class="clear"></div>
+                    <div style="display: none">
+                    <div class="col-xs-4">
+                        <div class="box-body widget-box bd-blue" style="min-height: 144px; border: 1px solid #6fb3e0; border-radius: 5px">
+                            <div class="widget-header widget-header-flat infobox-blue infobox-dark" style="margin: 0px!important;">
+                                <h4 class="widget-title ng-binding">
+                                    <i class="icon-tags"></i>
+                                    Danh sách nhân sự
+                                </h4>
+                            </div>
+
+                            <div class="widget-body">
+                                <ul class="link-dash">
+                                    @foreach(\App\Library\AdminFunction\CGlobal::$arrLinkListDash as $kl=>$val)
+                                        <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}@if(isset($arrNotify[$val['cacheNotify']]) && $arrNotify[$val['cacheNotify']] > 0)<b style="color: red"> ({{$arrNotify[$val['cacheNotify']]}})</b> @endif</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <div class="box-body widget-box bd-orange " style="min-height: 144px; border: 1px solid #e8b110; border-radius: 5px">
+                            <div class="widget-header widget-header-flat infobox-orange  infobox-dark" style="margin: 0px!important;">
+                                <h4 class="widget-title ng-binding">
+                                    <i class="icon-tags"></i>
+                                    Danh sách nhân sự
+                                </h4>
+                            </div>
+
+                            <div class="widget-body">
+                                <ul class="link-dash">
+                                    @foreach(\App\Library\AdminFunction\CGlobal::$arrLinkListDash_2 as $kl=>$val)
+                                        <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}@if(isset($arrNotify[$val['cacheNotify']]) && $arrNotify[$val['cacheNotify']] > 0)<b style="color: red"> ({{$arrNotify[$val['cacheNotify']]}})</b> @endif</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <div class="box-body widget-box bd-green" style="min-height: 144px; border: 1px solid #9abc32; border-radius: 5px">
+                            <div class="widget-header widget-header-flat infobox-green infobox-dark" style="margin: 0px!important;">
+                                <h4 class="widget-title ng-binding">
+                                    <i class="icon-tags"></i>
+                                    Danh sách nhân sự
+                                </h4>
+                            </div>
+
+                            <div class="widget-body">
+                                <ul class="link-dash">
+                                    @foreach(\App\Library\AdminFunction\CGlobal::$arrLinkListDash_3 as $kl=>$val)
+                                        <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}@if(isset($arrNotify[$val['cacheNotify']]) && $arrNotify[$val['cacheNotify']] > 0)<b style="color: red"> ({{$arrNotify[$val['cacheNotify']]}})</b> @endif</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                 </div>
             </div>
         </div>
     </div>

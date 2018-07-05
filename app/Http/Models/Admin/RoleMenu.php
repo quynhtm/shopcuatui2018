@@ -15,7 +15,7 @@ class RoleMenu extends BaseModel
     protected $primaryKey = 'role_menu_id';
     public $timestamps = false;
 
-    protected $fillable = array('role_group_menu_id','role_group_permission', 'role_status', 'role_id', 'role_name');
+    protected $fillable = array('role_group_menu_id','role_menu_project','role_group_permission', 'role_status', 'role_id', 'role_name');
 
     public static function getInfoByRoleId($role_id){
         $infor = RoleMenu::where('role_id', $role_id)->first();
@@ -105,6 +105,7 @@ class RoleMenu extends BaseModel
             }
 
             $total = $query->count();
+            $query->orderBy('role_menu_project', 'asc');
             $query->orderBy('role_menu_id', 'desc');
 
             //get field can lay du lieu

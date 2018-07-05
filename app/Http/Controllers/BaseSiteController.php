@@ -5,21 +5,16 @@ namespace App\Http\Controllers;
 class BaseSiteController extends Controller{
 
 	public function __construct(){}
-    public function head(){
-        return view('site_itomedic.common.head');
-    }
 	public function header($catid=0){
-        return view('site_itomedic.common.header');
+       echo 'Header';
 	}
     public function slider(){
-        return view('site_itomedic.common.slide');
+		echo 'Slider';
     }
     public function footer(){
-        return view('site_itomedic.common.footer');
+       echo 'Footer';
 	}
-    public function master(){
-        return view('site_itomedic.common.master');
-    }
+	
 	public function page403(){
 		echo '403';
 	}

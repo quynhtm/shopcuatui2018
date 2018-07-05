@@ -42,6 +42,7 @@ if(!class_exists('ThumbImg') ){
 				$paths =  $width."x".$height.'/'.$file_name;
 				$thumbPath = Config::get('config.DIR_ROOT').'/uploads/thumbs/'.$folder.'/'. $paths;
 				$url_img = $domain.'uploads/thumbs/'.$folder.'/'. $paths;
+
 				if(!file_exists($thumbPath)){
 					if(file_exists($imagSource)){
 						$objThumb = new \PHPThumb\GD($imagSource);

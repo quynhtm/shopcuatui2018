@@ -123,7 +123,7 @@ class MenuSystem extends BaseModel
     }
 
     public static function getAllParentMenu() {
-        $data = Cache::get(Define::CACHE_ALL_PARENT_MENU);
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_PARENT_MENU):array();
         if (sizeof($data) == 0) {
             $menu = MenuSystem::where('menu_id', '>', 0)
                 ->where('parent_id',0)
@@ -142,7 +142,7 @@ class MenuSystem extends BaseModel
     }
     public static function buildMenuAdmin(){
         $data = $menuTree = array();
-        $menuTree = Cache::get(Define::CACHE_TREE_MENU);
+        $menuTree = (Define::CACHE_ON)? Cache::get(Define::CACHE_TREE_MENU):array();
         if (sizeof($menuTree) == 0) {
             $search['active'] = Define::STATUS_SHOW;
             $dataSearch = MenuSystem::searchByCondition($search, 200, 0,$total);

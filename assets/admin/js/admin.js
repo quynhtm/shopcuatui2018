@@ -99,14 +99,14 @@ var Admin = {
             $('#img_loading_' + id).show();
             var _token = $('input[name="_token"]').val();
             var url_ajax = '';
-            if (type == 1) { //xoa danh mục tin tức
-                url_ajax = 'deleteCategoryNews';
-            } else if (type == 2) { // xóa tin tức và sản phẩm kiểu tin tức
+            if (type == 1) { //xoa tin tức
                 url_ajax = 'deleteNews';
+            } else if (type == 2) {
+                url_ajax = 'deleteCustomer';
             } else if (type == 3) {
                 url_ajax = 'deleteBanner';
             } else if (type == 4) {
-                url_ajax = 'deleteNews';
+                url_ajax = 'deleteMenu';
             } else if (type == 9) {
                 url_ajax = 'deletePermission';
             } else if (type == 10) {
@@ -119,16 +119,10 @@ var Admin = {
                 url_ajax = 'deleteSystemSetting';
             } else if (type == 14) {
                 url_ajax = 'deleteCarrierSetting';
-            } else if (type == 15) {
+            }else if (type == 15) {
                 url_ajax = 'deleteDeviceToken';
-            } else if (type == 16) { //xoa video
-                url_ajax = 'deleteVideo';
-            } else if (type == 17) { //xoa banner
-                url_ajax = 'deleteBanner';
-            }else if (type == 18) { //xoa contact
-                url_ajax = 'deleteContact';
-            }else if (type == 19) { //xoa info
-                url_ajax = 'deleteInfo';
+            }else if (type == 16) {
+                url_ajax = 'deleteWageStepConfig';
             }
             if (url_ajax != '') {
                 $.ajax({
@@ -601,5 +595,51 @@ var Admin = {
                 }
             }
         });
+    },
+
+    getAjaxDistrictsProvince: function (object,type,selectId) {
+        $('#'+selectId).html('');
+        var _token = $('input[name="_token"]').val();
+        var url_ajax = WEB_ROOT + '/manager/districtsProvince/ajaxGetOption';
+        var object_id = $('#'+object.id).val();
+        $.ajax({
+            type: "post",
+            url: url_ajax,
+            data: {object_id: object_id, type: type, selectId: selectId, _token: _token},
+            dataType: 'json',
+            success: function (res) {
+                if (res.isIntOk === 1) {
+                    $('#'+selectId).html(res.optionSelect);
+                } else {
+                    $('#'+selectId).html('');
+                }
+            }
+        });
+
+    },
+    getAjaxOptionConfigSalary: function (object,type,selectId) {
+        $('#'+selectId).html('');
+        var _token = $('input[name="_token"]').val();
+        var url_ajax = WEB_ROOT + '/manager/wageStepConfig/ajaxGetOption';
+        var object_id = $('#'+object.id).val();
+        $.ajax({
+            type: "post",
+            url: url_ajax,
+            data: {object_id: object_id, type: type, selectId: selectId, _token: _token},
+            dataType: 'json',
+            success: function (res) {
+                if (res.isIntOk === 1) {
+                    if(type == 5){
+                        $('#'+selectId).val(res.optionSelect);
+                    }else {
+                        $('#'+selectId).html(res.optionSelect);
+                    }
+
+                } else {
+                    $('#'+selectId).html('');
+                }
+            }
+        });
+
     },
 }

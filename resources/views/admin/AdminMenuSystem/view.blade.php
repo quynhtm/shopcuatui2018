@@ -7,7 +7,7 @@
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li class="active">Quản lý Menu System</li>
         </ul><!-- /.breadcrumb -->

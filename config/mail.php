@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'shdgroup.com.vn'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'manhquynh1984@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'system@shdgroup.com.vn'),
         'name' => env('MAIL_FROM_NAME', 'Mạnh Quỳnh đẹp zai gửi cho bạn'),
     ],
 
@@ -85,10 +85,10 @@ return [
     */
 
     //'username' => env('MAIL_USERNAME'),
-    'username' =>'manhquynh1984@gmail.com',
+    'username' =>'system@shdgroup.com.vn',
 
     //'password' => env('MAIL_PASSWORD'),
-    'password' => 'phamhonghao',
+    'password' => '1beqKYxi',
 
     /*
     |--------------------------------------------------------------------------

@@ -64,7 +64,7 @@ class Province extends BaseModel{
     }
 
     public static function getAllProvince() {
-        $data = Cache::get(Define::CACHE_ALL_PROVINCE);
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_PROVINCE):array();
         if (sizeof($data) == 0) {
             $result = Province::where('province_id', '>', 0)
                 ->where('province_status',Define::STATUS_SHOW)

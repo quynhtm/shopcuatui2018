@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Admin\MemberSite;
 use App\Http\Models\Admin\Role;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -58,6 +59,7 @@ class AdminRoleController extends BaseAdminController{
         }
         $page_no = (int) Request::get('page_no',1);
         $search['role_name'] = addslashes(Request::get('role_name_s',''));
+        $search['role_project'] = addslashes(Request::get('role_projects',''));
         $limit = 0;
         $total = 0;
         $offset = ($page_no - 1) * $limit;
@@ -66,7 +68,8 @@ class AdminRoleController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($search['role_status']) ? $search['role_status'] : CGlobal::status_show);
-
+        $arrMember = app(MemberSite::class)->getAllMember();
+        $optionMember= FunctionLib::getOption($arrMember, isset($search['role_project']) ? $search['role_project'] : 0);
         $this->viewPermission = $this->getPermissionPage();
         return view('admin.AdminRole.view',array_merge([
             'data'=>$data,
@@ -75,7 +78,9 @@ class AdminRoleController extends BaseAdminController{
             'start'=>($page_no - 1) * $limit,
             'paging'=>$paging,
             'arrStatus'=>$this->arrStatus,
+            'arrMember'=>$arrMember,
             'optionStatus'=>$optionStatus,
+            'optionMember'=>$optionMember,
         ],$this->viewPermission));
     }
     public function addRole($ids){
@@ -123,11 +128,13 @@ class AdminRoleController extends BaseAdminController{
         }
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status'])? $data['role_status'] : CGlobal::status_show);
-
+        $arrMember = app(MemberSite::class)->getAllMember();
+        $optionMember= FunctionLib::getOption($arrMember, isset($data['role_project']) ? $data['role_project'] : 0);
         return view('admin.AdminRole.ajaxLoadForm',
             array_merge([
                 'data'=>$data,
                 'optionStatus'=>$optionStatus,
+                'optionMember'=>$optionMember,
             ],$this->viewPermission));
     }
     private function valid($data=array()) {

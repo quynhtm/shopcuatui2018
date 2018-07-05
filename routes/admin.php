@@ -1,5 +1,4 @@
 <?php
-
 Route::get('logout', array('as' => 'admin.logout','uses' => Admin.'\AdminLoginController@logout'));
 Route::get('dashboard', array('as' => 'admin.dashboard','uses' => Admin.'\AdminDashBoardController@dashboard'));
 Route::get('dashboard/infoEdit', array('as' => 'admin.infoEdit','uses' => Admin.'\AdminSystemSettingController@getInfoEdit'));
@@ -23,6 +22,15 @@ Route::post('permission/create',array('as' => 'admin.permission_create','uses' =
 Route::get('permission/edit/{id}',array('as' => 'admin.permission_edit','uses' => Admin.'\AdminPermissionController@editInfo'))->where('id', '[0-9]+');
 Route::post('permission/edit/{id}',array('as' => 'admin.permission_edit','uses' => Admin.'\AdminPermissionController@edit'))->where('id', '[0-9]+');
 Route::post('permission/deletePermission', array('as' => 'admin.deletePermission','uses' => Admin.'\AdminPermissionController@deletePermission'));//ajax
+
+/*Member*/
+Route::match(['GET','POST'],'member/view',array('as' => 'admin.memberView','uses' => Admin.'\AdminMemberController@view'));
+Route::post('member/edit/{id?}',array('as' => 'admin.memberEdit','uses' => Admin.'\AdminMemberController@postItem'));
+Route::get('member/deleteItem',array('as' => 'admin.memberItem','uses' => Admin.'\AdminMemberController@deleteItem'));
+Route::post('member/ajaxLoadForm',array('as' => 'admin.loadForm','uses' => Admin.'\AdminMemberController@ajaxLoadForm'));
+
+//tỉnh thành quận huyện
+Route::post('districtsProvince/ajaxGetOption', array('as' => 'admin.districtsProvince','uses' => Admin.'\AdminDistrictsProvince@ajaxGetOption'));//ajax
 
 
 /*thông tin nhóm quyền*/
@@ -49,27 +57,115 @@ Route::get('menu/edit/{id?}', array('as' => 'admin.menuEdit','uses' => Admin.'\A
 Route::post('menu/edit/{id?}', array('as' => 'admin.menuEdit','uses' => Admin.'\AdminManageMenuController@postItem'));
 Route::post('menu/deleteMenu', array('as' => 'admin.deleteMenu','uses' => Admin.'\AdminManageMenuController@deleteMenu'));//ajax
 
-/*thông tin video */
-Route::get('video/view',array('as' => 'admin.videoView','uses' => Admin.'\AdminVideoController@view'));
-Route::get('video/edit/{id?}', array('as' => 'admin.videoEdit','uses' => Admin.'\AdminVideoController@getItem'));
-Route::post('video/edit/{id?}', array('as' => 'admin.videoEdit','uses' => Admin.'\AdminVideoController@postItem'));
-Route::post('video/deleteVideo', array('as' => 'admin.deleteVideo','uses' => Admin.'\AdminVideoController@deleteVideo'));//ajax
+/*Cài đặt hệ thống */
+Route::get('systemSetting/view',array('as' => 'admin.systemSettingView','uses' => Admin.'\AdminSystemSettingController@view'));
+Route::post('systemSetting/view/{id?}', array('as' => 'admin.systemSettingView','uses' => Admin.'\AdminSystemSettingController@postItem'));
+Route::get('systemSetting/edit/{id?}', array('as' => 'admin.systemSettingEdit','uses' => Admin.'\AdminSystemSettingController@getItem'));
+Route::post('systemSetting/edit/{id?}', array('as' => 'admin.systemSettingEdit','uses' => Admin.'\AdminSystemSettingController@postItem'));
+Route::post('systemSetting/deleteSystemSetting', array('as' => 'admin.deleteSystemSetting','uses' => Admin.'\AdminSystemSettingController@deleteSystemSetting'));//ajax\
+Route::post('systemSetting/importString', array('as' => 'admin.importStringSystemSetting','uses' => Admin.'\AdminSystemSettingController@importString'));//ajax\
 
-/*thông tin banner */
-Route::get('baner/view',array('as' => 'admin.bannerView','uses' => Admin.'\AdminBannerController@view'));
-Route::get('baner/edit/{id?}', array('as' => 'admin.bannerEdit','uses' => Admin.'\AdminBannerController@getItem'));
-Route::post('baner/edit/{id?}', array('as' => 'admin.bannerEdit','uses' => Admin.'\AdminBannerController@postItem'));
-Route::post('baner/deleteBanner', array('as' => 'admin.deleteBanner','uses' => Admin.'\AdminBannerController@deleteBanner'));//ajax
+/*Cài đặt nhà mạng */
+Route::get('carrierSetting/view',array('as' => 'admin.carrierSettingView','uses' => Admin.'\AdminCarrierSettingController@view'));
+Route::get('carrierSetting/edit/{id?}', array('as' => 'admin.carrierSettingEdit','uses' => Admin.'\AdminCarrierSettingController@getItem'));
+Route::post('carrierSetting/edit/{id?}', array('as' => 'admin.carrierSettingEdit','uses' => Admin.'\AdminCarrierSettingController@postItem'));
+Route::post('carrierSetting/deleteCarrierSetting', array('as' => 'admin.deleteCarrierSetting','uses' => Admin.'\AdminCarrierSettingController@deleteCarrierSetting'));//ajax
 
-/*thong tin contact*/
-Route::get('contact/view',array('as' => 'admin.contactView','uses' => Admin.'\AdminContactController@view'));
-Route::get('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@getItem'));
-Route::post('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@postItem'));
-Route::post('contact/deleteContact', array('as' => 'admin.deleteContact','uses' => Admin.'\AdminContactController@deleteContact'));//ajax
+/*Cài đặt thiết bị */
+Route::get('deviceToken/view',array('as' => 'admin.deviceTokenView','uses' => Admin.'\AdminDeviceTokenController@view'));
+Route::get('deviceToken/edit/{id?}', array('as' => 'admin.deviceTokenEdit','uses' => Admin.'\AdminDeviceTokenController@getItem'));
+Route::post('deviceToken/edit/{id?}', array('as' => 'admin.deviceTokenEdit','uses' => Admin.'\AdminDeviceTokenController@postItem'));
+Route::post('deviceToken/deleteDeviceToken', array('as' => 'admin.deleteDeviceToken','uses' => Admin.'\AdminDeviceTokenController@deleteDeviceToken'));//ajax
 
-/*thong tin chung*/
-Route::get('info/view',array('as' => 'admin.infoView','uses' => Admin.'\AdminInfoController@view'));
-Route::get('info/edit/{id?}', array('as' => 'admin.infoEdit','uses' => Admin.'\AdminInfoController@getItem'));
-Route::post('info/edit/{id?}', array('as' => 'admin.infoEdit','uses' => Admin.'\AdminInfoController@postItem'));
-Route::post('info/deleteInfo', array('as' => 'admin.deleteInfo','uses' => Admin.'\AdminInfoController@deleteInfo'));//ajax
+/*Cài đặt modem */
+Route::get('modem/view',array('as' => 'admin.modemView','uses' => Admin.'\AdminModemController@view'));
+Route::get('modem/edit/{id?}', array('as' => 'admin.modemEdit','uses' => Admin.'\AdminModemController@getItem'));
+Route::post('modem/edit/{id?}', array('as' => 'admin.modemEdit','uses' => Admin.'\AdminModemController@postItem'));
+Route::post('modem/deleteModem', array('as' => 'admin.deleteModem','uses' => Admin.'\AdminModemController@deleteModem'));//ajax
+
+/*send SMS*/
+Route::get('sendSms', array('as' => 'admin.sendSms','uses' => Admin.'\AdminSendSmsController@getSendSms'));
+Route::post('sendSms', array('as' => 'admin.sendSms','uses' => Admin.'\AdminSendSmsController@postSendSms'));
+Route::get('sendSms/uploadFileExcelPhone', array('as' => 'admin.uploadFileExcelPhone','uses' => Admin.'\AdminSendSmsController@uploadFileExcelPhone'));
+
+/*thông sms chờ xử lý*/
+Route::match(['GET','POST'], 'waittingSms/view',array('as' => 'admin.waittingSmsView','uses' => Admin.'\AdminWaittingProcessSmsController@view'));
+Route::match(['GET','POST'], 'waittingSms/viewSend',array('as' => 'admin.waittingSendSmsView','uses' => Admin.'\AdminWaittingProcessSmsController@viewSend'));
+Route::get('waittingSms/edit/{type_page?}/{id?}', array('as' => 'admin.waittingSmsEdit','uses' => Admin.'\AdminWaittingProcessSmsController@getItem'));
+Route::post('waittingSms/edit/{type_page?}/{id?}', array('as' => 'admin.waittingSmsEdit','uses' => Admin.'\AdminWaittingProcessSmsController@postItem'));
+Route::post('waittingSms/changeUserWaittingProcessSms', array('as' => 'admin.changeUserWaittingProcessSms','uses' => Admin.'\AdminWaittingProcessSmsController@changeUserWaittingProcessSms'));//ajax
+Route::get('waittingSms/getSettingContentAttach', array('as' => 'admin.getSettingContentAttach','uses' => Admin.'\AdminWaittingProcessSmsController@getSettingContentAttach'));//ajax
+Route::get('waittingSms/getContentGraftedSms', array('as' => 'admin.getContentGraftedSms','uses' => Admin.'\AdminWaittingProcessSmsController@getContentGraftedSms'));//ajax
+Route::get('waittingSms/submitContentGraftedSms', array('as' => 'admin.submitContentGraftedSms','uses' => Admin.'\AdminWaittingProcessSmsController@submitContentGraftedSms'));//ajax
+//waittingSendSMS
+Route::post('waittingSms/changeModemWaittingSendSms', array('as' => 'admin.changeModemWaittingSendSms','uses' => Admin.'\AdminWaittingProcessSmsController@changeModemWaittingSendSms'));//ajax
+Route::post('waittingSms/refuseModem', array('as' => 'admin.refuseModem','uses' => Admin.'\AdminWaittingProcessSmsController@refuseModem'));//ajax
+
+/*Document API Client*/
+Route::get('dashboard/clientAPIView', array('as' => 'admin.clientAPIView','uses' => Admin.'\AdminSystemSettingController@getApiClient'));
+Route::get('dashboard/client_api_edit/{id?}', array('as' => 'admin.client_api_edit','uses' => Admin.'\AdminSystemSettingController@getApiClientEdit'));
+Route::post('dashboard/client_api_edit/{id?}', array('as' => 'admin.client_api_edit','uses' => Admin.'\AdminSystemSettingController@postApiClientEdit'));
+
+/*Document API Customer*/
+Route::get('dashboard/customerAPIView', array('as' => 'admin.customerAPIView','uses' => Admin.'\AdminSystemSettingController@getApiCustomer'));
+Route::get('dashboard/customer_api_edit/{id?}', array('as' => 'admin.customer_api_edit','uses' => Admin.'\AdminSystemSettingController@getApiCustomerEdit'));
+Route::post('dashboard/customer_api_edit/{id?}', array('as' => 'admin.customer_api_edit','uses' => Admin.'\AdminSystemSettingController@postApiCustomerEdit'));
+
+/*Cài đặt station */
+Route::get('stationSetting/view',array('as' => 'admin.stationSettingView','uses' => Admin.'\AdminStationSettingController@view'));
+Route::post('stationSetting/view/{id?}', array('as' => 'admin.stationSettingEdit','uses' => Admin.'\AdminStationSettingController@postItem'));
+
+/*Station List*/
+Route::get('stationList/view',array('as' => 'admin.stationListView','uses' => Admin.'\AdminStationListController@view'));
+
+/*Station Report*/
+Route::get('stationReport/view',array('as' => 'admin.stationReportView','uses' => Admin.'\AdminStationReportController@view'));
+
+/*SMS History*/
+Route::get('smsHistory/view',array('as' => 'admin.smsHistoryView','uses' => Admin.'\AdminSendSMSHistory@view'));
+Route::get('smsHistory/details',array('as' => 'admin.smsHistoryDetailsView','uses' => Admin.'\AdminSendSMSHistory@viewDetails'));
+
+/*Report Chart*/
+Route::get('reportChart/view',array('as' => 'admin.reportChart','uses' => Admin.'\AdminReportChartController@view'));
+
+/*SMS Report Chart*/
+Route::get('smsMonthChart/view',array('as' => 'admin.smsMonthChart','uses' => Admin.'\AdminSMSReportChartController@view'));
+
+/*SMS Month Report Chart*/
+Route::get('smsMonthReportChart/view',array('as' => 'admin.smsMonthReportChart','uses' => Admin.'\AdminSMSMonthReportChartController@view'));
+
+/*SMS Day Report Chart*/
+Route::get('smsDayReportChart/view',array('as' => 'admin.smsDayReportChart','uses' => Admin.'\AdminSMSDayReportChartController@view'));
+
+/*SMS Year Report Chart*/
+Route::get('smsYearReportChart/view',array('as' => 'admin.smsYearReportChart','uses' => Admin.'\AdminSMSYearReportChartController@view'));
+
+/*SMS Hours Report Chart*/
+Route::get('smsHoursReportChart/view',array('as' => 'admin.smsHoursReportChart','uses' => Admin.'\AdminSMSHoursReportChartController@view'));
+
+/*SMS graphSuccessful Report Chart*/
+Route::get('graphSuccessful/view',array('as' => 'admin.graphSuccessful','uses' => Admin.'\AdminSMSGraphReportChartController@view'));
+
+/*SMS History*/
+Route::get('smsTeplate/view',array('as' => 'admin.smsTemplate','uses' => Admin.'\AdminSMSTemplateController@view'));
+Route::post('smsTeplate/addTemplate',array('as' => 'admin.addTemplate','uses' => Admin.'\AdminSMSTemplateController@addTemplate'));
+Route::get('smsTeplate/deleteTemplate',array('as' => 'admin.deleteTemplate','uses' => Admin.'\AdminSMSTemplateController@deleteTemplate'));
+
+/*Admin cronjob*/
+Route::match(['GET','POST'],'cronjob/view', array('as' => 'admin.CronjobView','uses' => Admin.'\AdminCronjobController@view'));
+Route::get('cronjob/edit/{id?}',array('as' => 'admin.CronjobEdit','uses' => Admin.'\AdminCronjobController@getItem'));
+Route::post('cronjob/edit/{id?}', array('as' => 'admin.CronjobEdit','uses' => Admin.'\AdminCronjobController@postItem'));
+Route::get('cronjob/deleteCronjob', array('as' => 'admin.deleteCronjob','uses' => Admin.'\AdminCronjobController@deleteCronjob'));
+
+/*Admin news*/
+Route::get('news/view',array('as' => 'admin.newsView','uses' => News.'\AdminNewsController@view'));
+Route::get('news/edit/{id?}', array('as' => 'admin.newsEdit','uses' => News.'\AdminNewsController@getItem'));
+Route::post('news/edit/{id?}', array('as' => 'admin.newsEdit','uses' => News.'\AdminNewsController@postItem'));
+Route::get('news/deleteNews', array('as' => 'admin.deleteNews','uses' => News.'\AdminNewsController@deleteNews'));
+
+Route::get('news/viewShow',array('as' => 'admin.viewShow','uses' => News.'\AdminNewsController@viewShow'));
+Route::get('news/viewItem/{name}-{id}.html', array('as' => 'admin.newsViewItem','uses' => News.'\AdminNewsController@newsViewItem'))->where('name', '[A-Z0-9a-z_\-]+')->where('id', '[0-9]+');
+
+
+
 

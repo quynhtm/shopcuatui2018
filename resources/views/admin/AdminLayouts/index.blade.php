@@ -72,7 +72,14 @@
     <script src="{{URL::asset('assets/admin/js/format.js')}}"></script>
     <script src="{{URL::asset('assets/lib/datetimepicker/jquery.datetimepicker.js')}}"></script>
     <script src="{{URL::asset('assets/admin/js/hr.js')}}"></script>
+
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/lib/upload/cssUpload.css')}}"/>
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/lib/jAlert/jquery.alerts.css')}}"/>
+
+    <script src="{{URL::asset('assets/lib/upload/jquery.uploadfile.js')}}"></script>
     <script src="{{URL::asset('assets/admin/js/baseUpload.js')}}"></script>
+    <script src="{{URL::asset('assets/lib/jAlert/jquery.alerts.js')}}"></script>
+
 
     {!!CGlobal::$extraHeaderCSS!!}
     {!!CGlobal::$extraHeaderJS!!}
@@ -91,19 +98,33 @@
             <span class="icon-bar"></span>
         </button>
         <div class="navbar-header pull-left">
-            <a href="#" class="navbar-brand">
-                <small>
-                    <i class="fa fa-leaf"></i>
+            <a href="javascript:void(0)" class="navbar-brand">
+                <small class="rlt3" style="text-transform: uppercase;font-size: 12px;font-style: italic;">
+                    <i class="fa fa-child fa-2x"></i>
                     {{CGlobal::web_name}}
                 </small>
             </a>
         </div>
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-                <li class="light-blue" style="display: none">
-                    <a class="dropdown-toggle" href="#">
+                <li class="light-blue">
+                    <a class="dropdown-toggle" href="{{URL::route('admin.viewShow')}}" title="Góp ý - Thắc mắc về hệ thống">
+                        <i class="fa fa-clipboard fa-2x marginTop5" aria-hidden="true">
+
+                        </i>
+                    </a>
+                </li>
+                {{--<li class="light-blue">
+                    <a class="dropdown-toggle" href="#" title="Góp ý - Thắc mắc về hệ thống">
+                        <i class="fa fa-comments fa-2x marginTop5" aria-hidden="true">
+                            <span class="msg_notify">13</span>
+                        </i>
+                    </a>
+                </li>--}}
+                <li class="light-blue">
+                    <a class="dropdown-toggle" href="{{URL::route('hr.HrMailViewGet')}}">
                         <i class="fa fa-envelope-o fa-2x marginTop5" aria-hidden="true">
-                            <span class="msg_notify">3</span>
+                            @if(isset($newMailInbox) && $newMailInbox > 0)<span class="msg_notify">{{$newMailInbox}}</span>@endif
                         </i>
                     </a>
                 </li>
@@ -115,6 +136,13 @@
                     </a>
                 </li>
                 <li class="light-blue" style="display: none">
+                    <a class="dropdown-toggle" href="#">
+                        <i class="fa fa-bell-o fa-2x marginTop5" aria-hidden="true">
+                            <span class="msg_notify">13</span>
+                        </i>
+                    </a>
+                </li>
+                <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
                             <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/vi.png"/>
@@ -158,6 +186,15 @@
                             </a>
                         </li>
                         <li class="divider"></li>
+                        @if(isset($user['user_object_id']) && $user['user_object_id'] > 0)
+                        <li>
+                            <a href="{{URL::route('hr.viewLuongDetailPerson')}}">
+                                <i class="ace-icon fa fa-usd"></i>
+                                Chi tiết lương
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        @endif
                         <li>
                             <a href="{{URL::route('admin.logout')}}">
                                 <i class="ace-icon fa fa-power-off"></i>
@@ -293,6 +330,35 @@
         </div>
     </div>
 </div>
+
+<!--Popup Upload File-->
+<div class="modal fade" id="sys_PopupUploadFileCommon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Tải tệp đính kèm</h4>
+            </div>
+            <div class="modal-body">
+                <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
+                    <div class="form_group">
+                        <div id="sys_show_button_upload_file">
+                            <div id="sys_mulitplefileuploaderFile" class="btn btn-primary">Tải tệp đính kèm</div>
+                        </div>
+                        <div id="status_file"></div>
+
+                        <div class="clearfix"></div>
+                        <div class="clearfix" style='margin: 5px 10px; width:100%;'>
+                            <div id="div_image_file"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Popup Upload File-->
+
 <script>
     function showModal(event) {
         var url = event.getAttribute('ajax_url');

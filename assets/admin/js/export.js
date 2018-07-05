@@ -164,7 +164,6 @@ $(document).ready(function(){
 
 });
 var Export = {
-
     removeItem:function(product_id){
         var customers_id = $("#customers_id").val();
         $.ajax({

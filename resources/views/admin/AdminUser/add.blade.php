@@ -8,7 +8,7 @@
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                <<a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li><a href="{{URL::route('admin.user_view')}}"> Danh sách tài khoản</a></li>
             <li class="active">Sửa tài khoản</li>
@@ -43,6 +43,17 @@
                         </div>
                     </div>
                     @endif
+                    @if($is_boss == 1)
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Thuộc member<span class="red"> (*) </span></label>
+                            <select name="user_parent" id="user_parent" class="form-control input-sm">
+                                <option value="0">----Chọn member----</option>
+                                {!! $optionMember!!}
+                            </select>
+                        </div>
+                    </div>
+                    @endif
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="name" class="control-label">Tên nhân viên<span class="red"> (*) </span></label>
@@ -50,6 +61,15 @@
                         </div>
                     </div>
 
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Phòng ban<span class="red"> (*) </span></label>
+                            <select name="user_depart_id" id="user_depart_id" class="form-control input-sm">
+                                <option value="0">----Chọn phòng ban----</option>
+                                {!! $optionDepart !!}
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">Kiểu User<span class="red"> (*) </span></label>

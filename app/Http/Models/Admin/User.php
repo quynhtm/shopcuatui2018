@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Models\Admin;
+
 use App\Http\Models\BaseModel;
 
 use App\Library\AdminFunction\FunctionLib;
@@ -19,19 +20,28 @@ class User extends BaseModel
     protected $primaryKey = 'user_id';
     public $timestamps = false;
 
-    protected $fillable = array('user_name', 'user_parent', 'user_password', 'user_full_name', 'user_email', 'user_phone',
+    protected $fillable = array('user_name', 'user_object_id', 'user_parent', 'user_password', 'user_full_name', 'user_email', 'user_phone',
         'user_status', 'user_sex', 'user_view', 'user_group', 'user_group_menu', 'user_last_login', 'user_last_ip', 'user_create_id', 'user_create_name',
-        'user_edit_id', 'user_edit_name', 'user_created', 'user_updated',
+        'user_edit_id', 'user_edit_name', 'user_created', 'user_updated', 'user_depart_id',
         'role_type', 'role_name', 'address', 'number_code', 'address_register', 'telephone');
 
     /**
      * @param $name
      * @return mixed
      */
+    public static function getUserByPersonId($person_id)
+    {
+        return User::where('user_object_id', $person_id)->first();
+    }
+
     public static function getUserByName($name)
     {
-        $admin = User::where('user_name', $name)->first();
-        return $admin;
+        return User::where('user_name', $name)->first();
+    }
+
+    public static function getUserByObjectId($object_id)
+    {
+        return User::where('user_object_id', $object_id)->first();
     }
 
     public static function updateUserPermissionWithRole($role)
@@ -44,7 +54,7 @@ class User extends BaseModel
                     $dataUpdate['user_group_menu'] = (isset($role->role_group_menu_id) && trim($role->role_group_menu_id) != '' && $role->role_status == Define::STATUS_SHOW) ? $role->role_group_menu_id : '';
                     $dataUpdate['role_type'] = $role->role_id;
                     $dataUpdate['role_name'] = $role->role_name;
-                    User::updateUser($user->user_id,$dataUpdate);
+                    User::updateUser($user->user_id, $dataUpdate);
                 }
             }
         }
@@ -66,7 +76,7 @@ class User extends BaseModel
      */
     public static function encode_password($password)
     {
-        return md5($password .CGlobal::project_name. '-haianhem!@!@!@13368');
+        return md5($password . CGlobal::project_name . '-haianhem!@!@!@13368');
     }
 
     public static function updateLogin($user = array())
@@ -86,6 +96,34 @@ class User extends BaseModel
             $user = Session::get('user');
         }
         return $user;
+    }
+
+    public function get_user_project()
+    {
+        $user_project = 0;
+        if (Session::has('user')) {
+            $user = Session::get('user');
+            if (!empty($user)) {
+                $user_project = (isset($user['user_project'])) ? $user['user_project'] : 0;
+            }
+        }
+        return $user_project;
+    }
+
+    public function get_project_search()
+    {
+        $user_project = 0;
+        if (Session::has('user')) {
+            $user = Session::get('user');
+            if (!empty($user)) {
+                if(isset($user['user_view']) && $user['user_view'] == CGlobal::status_hide){
+                    $user_project = Define::STATUS_SEARCH_ALL;
+                    return $user_project;
+                }
+                $user_project = (isset($user['user_project'])) ? $user['user_project'] : 0;
+            }
+        }
+        return $user_project;
     }
 
     public static function customer_login()
@@ -125,6 +163,10 @@ class User extends BaseModel
             if (isset($data['user_view']) && $data['user_view'] == 1) {
                 $query->whereIn('user_view', array(0, 1));
             } else {
+                $user_project = app(User::class)->get_project_search();
+                if($user_project > Define::STATUS_SEARCH_ALL){
+                    $query->where('user_parent', $user_project );
+                }
                 $query->where('user_view', 1);
             }
 
@@ -277,7 +319,7 @@ class User extends BaseModel
 
     public static function getListUserNameFullName()
     {
-        $data = Cache::get(Define::CACHE_INFO_USER);
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_INFO_USER):array();
         if (sizeof($data) == 0) {
             $arr = User::getList();
             foreach ($arr as $value) {
@@ -292,7 +334,7 @@ class User extends BaseModel
 
     public static function getOptionUserFullNameAndMail()
     {
-        $data = Cache::get(Define::CACHE_OPTION_USER);
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_OPTION_USER):array();
         if (sizeof($data) == 0) {
             $arr = User::getList();
             foreach ($arr as $value) {
@@ -307,7 +349,7 @@ class User extends BaseModel
 
     public static function getOptionUserMail()
     {
-        $data = Cache::get(Define::CACHE_OPTION_USER_MAIL);
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_OPTION_USER_MAIL):array();
         if (sizeof($data) == 0) {
             $arr = User::getList();
             foreach ($arr as $value) {
@@ -391,5 +433,19 @@ class User extends BaseModel
     {
         //return (trim($str_sql) != '') ? DB::statement(trim($str_sql)): array();
         return (trim($str_sql) != '') ? DB::select(trim($str_sql)) : array();
+    }
+
+    public static function getUserIdInArrPersonnelId($arrUserObjectId = array())
+    {
+        $person = array();
+        if (sizeof($arrUserObjectId) > 0) {
+            $result = User::whereIn('user_object_id', $arrUserObjectId)->get();
+            if (sizeof($result) > 0) {
+                foreach ($result as $item) {
+                    $person[] = $item->user_object_id;
+                }
+            }
+        }
+        return $person;
     }
 }

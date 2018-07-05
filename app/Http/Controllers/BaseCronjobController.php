@@ -27,7 +27,7 @@ class BaseCronjobController extends Controller{
         );
     }
 
-    public function returnResultError($dataOutPut, $message = 'Error Exception'){
+    public function returnResultError($dataOutPut, $message = 'No action'){
         $dataLog['data'] = $dataOutPut;
         $dataLog['message'] = $message;
         return Response::json(

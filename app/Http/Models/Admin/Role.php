@@ -89,6 +89,7 @@ class Role extends BaseModel{
                 $query->where('role_name','LIKE', '%' . $dataSearch['role_name'] . '%');
             }
             $total = $query->count();
+            $query->orderBy('role_project', 'asc');
             $query->orderBy('role_order', 'asc');
 
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
@@ -112,25 +113,30 @@ class Role extends BaseModel{
         if($id > 0){
             //Cache::forget(Define::CACHE_ROLE_ID.$id);
         }
-        Cache::forget(Define::CACHE_OPTION_ROLE);
+        Cache::forget(Define::CACHE_OPTION_ROLE.'_'.$data->role_project);
     }
 
-    public static function getListAll() {
+    public static function getListAll($user_project = 0) {
         $query = Role::where('role_id','>',0);
+        if($user_project > 0){
+            $query->where('role_project','=', $user_project);
+        }
         $query->where('role_status','=', Define::STATUS_SHOW);
         $list = $query->orderBy('role_order','ASC')->get();
         return $list;
     }
 
-    public static function getOptionRole() {
-        $data = Cache::get(Define::CACHE_OPTION_ROLE);
+    public static function getOptionRole($project = 0) {
+        $user_project = app(User::class)->get_user_project();
+        $user_project = ($project > 0)? $project: $user_project;
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_OPTION_ROLE.'_'.$user_project):array();
         if (sizeof($data) == 0) {
-            $arr =  Role::getListAll();
+            $arr =  Role::getListAll($user_project);
             foreach ($arr as $value){
                 $data[$value->role_id] = $value->role_name;
             }
             if(!empty($data)){
-                Cache::put(Define::CACHE_OPTION_ROLE, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Define::CACHE_OPTION_ROLE.'_'.$user_project, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
             }
         }
         return $data;

@@ -63,7 +63,6 @@ class Permission extends BaseModel{
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
-
     }
 
     public static function updatePermission($id, $data,  $arr_group = array())

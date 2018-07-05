@@ -5,7 +5,7 @@
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li><a href="{{URL::route('admin.groupUser_view')}}"> Danh sách nhóm quyền</a></li>
             <li class="active">Tạo nhóm quyền</li>

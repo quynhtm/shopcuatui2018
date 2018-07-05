@@ -24,30 +24,6 @@ class ArrayPermission{
         'permission_create' => array('name_permit'=>'Tạo tạo quyền','group_permit'=>'Tạo quyền'),
         'permission_edit' => array('name_permit'=>'Sửa tạo quyền','group_permit'=>'Tạo quyền'),
 
-        'banner_full' => array('name_permit'=>'Full quảng cáo','group_permit'=>'Quyền quảng cáo'),
-        'banner_view' => array('name_permit'=>'Xem quảng cáo','group_permit'=>'Quyền quảng cáo'),
-        'banner_delete' => array('name_permit'=>'Xóa quảng cáo','group_permit'=>'Quyền quảng cáo'),
-        'banner_create' => array('name_permit'=>'Tạo quảng cáo','group_permit'=>'Quyền quảng cáo'),
-        'banner_edit' => array('name_permit'=>'Sửa quảng cáo','group_permit'=>'Quyền quảng cáo'),
-
-        'category_full' => array('name_permit'=>'Full danh mục','group_permit'=>'Quyền danh mục'),
-        'category_view' => array('name_permit'=>'Xem danh mục','group_permit'=>'Quyền danh mục'),
-        'category_delete' => array('name_permit'=>'Xóa danh mục','group_permit'=>'Quyền danh mục'),
-        'category_create' => array('name_permit'=>'Tạo danh mục','group_permit'=>'Quyền danh mục'),
-        'category_edit' => array('name_permit'=>'Sửa danh mục','group_permit'=>'Quyền danh mục'),
-
-        'items_full' => array('name_permit'=>'Full tin rao','group_permit'=>'Quyền tin rao'),
-        'items_view' => array('name_permit'=>'Xem tin rao','group_permit'=>'Quyền tin rao'),
-        'items_delete' => array('name_permit'=>'Xóa tin rao','group_permit'=>'Quyền tin rao'),
-        'items_create' => array('name_permit'=>'Tạo tin rao','group_permit'=>'Quyền tin rao'),
-        'items_edit' => array('name_permit'=>'Sửa tin rao','group_permit'=>'Quyền tin rao'),
-
-        'news_full' => array('name_permit'=>'Full tin tức','group_permit'=>'Quyền tin tức'),
-        'news_view' => array('name_permit'=>'Xem tin tức','group_permit'=>'Quyền tin tức'),
-        'news_delete' => array('name_permit'=>'Xóa tin tức','group_permit'=>'Quyền tin tức'),
-        'news_create' => array('name_permit'=>'Tạo tin tức','group_permit'=>'Quyền tin tức'),
-        'news_edit' => array('name_permit'=>'Sửa tin tức','group_permit'=>'Quyền tin tức'),
-
         'province_full' => array('name_permit'=>'Full tỉnh thành','group_permit'=>'Quyền tỉnh thành'),
         'province_view' => array('name_permit'=>'Xem tỉnh thành','group_permit'=>'Quyền tỉnh thành'),
         'province_delete' => array('name_permit'=>'Xóa tỉnh thành','group_permit'=>'Quyền tỉnh thành'),
@@ -60,61 +36,11 @@ class ArrayPermission{
         'user_customer_create' => array('name_permit'=>'Tạo khách hàng','group_permit'=>'Quyền khách hàng'),
         'user_customer_edit' => array('name_permit'=>'Sửa khách hàng','group_permit'=>'Quyền khách hàng'),
 
-        //quyền dự án SMS
-        /***********************************************************************************************************************/
-        /*private $permission_view = 'waittingSms_view';
-        private $permission_full = 'waittingSms_full';
-        private $permission_delete = 'waittingSms_delete';
-        private $permission_create = 'waittingSms_create';
-        private $permission_edit = 'waittingSms_edit';*/
-        /***********************************************************************************************************************/
-
-        'waittingSms_full' => array('name_permit'=>'Full waittingSms','group_permit'=>'Quyền waittingSms'),
-        'waittingSms_view' => array('name_permit'=>'Xem waittingSms','group_permit'=>'Quyền waittingSms'),
-        'waittingSms_delete' => array('name_permit'=>'Xóa waittingSms','group_permit'=>'Quyền waittingSms'),
-        'waittingSms_create' => array('name_permit'=>'Tạo waittingSms','group_permit'=>'Quyền waittingSms'),
-        'waittingSms_edit' => array('name_permit'=>'Sửa waittingSms','group_permit'=>'Quyền waittingSms'),
-
-        'systemSetting_full' => array('name_permit'=>'Full systemSetting','group_permit'=>'Quyền systemSetting'),
-        'systemSetting_view' => array('name_permit'=>'Xem systemSetting','group_permit'=>'Quyền systemSetting'),
-        'systemSetting_delete' => array('name_permit'=>'Xóa systemSetting','group_permit'=>'Quyền systemSetting'),
-        'systemSetting_create' => array('name_permit'=>'Tạo systemSetting','group_permit'=>'Quyền systemSetting'),
-        'systemSetting_edit' => array('name_permit'=>'Sửa systemSetting','group_permit'=>'Quyền systemSetting'),
-
-        'stationSetting_full' => array('name_permit'=>'Full stationSetting','group_permit'=>'Quyền stationSetting'),
-        'stationSetting_view' => array('name_permit'=>'Xem stationSetting','group_permit'=>'Quyền stationSetting'),
-        'stationSetting_delete' => array('name_permit'=>'Xóa stationSetting','group_permit'=>'Quyền stationSetting'),
-        'stationSetting_create' => array('name_permit'=>'Tạo stationSetting','group_permit'=>'Quyền stationSetting'),
-        'stationSetting_edit' => array('name_permit'=>'Sửa stationSetting','group_permit'=>'Quyền stationSetting'),
-
-        'sendSmsHistory_full' => array('name_permit'=>'Full sendSmsHistory','group_permit'=>'Quyền sendSmsHistory'),
-        'sendSmsHistory_view' => array('name_permit'=>'Xem sendSmsHistory','group_permit'=>'Quyền sendSmsHistory'),
-        'sendSmsHistory_delete' => array('name_permit'=>'Xóa sendSmsHistory','group_permit'=>'Quyền sendSmsHistory'),
-        'sendSmsHistory_create' => array('name_permit'=>'Tạo sendSmsHistory','group_permit'=>'Quyền sendSmsHistory'),
-        'sendSmsHistory_edit' => array('name_permit'=>'Sửa sendSmsHistory','group_permit'=>'Quyền sendSmsHistory'),
-
-        'sendSmsTemplate_full' => array('name_permit'=>'Full sendSmsTemplate','group_permit'=>'Quyền sendSmsTemplate'),
-        'sendSmsTemplate_view' => array('name_permit'=>'Xem sendSmsTemplate','group_permit'=>'Quyền sendSmsTemplate'),
-        'sendSmsTemplate_delete' => array('name_permit'=>'Xóa sendSmsTemplate','group_permit'=>'Quyền sendSmsTemplate'),
-        'sendSmsTemplate_create' => array('name_permit'=>'Tạo sendSmsTemplate','group_permit'=>'Quyền sendSmsTemplate'),
-        'sendSmsTemplate_edit' => array('name_permit'=>'Sửa sendSmsTemplate','group_permit'=>'Quyền sendSmsTemplate'),
-
-        'sendSms_full' => array('name_permit'=>'Full sendSms','group_permit'=>'Quyền sendSms'),
-        'sendSms_delete' => array('name_permit'=>'Xóa sendSms','group_permit'=>'Quyền sendSms'),
-        'sendSms_create' => array('name_permit'=>'Tạo sendSms','group_permit'=>'Quyền sendSms'),
-        'sendSms_edit' => array('name_permit'=>'Sửa sendSms','group_permit'=>'Quyền sendSms'),
-
-        'stationReport_full' => array('name_permit'=>'Full reportChart','group_permit'=>'Quyền reportChart'),
-        'stationReport_view' => array('name_permit'=>'Xem reportChart','group_permit'=>'Quyền reportChart'),
-
-        'reportChart_full' => array('name_permit'=>'Full stationSetting','group_permit'=>'Quyền stationSetting'),
-        'reportChart_view' => array('name_permit'=>'Xem stationSetting','group_permit'=>'Quyền stationSetting'),
-
-        'modem_full' => array('name_permit'=>'Full Modem','group_permit'=>'Quyền Modem'),
-        'modem_view' => array('name_permit'=>'Xem Modem','group_permit'=>'Quyền Modem'),
-        'modem_delete' => array('name_permit'=>'Xóa Modem','group_permit'=>'Quyền Modem'),
-        'modem_create' => array('name_permit'=>'Tạo Modem','group_permit'=>'Quyền Modem'),
-        'modem_edit' => array('name_permit'=>'Sửa Modem','group_permit'=>'Quyền Modem'),
+        'adminCronjob_full' => array('name_permit'=>'Full cronjob','group_permit'=>'Quyền cronjob'),
+        'adminCronjob_view' => array('name_permit'=>'Xem cronjob','group_permit'=>'Quyền cronjob'),
+        'adminCronjob_delete' => array('name_permit'=>'Xóa cronjob','group_permit'=>'Quyền cronjob'),
+        'adminCronjob_create' => array('name_permit'=>'Tạo cronjob','group_permit'=>'Quyền cronjob'),
+        'adminCronjob_edit' => array('name_permit'=>'Sửa cronjob','group_permit'=>'Quyền cronjob'),
 
         'menu_full' => array('name_permit'=>'Full menu','group_permit'=>'Quyền menu'),
         'menu_view' => array('name_permit'=>'Xem menu','group_permit'=>'Quyền menu'),
@@ -122,23 +48,117 @@ class ArrayPermission{
         'menu_create' => array('name_permit'=>'Tạo menu','group_permit'=>'Quyền menu'),
         'menu_edit' => array('name_permit'=>'Sửa menu','group_permit'=>'Quyền menu'),
 
-        'deviceToken_full' => array('name_permit'=>'Full thiết bị','group_permit'=>'Quyền thiết bị'),
-        'deviceToken_view' => array('name_permit'=>'Xem thiết bị','group_permit'=>'Quyền thiết bị'),
-        'deviceToken_delete' => array('name_permit'=>'Xóa thiết bị','group_permit'=>'Quyền thiết bị'),
-        'deviceToken_create' => array('name_permit'=>'Tạo thiết bị','group_permit'=>'Quyền thiết bị'),
-        'deviceToken_edit' => array('name_permit'=>'Sửa thiết bị','group_permit'=>'Quyền thiết bị'),
 
-        'carrierSetting_full' => array('name_permit'=>'Full nhà mạng','group_permit'=>'Quyền nhà mạng'),
-        'carrierSetting_view' => array('name_permit'=>'Xem nhà mạng','group_permit'=>'Quyền nhà mạng'),
-        'carrierSetting_delete' => array('name_permit'=>'Xóa nhà mạng','group_permit'=>'Quyền nhà mạng'),
-        'carrierSetting_create' => array('name_permit'=>'Tạo nhà mạng','group_permit'=>'Quyền nhà mạng'),
-        'carrierSetting_edit' => array('name_permit'=>'Sửa nhà mạng','group_permit'=>'Quyền nhà mạng'),
+
+        'role_full' => array('name_permit'=>'Full Role','group_permit'=>'Quyền Role'),
+        'role_view' => array('name_permit'=>'Xem Role','group_permit'=>'Quyền Role'),
+        'role_delete' => array('name_permit'=>'Xóa Role','group_permit'=>'Quyền Role'),
+        'role_create' => array('name_permit'=>'Tạo Role','group_permit'=>'Quyền Role'),
+        'role_edit' => array('name_permit'=>'Sửa Role','group_permit'=>'Quyền Role'),
+
+        'role_permission_view' => array('name_permit'=>'Full','group_permit'=>'Phân quyền role'),
+        'role_permission_create' => array('name_permit'=>'Tạo','group_permit'=>'Phân quyền role'),
+        'role_permission_edit' => array('name_permit'=>'Sửa','group_permit'=>'Phân quyền role'),
 
         'hr_document_full' => array('name_permit'=>'Full văn bản','group_permit'=>'Quyền văn bản'),
         'hr_document_view' => array('name_permit'=>'Xem văn bản','group_permit'=>'Quyền văn bản'),
         'hr_document_delete' => array('name_permit'=>'Xóa văn bản','group_permit'=>'Quyền văn bản'),
         'hr_document_create' => array('name_permit'=>'Tạo văn bản','group_permit'=>'Quyền văn bản'),
         'hr_document_edit' => array('name_permit'=>'Sửa văn bản','group_permit'=>'Quyền văn bản'),
+
+        'personBonusFull' => array('name_permit'=>'Full','group_permit'=>'Quyền Thông tin khen thưởng, danh hiệu, kỷ luật'),
+        'personBonusView' => array('name_permit'=>'Xem','group_permit'=>'Quyền Thông tin khen thưởng, danh hiệu, kỷ luật'),
+        'personBonusDelete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Thông tin khen thưởng, danh hiệu, kỷ luật'),
+        'personBonusCreate' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Thông tin khen thưởng, danh hiệu, kỷ luật'),
+
+        'personCurriculumVitaeFull' => array('name_permit'=>'Full','group_permit'=>'Quyền Thông tin lý lịch 2C'),
+        'personCurriculumVitaeView' => array('name_permit'=>'Xem','group_permit'=>'Quyền Thông tin lý lịch 2C'),
+        'personCurriculumVitaeDelete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Thông tin lý lịch 2C'),
+        'personCurriculumVitaeCreate' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Thông tin lý lịch 2C'),
+
+        'department_config_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Quản lý cấu hình đơn vị'),
+        'department_config_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền Quản lý cấu hình đơn vị'),
+        'department_config_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Quản lý cấu hình đơn vị'),
+        'department_config_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Quản lý cấu hình đơn vị'),
+
+        'device_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Quản lý tài sản'),
+        'device_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền Quản lý tài sản'),
+        'device_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Quản lý tài sản'),
+        'device_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Quản lý tài sản'),
+        'device_export' => array('name_permit'=>'Export','group_permit'=>'Quyền Quản lý tài sản'),
+
+        'hrDefined_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Quản lý định nghĩa chung'),
+        'hrDefined_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền Quản lý định nghĩa chung'),
+        'hrDefined_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Quản lý định nghĩa chung'),
+        'hrDefined_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Quản lý định nghĩa chung'),
+
+        'department_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Quản lý đơn vị - phòng ban'),
+        'department_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền Quản lý đơn vị - phòng ban'),
+        'department_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Quản lý đơn vị - phòng ban'),
+        'department_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Quản lý đơn vị - phòng ban'),
+
+        'hr_mail_full' => array('name_permit'=>'Full','group_permit'=>'Quyền thư gửi'),
+        'hr_mail_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền thư gửi'),
+        'hr_mail_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền thư gửi'),
+        'hr_mail_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền thư gửi'),
+
+        'wagestepconfig_full' => array('name_permit'=>'Full','group_permit'=>'Quyền thang bảng lương'),
+        'wagestepconfig_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền thang bảng lương'),
+        'wagestepconfig_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền thang bảng lương'),
+        'wagestepconfig_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền thang bảng lương'),
+
+        'personContractsFull' => array('name_permit'=>'Full','group_permit'=>'Quyền Họp đồng lao động'),
+        'personContractsView' => array('name_permit'=>'Xem','group_permit'=>'Quyền Họp đồng lao động'),
+        'personContractsDelete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Họp đồng lao động'),
+        'personContractsCreate' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Họp đồng lao động'),
+
+        'personCreaterUser_full' => array('name_permit'=>'Full','group_permit'=>'Quyền tạo NS login'),
+        'personCreaterUser_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền tạo NS login'),
+        'personCreaterUser_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền tạo NS login'),
+        'personCreaterUser_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền tạo NS login'),
+
+        'jobAssignmentFull' => array('name_permit'=>'Full','group_permit'=>'Quyền Bổ nhiệm/Bổ nhiệm lại chức vụ'),
+        'jobAssignmentView' => array('name_permit'=>'Xem','group_permit'=>'Quyền Bổ nhiệm/Bổ nhiệm lại chức vụ'),
+        'jobAssignmentDelete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Bổ nhiệm/Bổ nhiệm lại chức vụ'),
+        'jobAssignmentCreate' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Bổ nhiệm/Bổ nhiệm lại chức vụ'),
+
+        'passport_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Thông tin hộ chiếu - mã số thuế'),
+        'passport_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Thông tin hộ chiếu - mã số thuế'),
+        'passport_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Thông tin hộ chiếu - mã số thuế'),
+
+        'person_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Quản lý nhân sự'),
+        'person_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền Quản lý nhân sự'),
+        'person_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Quản lý nhân sự'),
+        'person_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Quản lý nhân sự'),
+        'person_creater_user' => array('name_permit'=>'Tạo user login','group_permit'=>'Quyền Quản lý nhân sự'),
+
+        'quitJob_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Thiết lập buộc thôi việc nhân sự'),
+        'quitJob_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Thiết lập buộc thôi việc nhân sự'),
+        'quitJob_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Thiết lập buộc thôi việc nhân sự'),
+
+        'viewTienLuongCongChuc' => array('name_permit'=>'Full','group_permit'=>'Quyền Báo cáo danh sách và tiền lương công chức'),
+        'exportTienLuongCongChuc' => array('name_permit'=>'Export','group_permit'=>'Quyền Báo cáo danh sách và tiền lương công chức'),
+
+        'personViewTienLuongCongChuc' => array('name_permit'=>'Full','group_permit'=>'NS xem tiền lương công chức'),
+        'personExportTienLuongCongChuc' => array('name_permit'=>'Export','group_permit'=>'NS xem tiền lương công chức'),
+
+        'retirement_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Thiết lập ngày nghỉ hưu'),
+        'retirement_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền Thiết lập ngày nghỉ hưu'),
+        'retirement_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Thiết lập ngày nghỉ hưu'),
+        'retirement_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Thiết lập ngày nghỉ hưu'),
+
+        'salaryAllowanceFull' => array('name_permit'=>'Full','group_permit'=>'Quyền Lương, phụ cấp'),
+        'salaryAllowanceView' => array('name_permit'=>'Xem','group_permit'=>'Quyền Lương, phụ cấp'),
+        'salaryAllowanceDelete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Lương, phụ cấp'),
+        'salaryAllowanceCreate' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Lương, phụ cấp'),
+
+
+        /**
+         * private $salaryAllowanceFull = 'salaryAllowanceFull';
+        private $salaryAllowanceView = 'salaryAllowanceView';
+        private $salaryAllowanceDelete = 'salaryAllowanceDelete';
+        private $salaryAllowanceCreate = 'salaryAllowanceCreate';
+         */
     );
 
 }

@@ -9,11 +9,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\GroupUser;
+use App\Http\Models\Admin\MemberSite;
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\MenuSystem;
 use App\Http\Models\Admin\RoleMenu;
 use App\Http\Models\Admin\Role;
 
+use App\Http\Models\Hr\Department;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
@@ -32,6 +34,8 @@ class AdminUserController extends BaseAdminController{
     private $arrStatus = array();
     private $arrRoleType = array();
     private $arrSex = array();
+    private $arrDepart = array();
+    private $arrMember = array();
     private $error = array();
 
     public function __construct(){
@@ -40,7 +44,8 @@ class AdminUserController extends BaseAdminController{
     }
 
     public function getDataDefault(){
-        $this->arrRoleType = Role::getOptionRole();
+        $user_project = app(User::class)->get_user_project();
+        $this->arrRoleType = Role::getOptionRole($user_project);
         $this->arrStatus = array(
             CGlobal::status_hide => FunctionLib::controLanguage('status_all',$this->languageSite),
             CGlobal::status_show => FunctionLib::controLanguage('status_show',$this->languageSite),
@@ -48,6 +53,8 @@ class AdminUserController extends BaseAdminController{
         $this->arrSex = array(
             CGlobal::status_hide => FunctionLib::controLanguage('sex_girl',$this->languageSite),
             CGlobal::status_show => FunctionLib::controLanguage('sex_boy',$this->languageSite));
+        $this->arrDepart = Department::getDepartmentAll();
+        $this->arrMember = app(MemberSite::class)->getAllMember();
     }
     public function view(){
         CGlobal::$pageAdminTitle  = "Quản trị User | Admin CMS";
@@ -80,6 +87,7 @@ class AdminUserController extends BaseAdminController{
                 'start'=>($page_no - 1) * $limit,
                 'paging'=>$paging,
                 'arrStatus'=>$this->arrStatus,
+                'arrDepart'=>$this->arrDepart,
                 'arrGroupUser'=>$arrGroupUser,
                 'optionRoleType'=>$optionRoleType,
                 'is_root'=>$this->is_root,
@@ -113,6 +121,8 @@ class AdminUserController extends BaseAdminController{
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['user_status'])? $data['user_status']: CGlobal::status_show);
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['user_sex'])? $data['user_sex']: CGlobal::status_show);
         $optionRoleType = FunctionLib::getOption($this->arrRoleType, isset($data['role_type'])? $data['role_type']: Define::ROLE_TYPE_CUSTOMER);
+        $optionDepart= FunctionLib::getOption($this->arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
+        $optionMember= FunctionLib::getOption($this->arrMember, isset($data['user_parent']) ? $data['user_parent'] : 0);
         return view('admin.AdminUser.add',[
             'data'=>$data,
             'id'=>$id,
@@ -124,8 +134,11 @@ class AdminUserController extends BaseAdminController{
             'optionStatus'=>$optionStatus,
             'optionSex'=>$optionSex,
             'optionRoleType'=>$optionRoleType,
+            'optionDepart'=>$optionDepart,
+            'optionMember'=>$optionMember,
 
             'is_root'=>$this->is_root,
+            'is_boss'=>$this->is_boss,
             'permission_edit'=>in_array($this->permission_edit, $this->permission) ? 1 : 0,
             'permission_create'=>in_array($this->permission_create, $this->permission) ? 1 : 0,
             'permission_change_pass'=>in_array($this->permission_change_pass, $this->permission) ? 1 : 0,
@@ -149,10 +162,12 @@ class AdminUserController extends BaseAdminController{
         $data['telephone'] = Request::get('telephone', '');
         $data['address_register'] = Request::get('address_register', '');
         $data['number_code'] = Request::get('number_code', '');
+        $data['user_depart_id'] = Request::get('user_depart_id', 0);
         $data['role_type'] = Request::get('role_type', Define::ROLE_TYPE_CUSTOMER);
 
+        $data['user_parent'] = ($this->is_boss)? Request::get('user_parent', 0) : $this->user_project;
+
         $this->validUser($id,$data);
-        //FunctionLib::debug($this->error);
 
         //lấy phân quyền theo role
         if($data['role_type'] > 0){
@@ -162,17 +177,6 @@ class AdminUserController extends BaseAdminController{
                 $dataInsert['user_group_menu'] = (isset($infoPermiRole->role_group_menu_id) && trim($infoPermiRole->role_group_menu_id) != '')?$infoPermiRole->role_group_menu_id:'';
             }
         }
-        /*$groupUser = $data['user_group'] = Request::get('user_group', array());
-        if ($groupUser) {
-            $strGroupUser = implode(',', $groupUser);
-            $dataInsert['user_group'] = $strGroupUser;
-        }
-        $groupUserMenu = $data['user_group_menu'] = Request::get('user_group_menu', array());
-        if ($groupUserMenu) {
-            $strGroupUserMenu = implode(',', $groupUserMenu);
-            $dataInsert['user_group_menu'] = $strGroupUserMenu;
-        }*/
-
         if (empty($this->error)) {
             $groupRole = Role::getOptionRole();
             //Insert dữ liệu
@@ -186,6 +190,8 @@ class AdminUserController extends BaseAdminController{
             $dataInsert['role_name'] = isset($groupRole[$data['role_type']]) ? $groupRole[$data['role_type']] : '';
             $dataInsert['user_full_name'] = $data['user_full_name'];
             $dataInsert['user_status'] = (int)$data['user_status'];
+            $dataInsert['user_depart_id'] = (int)$data['user_depart_id'];
+            $dataInsert['user_parent'] = (int)$data['user_parent'];
             $dataInsert['user_edit_id'] = User::user_id();
             $dataInsert['user_edit_name'] = User::user_name();
             $dataInsert['user_updated'] = time();
@@ -207,7 +213,6 @@ class AdminUserController extends BaseAdminController{
                     $this->error[] = 'Lỗi truy xuất dữ liệu';;
                 }
             }
-
         }
         $arrGroupUser = GroupUser::getListGroupUser();
         $menuAdmin = MenuSystem::getListMenuPermission();
@@ -215,6 +220,8 @@ class AdminUserController extends BaseAdminController{
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['user_status'])? $data['user_status']: CGlobal::status_show);
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['user_sex'])? $data['user_sex']: CGlobal::status_show);
         $optionRoleType = FunctionLib::getOption($this->arrRoleType, isset($data['role_type'])? $data['role_type']: Define::ROLE_TYPE_CUSTOMER);
+        $optionDepart= FunctionLib::getOption($this->arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
+        $optionMember= FunctionLib::getOption($this->arrMember, isset($data['user_parent']) ? $data['user_parent'] : 0);
         return view('admin.AdminUser.add',[
             'data'=>$data,
             'id'=>$id,
@@ -225,8 +232,11 @@ class AdminUserController extends BaseAdminController{
             'optionStatus'=>$optionStatus,
             'optionSex'=>$optionSex,
             'optionRoleType'=>$optionRoleType,
+            'optionDepart'=>$optionDepart,
+            'optionMember'=>$optionMember,
 
             'error'=>$this->error,
+            'is_boss'=>$this->is_boss,
             'permission_edit'=>in_array($this->permission_edit, $this->permission) ? 1 : 0,
             'permission_create'=>in_array($this->permission_create, $this->permission) ? 1 : 0,
             'permission_change_pass'=>in_array($this->permission_change_pass, $this->permission) ? 1 : 0,
@@ -250,6 +260,9 @@ class AdminUserController extends BaseAdminController{
             }
             if(isset($data['user_email']) && trim($data['user_email']) == '') {
                 $this->error[] = 'Mail không được bỏ trống';
+            }
+            if(isset($data['user_parent']) && trim($data['user_parent']) == 0) {
+                $this->error[] = 'Chưa chọn member';
             }
         }
         return true;

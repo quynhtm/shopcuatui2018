@@ -176,7 +176,7 @@ body {
 
 .form_login {
     margin: auto;
-    margin-top: 150px;
+    margin-top: 300px;
     top: 100px;
     right: 0px;
     width: 350px;
@@ -449,33 +449,43 @@ th {
 .marginTop5{
     margin-top: 5px;
 }
-.block_title{ font-weight: bold; font-size: 20px; color: #0ba1b5}
+.block_title{ font-weight: bold; font-size: 18px; color: #1b809e; text-transform: uppercase}
 
 .msg_notify{background: red; color:#ffffff; position: absolute;top: 2px; left: -1px; border-radius: 15px; font-size: 10px; padding: 5px 5px; }
 .updowTop10{margin-top: -10px!important;}
 .updowTop20{margin-top: -20px!important;}
 .updowTop30{margin-top: -30px!important;}
-
-#sys_drag_sort {
-    display: inline-block;
-    width: 100%;
-    margin: 0;
-    list-style: none;
+.rlt3{
+    position: relative;
+    top: 3px;
 }
-.ul_drag_sort li{
-    border: 1px solid #ddd;
-    padding: 5px;
-    display: inline-block;
-    float: left;
-    margin-right: 10px;
-    margin-top: 10px;
-    height: 180px;
-    width: 20%;
+.color_msg{color: #0000F0!important;}
+.table-bordered {
+    border-color: #eaeff0;
 }
-.ul_drag_sort li img{
-    max-width: 100%;
-    height: 80px;
+.table > tbody > tr > td, .table > tfoot > tr > td {
+    vertical-align: middle;
+    border-top: 1px solid #eaeff0;
 }
-.bd_ddd{
-    border: 1px solid #ddd;
+.table-bordered > tbody > tr > td {
+    border-color: #eaeff0;
+}
+.panel-default > .panel-heading, .panel-default > .panel-footer {
+    border-color: #edf1f2;
+}
+.panel-default .panel-heading {
+    background: #f6f8f8;
+    border-bottom: 1px solid #ddd;
+}
+.panel-heading .panel-title {
+    line-height: 32px;
+    font-style: italic;
+}
+.tit {
+    color: #1b809e;
+    display: block;
+    overflow: hidden;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
 }

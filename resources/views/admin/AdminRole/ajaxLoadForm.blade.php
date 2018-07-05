@@ -21,6 +21,12 @@
                 <input type="text" name="role_order" title="Thứ tự hiển thị" class="form-control input-required" id="role_order" @if(isset($data['role_order']))value="{{$data['role_order']}}"@endif>
             </div>
             <div class="form-group">
+                <label for="role_status">Thuộc member</label>
+                <select class="form-control input-sm" name="role_project" id="role_project">
+                    {!! $optionMember !!}
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="role_status">Trạng thái</label>
                 <select class="form-control input-sm" name="role_status" id="role_status">
                     {!! $optionStatus !!}

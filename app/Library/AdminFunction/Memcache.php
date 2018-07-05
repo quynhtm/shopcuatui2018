@@ -25,4 +25,7 @@ class Memcache{
     const CACHE_USER_NAME    = 'haianhem';
     const CACHE_USER_KEY    = 'admin!@133';
     const CACHE_EMAIL_NAME    = 'manager@gmail.com';
+
+    const CACHE_DISTRICT_WITH_PROVINCE_ID    = 'cache_district_with_province_id_';
+    const CACHE_WARDS_WITH_DISTRICT_ID    = 'cache_wards_with_district_id_';
 }

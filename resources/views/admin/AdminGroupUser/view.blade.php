@@ -5,7 +5,7 @@
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li class="active">Danh sách nhóm quyền</li>
         </ul><!-- /.breadcrumb -->
@@ -66,6 +66,7 @@
                                     {{ $item['group_user_name'] }}
                                 </td>
                                 <td>
+                                    <div style=" height: 100px; overflow-y: auto">
                                     @if(!empty($item['permissions']))
                                         @foreach($item['permissions'] as $permission)
                                             <div class="checkbox disabled">
@@ -76,6 +77,7 @@
                                             </div>
                                         @endforeach
                                     @endif
+                                    </div>
                                 </td>
                                 <td class="text-center text-middle">
                                     @if($item['group_user_view'] == 1)

@@ -7,7 +7,7 @@
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li class="active">Quản lý người dùng</li>
         </ul><!-- /.breadcrumb -->
@@ -85,10 +85,9 @@
                                     <div><b>E: </b>{{ $item['user_email'] }}</div>
                                 </td>
                                 <td>
-                                    @if(trim($item['user_phone']) != '')<div><b>Phone : </b>{{ $item['user_phone'] }}</div>@endif
-                                    @if(trim($item['telephone']) != '')<div><b>Telephone : </b>{{ $item['telephone'] }}</div>@endif
-                                    @if(trim($item['number_code']) != '')<div><b>Giấy phép KD : </b>{{ $item['number_code'] }}</div>@endif
-                                    @if(trim($item['address_register']) != '')<div><b>Địa chỉ KD : </b>{{ $item['address_register'] }}</div>@endif
+                                    @if(trim($item['user_phone']) != '')<div><b>Phone: </b>{{ $item['user_phone'] }}</div>@endif
+                                    @if(trim($item['telephone']) != '')<div><b>Telephone: </b>{{ $item['telephone'] }}</div>@endif
+                                    @if(trim($item['user_depart_id'])> 0 && isset($arrDepart[$item['user_depart_id']]))<div><b>Phòng ban: </b>{{ $arrDepart[$item['user_depart_id']] }}</div>@endif
                                 </td>
                                 <td class="text-center middle">
                                     {{$item['role_name']}}

@@ -7,6 +7,9 @@
 */
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Models\Admin\MemberSite;
+use App\Library\AdminFunction\Curl;
+use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +18,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\GroupUserPermission;
 use App\Library\AdminFunction\CGlobal;
+use Illuminate\Support\Facades\URL;
 
 class AdminLoginController extends Controller{
 
@@ -30,12 +34,15 @@ class AdminLoginController extends Controller{
                 return Redirect::to(self::buildUrlDecode($url));
             }
         } else {
+            //call cronjob auto
+            $curl = Curl::getInstance();
+            $curl->get(URL::route('cr.callRunCronjob'));
+
             return view('admin.AdminUser.login');
         }
     }
 
     public function postLogin(Request $request, $url = ''){
-
         if(Session::has('user')){
             if ($url === '' || $url === 'user'){
                 return Redirect::route('admin.dashboard');
@@ -58,7 +65,10 @@ class AdminLoginController extends Controller{
                         if ($user->user_status == CGlobal::status_hide ||$user->user_status == CGlobal::status_block ) {
                             $error = 'Tài khoản bị khóa!';
                         } elseif ($user->user_status == CGlobal::status_show || $user->user_view == CGlobal::status_hide) {
-                            if ($user->user_password == User::encode_password($password)) {
+                            $check_action_member = self::checkMemberAction($user->user_parent);
+                            if(!$check_action_member && $user->user_view != CGlobal::status_hide){
+                                $error = 'Tài khoản gốc bị khóa!';
+                            }elseif ($user->user_password == User::encode_password($password)) {
                                 $permission_code = array();
                                 $group = explode(',', $user->user_group);
                                 if ($group) {
@@ -71,10 +81,12 @@ class AdminLoginController extends Controller{
                                 }
                                 $data = array(
                                     'user_id' => $user->user_id,
+                                    'user_object_id' => $user->user_object_id,
+                                    'user_project' => $user->user_parent,
                                     'user_name' => $user->user_name,
                                     'user_full_name' => $user->user_full_name,
                                     'user_email' => $user->user_email,
-                                    'user_employee_id' => $user->user_employee_id,
+                                    'user_depart_id' => $user->user_depart_id,
                                     'user_is_admin' => $user->user_is_admin,
                                     'user_group_menu' => $user->user_group_menu,
                                     'user_view' => $user->user_view,
@@ -103,6 +115,15 @@ class AdminLoginController extends Controller{
         return view('admin.AdminUser.login',['error'=>$error, 'username'=>$username]);
     }
 
+    public function checkMemberAction($member_id){
+        if($member_id > 0){
+            $member = app(MemberSite::class)->getInforMemberById($member_id);
+            if(isset($member->member_id) && $member->member_status == Define::STATUS_SHOW){
+                return true;
+            }
+        }
+        return false;
+    }
     public function logout(Request $request){
 		if($request->session()->has('user')){
             $request->session()->forget('user');
