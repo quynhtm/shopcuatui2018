@@ -17,8 +17,8 @@ class Define
     //local
     const DB_HOST = 'localhost';
     const DB_PORT = '3306';
-    const DB_DATABASE = 'nhansu';
-    const DB_USERNAME = 'root';
+    const DB_DATABASE = '';
+    const DB_USERNAME = '';
     const DB_PASSWORD = '';
     //server
 
@@ -60,6 +60,14 @@ class Define
     const TABLE_HR_PAYROLL = 'hr_payroll';// bảng tính lương
 
     const TABLE_NEWS = 'hr_news';// Bảng tin tức
+
+    const TABLE_NEW_CATEGORY = 'new_category';
+
+    const TABLE_PRO_CATEGORY = 'pro_category';
+    const TABLE_PRO_DEPARTMENT = 'pro_department';
+    const TABLE_ORDER = 'pro_order';
+    const TABLE_ORDER_ITEM = 'pro_order_item';
+    const TABLE_PRODUCT = 'pro_product';
 
     /***************************************************************************************************************
      * //Memcache
@@ -169,7 +177,6 @@ class Define
     const CURRICULUMVITAE_CONG_TAC = 3;
     const CURRICULUMVITAE_HOAT_DONG_DANG = 4;
     const CURRICULUMVITAE_QUANHE_DACDIEM_BANTHAN = 5;
-
 
     const JOBASSIGNMENT_THONG_BAO = 1;
     const JOBASSIGNMENT_DA_BO_NHIEM = 2;
