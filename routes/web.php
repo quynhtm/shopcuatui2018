@@ -5,6 +5,7 @@ const Admin = "Admin";
 const HResources = "Hr";
 const Cronjob = "Cronjob";
 const News = "News";
+const Product = "Product";
 
 // Used for dev by Quynh
 $isDev = Request::get('is_debug','');
@@ -29,6 +30,11 @@ Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 //Router HR
 Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 	require __DIR__.'/hr.php';
+});
+
+//Router Product
+Route::group(array('prefix' => 'manager', 'before' => ''), function(){
+	require __DIR__.'/product.php';
 });
 
 //Router Api

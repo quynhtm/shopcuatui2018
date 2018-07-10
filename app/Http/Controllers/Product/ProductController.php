@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Product\DepartmentProduct;
+use App\Http\Models\Product\Product;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -20,23 +21,25 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use View;
 
-class ProDepartmentController extends BaseAdminController{
+class AdminProductController extends BaseAdminController{
 
-    private $permission_view = 'menu_view';
-    private $permission_full = 'menu_full';
-    private $permission_delete = 'menu_delete';
-    private $permission_create = 'menu_create';
-    private $permission_edit = 'menu_edit';
+    private $permission_view = 'productView';
+    private $permission_full = 'productFull';
+    private $permission_delete = 'productDelete';
+    private $permission_create = 'productCreate';
+    private $permission_edit = 'productEdit';
+
     private $arrStatus = array();
     private $error = array();
-    private $arrMenuParent = array();
     private $viewPermission = array();//check quyen
 
-    public function __construct()
-    {
+    public $obj_product;
+
+    public function __construct(Product $obj_product){
+        $this->obj_product = $obj_product;
+
         parent::__construct();
-        $this->arrMenuParent = MenuSystem::getAllParentMenu();
-        CGlobal::$pageAdminTitle = 'Quản lý menu';
+        CGlobal::$pageAdminTitle = 'Quản lý sản phẩm';
     }
 
     public function getDataDefault(){
@@ -63,14 +66,10 @@ class ProDepartmentController extends BaseAdminController{
         }
         $pageNo = (int) Request::get('page_no',1);
         $sbmValue = Request::get('submit', 1);
-        $limit = 200;
+        $limit = CGlobal::number_show_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
         $total = 0;
-
-        $search['menu_name'] = addslashes(Request::get('menu_name',''));
-        $search['active'] = (int)Request::get('active',-1);
-        //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
         $search['product_name'] = addslashes(Request::get('product_name',''));
         $search['product_id'] = (int)Request::get('product_id',0);
@@ -82,28 +81,27 @@ class ProDepartmentController extends BaseAdminController{
         $search['user_id_creater'] = (int)Request::get('user_id_creater',0);
         //$search['field_get'] = 'order_id,order_product_name,order_status';//cac truong can lay
 
-        $dataSearch = Product::searchByCondition($search, $limit, $offset,$total);
+        $data = $this->obj_product->searchByCondition($search, $limit, $offset,$total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
-        //FunctionLib::debug($search);
 
-        $optionStatus = FunctionLib::getOption($this->arrStatus, $search['product_status']);
-        $optionType = FunctionLib::getOption($this->arrTypeProduct, $search['product_is_hot']);
-        $optionDepart = FunctionLib::getOption(array(0=>'--- Chọn chuyên mục ---')+ $this->arrDepart, $search['depart_id']);
-
-        $optionCategory = FunctionLib::getOption(array(-1=>'---Chọn danh mục----') + $this->arrCategory,$search['category_id']);
-        $optionStatusUpdate = FunctionLib::getOption($this->arrStatusUpdate, -1);
-
+        //$optionStatus = FunctionLib::getOption($this->arrStatus, $search['product_status']);
         //FunctionLib::debug($data);
         $this->getDataDefault();
 
         $this->viewPermission = $this->getPermissionPage();
-        return view('admin.AdminMenuSystem.view',array_merge([
+        return view('product.Product.view',array_merge([
             'data'=>$data,
             'search'=>$search,
             'total'=>$total,
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
-            'optionStatus'=>$optionStatus,
+
+            'optionStatus'=>[],
+            'optionType'=>[],
+            'optionDepart'=>[],
+            'optionCategory'=>[],
+            'arrShop'=>[],
+            'arrUser'=>[],
         ],$this->viewPermission));
     }
 

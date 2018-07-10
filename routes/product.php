@@ -1,4 +1,6 @@
 <?php
+/*thông tin product */
+Route::get('product',array('as' => 'admin.productView','uses' => Product.'\AdminProductController@view'));
 
 /*thông tin Depart product */
 Route::get('proDepart/view',array('as' => 'admin.proDepartView','uses' => Product.'\ProDepartmentController@view'));

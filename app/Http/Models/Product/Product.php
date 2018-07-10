@@ -99,13 +99,13 @@ class Product extends BaseModel
         }
     }
 
-    public static function removeCache($id = 0,$data){
+    public function removeCache($id = 0,$data){
         if($id > 0){
             //Cache::forget(Define::CACHE_PRO_CATEGORY_ID.$id);
         }
     }
 
-    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
+    public function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = Product::where('product_id','>',0);
             if (isset($dataSearch['product_name']) && $dataSearch['product_name'] != '') {
