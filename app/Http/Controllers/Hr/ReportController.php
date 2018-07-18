@@ -128,8 +128,7 @@ class ReportController extends BaseAdminController
 
         $this->viewPermission = $this->getPermissionPage();
 
-        $user_project = app(MemberSite::class)->getTypeMemberById($this->user_project);
-        $theme = ($user_project == CGlobal::hr_hanchinh_2c) ? 'hr.Report.reportTienLuongCongChuc' : 'hr.Report.reportTienLuongCongChuc_TuNhan';
+        $theme = ($this->user_project == CGlobal::hr_hanchinh_2c) ? 'hr.Report.reportTienLuongCongChuc' : 'hr.Report.reportTienLuongCongChuc_TuNhan';
 
         return view($theme, array_merge([
             'data' => $data,

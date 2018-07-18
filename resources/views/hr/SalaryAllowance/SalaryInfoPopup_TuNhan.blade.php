@@ -25,54 +25,42 @@ use App\Library\AdminFunction\CGlobal;
                     </div>
                     <div class="col-sm-6">{{ $salary->salary_month }}- {{ $salary->salary_year }}</div>
                 </div>
+
                 <div class="clear"></div>
+
                 <div class="form-group">
                     <div class="col-sm-6">
-                        <b>Thang bảng lương</b>:
+                        <b>Tiền bảo hiểm</b>:
                     </div>
-                    <div class="col-sm-6">@if(isset($arrThangbangluong[$salary->salary_wage_table])){{ $arrThangbangluong[$salary->salary_wage_table] }}@endif</div>
+                    <div class="col-sm-6">{{ number_format($salary->salary_money_insurrance) }} đ</div>
                 </div>
                 <div class="clear"></div>
                 <div class="form-group">
                     <div class="col-sm-6">
-                        <b>Ngạch công chức</b>:
+                        <b>Tiền phụ cấp</b>:
                     </div>
-                    <div class="col-sm-6">@if(isset($arrNghachcongchuc[$salary->salary_civil_servants])){{ $arrNghachcongchuc[$salary->salary_civil_servants] }}@endif</div>
-                </div>
-                <div class="clear"></div>
-                <div class="form-group">
-                    <div class="col-sm-6">
-                        <b>Mã nghạch</b>:
-                    </div>
-                    <div class="col-sm-6">@if(isset($arrMaNgach[$salary->salary_tariffs])){{ $arrMaNgach[$salary->salary_tariffs] }}@endif</div>
-                </div>
-                <div class="clear"></div>
-                <div class="form-group">
-                    <div class="col-sm-6">
-                        <b>Bậc lương</b>:
-                    </div>
-                    <div class="col-sm-6">@if(isset($arrBacluong[$salary->salary_wage])){{ $arrBacluong[$salary->salary_wage] }}@endif</div>
-                </div>
-                <div class="clear"></div>
-                <div class="form-group">
-                    <div class="col-sm-6">
-                        <b>Hệ số</b>:
-                    </div>
-                    <div class="col-sm-6">{{ $salary->salary_coefficients }}</div>
+                    <div class="col-sm-6">{{ number_format($salary->salary_money_allowance) }} đ</div>
                 </div>
                 <div class="clear"></div>
                 <div class="form-group">
                     <div class="col-sm-6">
                         <b>Lương cơ sở</b>:
                     </div>
-                    <div class="col-sm-6">{{ $salary->salary_salaries }}</div>
+                    <div class="col-sm-6">{{ number_format($salary->salary_salaries) }} đ</div>
                 </div>
                 <div class="clear"></div>
                 <div class="form-group">
                     <div class="col-sm-6">
                         <b>% lương thực hưởng</b>:
                     </div>
-                    <div class="col-sm-6">{{ $salary->salary_percent }}</div>
+                    <div class="col-sm-6">{{ $salary->salary_percent }}%</div>
+                </div>
+                <div class="clear"></div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <b>Lương thực nhận</b>:
+                    </div>
+                    <div class="col-sm-6"><b>{{ number_format(($salary->salary_executance + $salary->salary_money_allowance) -$salary->salary_money_insurrance) }} đ</b></div>
                 </div>
             </div>
 

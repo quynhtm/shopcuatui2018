@@ -35,12 +35,10 @@ class SalaryAllowanceController extends BaseAdminController
     private $arrNghachcongchuc = array();
     private $arrMaNgach = array();
     private $arrBacluong = array();
-    private $member_type = CGlobal::hr_tu_nhan;
 
     public function __construct()
     {
         parent::__construct();
-        $this->member_type = app(MemberSite::class)->getTypeMemberById($this->user_project);
     }
 
     public function getDataDefault()
@@ -96,8 +94,7 @@ class SalaryAllowanceController extends BaseAdminController
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
 
-        $user_project = app(MemberSite::class)->getTypeMemberById($this->user_project);
-        $theme = ($user_project == CGlobal::hr_hanchinh_2c) ? 'hr.SalaryAllowance.View' : 'hr.SalaryAllowance.View_TuNhan';
+        $theme = ($this->user_project == CGlobal::hr_hanchinh_2c) ? 'hr.SalaryAllowance.View' : 'hr.SalaryAllowance.View_TuNhan';
 
         return view($theme, array_merge([
             'person_id' => $person_id,
@@ -122,7 +119,7 @@ class SalaryAllowanceController extends BaseAdminController
             return response()->json($arrData);
         }
         $html = '';
-        if($this->member_type == CGlobal::hr_tu_nhan){
+        if($this->user_project == CGlobal::hr_tu_nhan){
             $html = $this->editSalaryTuNhan();
 
         }else{
@@ -241,7 +238,7 @@ class SalaryAllowanceController extends BaseAdminController
         $id_hiden = Request::get('id_hiden', '');
         ///FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        $msg = $this->validateForm($this->member_type,$data);
+        $msg = $this->validateForm($this->user_project,$data);
         if (trim($msg) != '') {
             $arrData = ['intReturn' => 0, 'msg' => $msg];
         } else {
@@ -256,7 +253,7 @@ class SalaryAllowanceController extends BaseAdminController
 
                 //cap nhat dong bo thong tin nguoi dung
                 $request = array('person_id'=>$person_id, 'salary_id'=>$salary_id, 'person_date_salary_increase'=>Define::STATUS_SHOW);
-                if($this->member_type == CGlobal::hr_tu_nhan){
+                if($this->user_project == CGlobal::hr_tu_nhan){
                     app(Person::class)->putDataSalaryPersonTuNhan($request);
                 }else{
                     app(Person::class)->putDataSalaryPerson($request);
@@ -269,7 +266,7 @@ class SalaryAllowanceController extends BaseAdminController
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
-                $theme = ($this->member_type == CGlobal::hr_tu_nhan)?'hr.SalaryAllowance.SalaryList_TuNhan':'hr.SalaryAllowance.SalaryList';
+                $theme = ($this->user_project == CGlobal::hr_tu_nhan)?'hr.SalaryAllowance.SalaryList_TuNhan':'hr.SalaryAllowance.SalaryList';
                 $html = view($theme, array_merge([
                     'person_id' => $person_id,
                     'lương' => $lương,
@@ -348,8 +345,7 @@ class SalaryAllowanceController extends BaseAdminController
 
         $this->viewPermission = $this->getPermissionPage();
 
-        $user_project = app(MemberSite::class)->getTypeMemberById($this->user_project);
-        $theme = ($user_project == CGlobal::hr_hanchinh_2c) ? 'hr.SalaryAllowance.SalaryInfoPopup' : 'hr.SalaryAllowance.SalaryInfoPopup_TuNhan';
+        $theme = ($this->user_project == CGlobal::hr_hanchinh_2c) ? 'hr.SalaryAllowance.SalaryInfoPopup' : 'hr.SalaryAllowance.SalaryInfoPopup_TuNhan';
 
         $html = view($theme, [
             'salary' => $salary,
@@ -400,8 +396,7 @@ class SalaryAllowanceController extends BaseAdminController
 
         $this->viewPermission = $this->getPermissionPage();
 
-        $user_project = app(MemberSite::class)->getTypeMemberById($this->user_project);
-        $theme = ($user_project == CGlobal::hr_hanchinh_2c) ? 'hr.SalaryAllowance.AllowancePopupAdd' : 'hr.SalaryAllowance.AllowancePopupAdd_TuNhan';
+        $theme = ($this->user_project == CGlobal::hr_hanchinh_2c) ? 'hr.SalaryAllowance.AllowancePopupAdd' : 'hr.SalaryAllowance.AllowancePopupAdd_TuNhan';
 
         $html = view($theme, [
             'data' => $data,

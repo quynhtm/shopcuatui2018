@@ -8,6 +8,7 @@ namespace App\Http\Models\Hr;
 use App\Http\Models\Admin\User;
 use App\Http\Models\BaseModel;
 
+use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
@@ -74,7 +75,9 @@ class Payroll extends BaseModel
             }
             $item->save();
             DB::connection()->getPdo()->commit();
-            Payroll::checkingValuePayroll($item);
+            if($item->payroll_project == CGlobal::hr_hanchinh_2c){//2C thì mới cập nhật lại
+                Payroll::checkingValuePayroll($item);
+            }
             self::removeCache($item->payroll_id, $item);
             return $item->payroll_id;
         } catch (PDOException $e) {
@@ -100,7 +103,9 @@ class Payroll extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            //Payroll::checkingValuePayroll($item);
+            if($item->payroll_project == CGlobal::hr_hanchinh_2c){//2C thì mới cập nhật lại
+                Payroll::checkingValuePayroll($item);
+            }
             self::removeCache($item->payroll_id, $item);
             return $item->payroll_id;
         } catch (PDOException $e) {

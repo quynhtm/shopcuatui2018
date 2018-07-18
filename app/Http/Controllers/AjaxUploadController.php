@@ -807,8 +807,6 @@ class AjaxUploadController extends BaseAdminController{
 								}
 							}
 							break;
-						default:
-
 						case Define::FILE_TYPE_KHENTHUONG:
                         case Define::FILE_TYPE_DANHHIEU :
                         case Define::FILE_TYPE_KYLUAT :

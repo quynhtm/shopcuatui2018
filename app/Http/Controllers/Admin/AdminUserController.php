@@ -163,9 +163,10 @@ class AdminUserController extends BaseAdminController{
         $data['address_register'] = Request::get('address_register', '');
         $data['number_code'] = Request::get('number_code', '');
         $data['user_depart_id'] = Request::get('user_depart_id', 0);
+        $data['user_parent'] = Request::get('user_parent', 0);
         $data['role_type'] = Request::get('role_type', Define::ROLE_TYPE_CUSTOMER);
 
-        $data['user_parent'] = ($this->is_boss)? Request::get('user_parent', 0) : $this->user_project;
+        $member_id = ($this->is_boss)? Request::get('user_parent', 0) : $this->user_project;
 
         $this->validUser($id,$data);
 
@@ -195,6 +196,10 @@ class AdminUserController extends BaseAdminController{
             $dataInsert['user_edit_id'] = User::user_id();
             $dataInsert['user_edit_name'] = User::user_name();
             $dataInsert['user_updated'] = time();
+
+            //lấy loại member
+            $obj_member = new  MemberSite();
+            $dataInsert['user_project'] = $obj_member->getTypeMemberById($member_id);
 
             if($id > 0){
                 if (User::updateUser($id, $dataInsert)) {

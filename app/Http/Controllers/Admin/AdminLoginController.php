@@ -81,8 +81,9 @@ class AdminLoginController extends Controller{
                                 }
                                 $data = array(
                                     'user_id' => $user->user_id,
+                                    'user_project' => $user->user_project,
                                     'user_object_id' => $user->user_object_id,
-                                    'user_project' => $user->user_parent,
+                                    'user_parent' => $user->user_parent,
                                     'user_name' => $user->user_name,
                                     'user_full_name' => $user->user_full_name,
                                     'user_email' => $user->user_email,

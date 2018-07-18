@@ -139,6 +139,8 @@ class Person extends BaseModel
                 //luong cua nhan sự theo thông tin mới
                 $thongTinLuongNS = Payroll::getPayrollByInfoSalary($person_id, $infoSalary->salary_month, $infoSalary->salary_year);
                 $dataNewPay['payroll_person_id'] = $person_id;
+                $dataNewPay['payroll_month'] = $infoSalary->salary_month;
+                $dataNewPay['payroll_year'] = $infoSalary->salary_year;
                 $dataNewPay['he_so_luong'] = $infoSalary->salary_percent;//hệ số lương thực lĩnh tư nhân
                 $dataNewPay['luong_co_so'] = $infoSalary->salary_salaries;//lương cơ sở
                 $dataNewPay['tong_tien_baohiem'] = $infoSalary->salary_money_insurrance;//tiền bảo hiểm

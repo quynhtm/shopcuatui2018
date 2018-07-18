@@ -10,7 +10,7 @@ use App\library\AdminFunction\Define;
 
 class CGlobal
 {
-    const IS_DEV = 0;
+    const IS_DEV = 0;//0: trên server 1: local
 
     static $css_ver = 1;
     static $js_ver = 1;
