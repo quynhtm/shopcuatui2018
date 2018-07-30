@@ -1,3 +1,7 @@
+<?php use App\Library\AdminFunction\FunctionLib; ?>
+<?php use App\Library\AdminFunction\Define; ?>
+@extends('admin.AdminLayouts.index')
+@section('content')
 <div class="main-content-inner">
     <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
         <ul class="breadcrumb">
@@ -27,50 +31,34 @@
                         <div class="form-group col-lg-3">
                             <label for="order_status">Trạng thái</label>
                             <select name="product_status" id="product_status" class="form-control input-sm">
-                                {{$optionStatus}}
+
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="order_status">Loại sản phẩm</label>
                             <select name="product_is_hot" id="product_is_hot" class="form-control input-sm">
-                                {{$optionType}}
+
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="order_status">Thuộc chuyên mục</label>
                             <select name="depart_id" id="depart_id" class="form-control input-sm">
-                                {{$optionDepart}}
+
                             </select>
                         </div>
 
                         <div class="form-group col-lg-3">
                             <label for="order_status">Thuộc danh mục</label>
                             <select name="category_id" id="category_id" class="form-control input-sm">
-                                {{$optionCategory}}
+
                             </select>
                         </div>
-                        <div class="form-group col-lg-3">
-                            <label for="order_status">Sản phẩm của Shop</label>
-                            <select name="user_shop_id" id="user_shop_id" class="form-control input-sm chosen-select-deselect" tabindex="12" data-placeholder="Chọn tên shop">
-                                <option value=""></option>
-                                @foreach($arrShop as $shop_id => $shopName)
-                                    <option value="{{$shop_id}}" @if($search['user_shop_id'] == $shop_id) selected="selected" @endif>{{$shopName}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="order_status">Người đăng sản phẩm</label>
-                            <select name="user_id_creater" id="user_id_creater" class="form-control input-sm chosen-select-deselect" tabindex="12" data-placeholder="Chọn tên người tạo sản phẩm">
-                                <option value=""></option>
-                                @foreach($arrUser as $userId => $userName)
-                                    <option value="{{$userId}}" @if($search['user_id_creater'] == $userId) selected="selected" @endif>{{$userName}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <div class="form-group col-lg-12 text-right">
                             @if($is_root || $permission_full ==1 || $permission_create == 1)
                                 <span class="">
-                                    <a class="btn btn-danger btn-sm" href="{{URL::route('admin.productEdit')}}">
+                                    {{--<a class="btn btn-danger btn-sm" href="{{URL::route('admin.productEdit')}}">--}}
+                                     <a class="btn btn-danger btn-sm" href="#">
                                         <i class="ace-icon fa fa-plus-circle"></i>
                                         Thêm mới
                                     </a>
@@ -85,17 +73,10 @@
                         <a class="btn btn-warning btn-sm" href="javascript:void(0);" onclick="Admin.removeAllItems(1);"><i class="fa fa-trash"></i> Xóa nhiều SP </a>
                         <div class="col-lg-3">
                             <select name="product_status_update" id="product_status_update" class="form-control input-sm">
-                                {{$optionStatusUpdate}}
+
                             </select>
                         </div>
-                        <div class="form-group col-lg-3">
-                            <select name="sale_creater" id="sale_creater" class="form-control input-sm chosen-select-deselect" tabindex="12" data-placeholder="Chọn tên người tạo sản phẩm">
-                                <option value=""></option>
-                                @foreach($arrUser as $userId2 => $userName2)
-                                    <option value="{{$userId2}}")>{{$userName2}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <a class="btn btn-success btn-sm" href="javascript:void(0);" onclick="Admin.setStastusProduct();"><i class="fa fa-refresh"></i> Đổi trạng thái </a>
                         <span class="img_loading" id="img_loading_delete_all"></span>
                     </div>
@@ -125,14 +106,12 @@
                                     <input class="check" type="checkbox" name="checkItems[]" id="sys_checkItems" value="{{$item->product_id}}">
                                 </td>
                                 <td class="text-center text-middle">
-                                    <img src="{{ ThumbImg::getImageThumb(CGlobal::FOLDER_PRODUCT, $item->product_id, $item->product_image, CGlobal::sizeImage_100)}}">
+
                                 </td>
                                 <td class="text-left text-middle">
-                                    @if($item->product_status == CGlobal::status_show)
+                                    @if($item->product_status == 1)
                                         [<b>{{ $item->product_id }}</b>]
-                                        <a href="{{FunctionLib::buildLinkDetailProduct($item->product_id, $item->product_name, $item->category_name)}}" target="_blank" title="Chi tiết sản phẩm">
-                                             {{ $item->product_name }}
-                                        </a>
+                                        {{ $item->product_name }}
                                     @else
                                         [<b>{{ $item->product_id }}</b>] {{ $item->product_name }}
                                     @endif
@@ -144,14 +123,14 @@
                                     @endif
                                 </td>
                                 <td class="text-middle">
-                                    @if($item->product_price_market > 0)Thị trường: <b class="green">{{ FunctionLib::numberFormat($item->product_price_market) }} đ</b><br/>@endif
-                                    Giá bán: <b class="red">{{ FunctionLib::numberFormat($item->product_price_sell) }} đ</b>
-                                    @if($item->product_price_input > 0)<br/>Giá nhập: <b>{{ FunctionLib::numberFormat($item->product_price_input) }} đ</b>@endif
+                                    @if($item->product_price_market > 0)Thị trường: <b class="green">{{ \App\Library\AdminFunction\FunctionLib::numberFormat($item->product_price_market) }} đ</b><br/>@endif
+                                    Giá bán: <b class="red">{{ \App\Library\AdminFunction\FunctionLib::numberFormat($item->product_price_sell) }} đ</b>
+                                    @if($item->product_price_input > 0)<br/>Giá nhập: <b>{{ \App\Library\AdminFunction\FunctionLib::numberFormat($item->product_price_input) }} đ</b>@endif
 
                                     @if(isset($arrTypePrice[$item->product_type_price]))
                                         <br/><b class="red">{{ $arrTypePrice[$item->product_type_price] }}</b>
                                     @endif
-                                    @if(isset($arrTypeProduct[$item->product_is_hot]) && $item->product_is_hot != CGlobal::PRODUCT_NOMAL)
+                                    @if(isset($arrTypeProduct[$item->product_is_hot]))
                                         <br/><b class="red">{{ $arrTypeProduct[$item->product_is_hot] }}</b>
                                     @endif
                                 </td>
@@ -165,21 +144,21 @@
                                       <br/>Sửa: <b>{{$item->user_name_update}}</b> <br/>{{date ('d-m-Y H:i',$item->time_update)}}
                                 </td>
                                 <td class="text-center text-middle">
-                                    @if($item->is_block == CGlobal::PRODUCT_BLOCK)
+                                    @if($item->is_block == -1)
                                         <i class="fa fa-lock fa-2x red" title="Bị khóa"></i>
                                     @else
-                                        @if($item->product_status == CGlobal::status_show)
+                                        @if($item->product_status == 1)
                                             <i class="fa fa-check fa-2x green" title="Hiển thị"></i>
                                         @endif
-                                        @if($item->product_status == CGlobal::status_hide)
+                                        @if($item->product_status == 0)
                                             <i class="fa fa-close fa-2x red" title="Đang ẩn"></i>
                                         @endif
-                                        @if($item->product_status == CGlobal::IMAGE_ERROR)
+                                        @if($item->product_status == 13)
                                             <i class="fa fa-bug fa-2x red" title="Sản phẩm bị lỗi"></i>
                                         @endif
                                     @endif
                                     @if($is_root || $permission_full ==1|| $permission_edit ==1  )
-                                        <a href="{{URL::route('admin.productEdit',array('id' => $item->product_id))}}" title="Sửa sản phẩm"><i class="fa fa-edit fa-2x"></i></a>
+                                        <a href="" title="Sửa sản phẩm"><i class="fa fa-edit fa-2x"></i></a>
                                     @endif
                                     <span class="img_loading" id="img_loading_{{$item->product_id}}"></span>
                                 </td>
@@ -188,7 +167,7 @@
                         </tbody>
                     </table>
                     <div class="text-right">
-                        {{$paging}}
+                        {!! $paging !!}
                     </div>
                 @else
                     <div class="alert">
@@ -212,3 +191,5 @@
         $(selector).chosen(config[selector]);
     }
 </script>
+
+@stop

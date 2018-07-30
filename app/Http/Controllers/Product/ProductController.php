@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Product\DepartmentProduct;
 use App\Http\Models\Product\Product;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -18,10 +17,9 @@ use App\Library\AdminFunction\Pagging;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\URL;
 use View;
 
-class AdminProductController extends BaseAdminController{
+    class ProductController extends BaseAdminController{
 
     private $permission_view = 'productView';
     private $permission_full = 'productFull';
@@ -96,12 +94,12 @@ class AdminProductController extends BaseAdminController{
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
 
-            'optionStatus'=>[],
-            'optionType'=>[],
-            'optionDepart'=>[],
-            'optionCategory'=>[],
-            'arrShop'=>[],
-            'arrUser'=>[],
+            'optionStatus'=>$this->arrStatus,
+            'optionType'=>$this->arrStatus,
+            'optionDepart'=>$this->arrStatus,
+            'optionCategory'=>$this->arrStatus,
+            'arrShop'=>$this->arrStatus,
+            'arrUser'=>$this->arrStatus
         ],$this->viewPermission));
     }
 
