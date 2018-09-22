@@ -48,12 +48,21 @@ define('TABLE_ROLE', PREFIX.'role');
 define('TABLE_GROUP_USER_PERMISSION', PREFIX.'group_user_permission');
 define('TABLE_MEMBER', PREFIX.'member');
 
+define('TABLE_DEPARTMENT', PREFIX.'department');
+
 
 /**************************************************************************************************************
  * định nghĩa quyền
  **************************************************************************************************************/
-//permiss banner
+//Permiss banner
 define('PERMISS_BANNER_FULL', 'bannerFull');
 define('PERMISS_BANNER_VIEW', 'bannerView');
 define('PERMISS_BANNER_CREATE', 'bannerCreate');
 define('PERMISS_BANNER_DELETE', 'bannerDelete');
+
+//Type dategory
+define('PERMISS_DEPARTMENT_FULL', 'departmentFull');
+define('PERMISS_DEPARTMENT_VIEW', 'departmentView');
+define('PERMISS_DEPARTMENT_CREATE', 'departmentCreate');
+define('PERMISS_DEPARTMENT_DELETE', 'departmentDelete');
+
