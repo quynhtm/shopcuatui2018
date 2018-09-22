@@ -58,4 +58,14 @@ class CGlobal
             4 => 'Báo cáo',
             1 => 'Setting',
         ];
+
+    const member_type_vip = 1;
+    const member_type_A = 2;
+    const member_type_B = 3;
+    const member_type_C = 4;
+    public static $arrTypeMember= [
+        self::member_type_vip=>'Member VIP',
+        self::member_type_A=>'Member A',
+        self::member_type_B=>'Member B',
+        self::member_type_C=>'Member C',];
 }
