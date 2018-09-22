@@ -17,6 +17,12 @@ Route::post('user/remove/{id}',array('as' => 'admin.user_remove','uses' => Admin
 Route::get('user/getInfoSettingUser', array('as' => 'admin.getInfoSettingUser','uses' => Admin.'\AdminUserController@getInfoSettingUser'));//ajax
 Route::post('user/submitInfoSettingUser', array('as' => 'admin.submitInfoSettingUser','uses' => Admin.'\AdminUserController@submitInfoSettingUser'));//ajax
 
+//member
+Route::match(['GET','POST'],'member', array('as' => 'admin.viewMember','uses' => Admin.'\AdminMemberController@view'));
+Route::post('member/post/{id?}', array('as' => 'admin.getMember','uses' => Admin.'\AdminMemberController@postItem'))->where('id', '[0-9]+');
+Route::get('member/delete',array('as' => 'admin.deleteMember','uses' => Admin.'\AdminMemberController@deleteItem'));
+Route::post('member/ajaxLoad', array('as' => 'admin.ajaxMember','uses' => Admin.'\AdminMemberController@ajaxLoadForm'));
+
 /*thông tin quyền*/
 Route::match(['GET','POST'],'permission/view',array('as' => 'admin.permission_view','uses' => Admin.'\AdminPermissionController@view'));
 Route::get('permission/addPermiss',array('as' => 'admin.addPermiss','uses' => Admin.'\AdminPermissionController@addPermiss'));
