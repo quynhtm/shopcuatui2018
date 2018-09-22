@@ -45,7 +45,6 @@
                             @if($is_boss == 1)
                             <th width="20%" class="text-center">View menu id</th>
                             <th width="15%" class="text-center">List quyền</th>
-                            <th width="15%" class="text-center">Member</th>
                             @endif
                             <th width="10%" class="text-center">Status</th>
                             <th width="10%" class="text-center">Action</th>
@@ -53,13 +52,12 @@
                         </thead>
                         <tbody>
                         @foreach ($data as $key => $item)
-                            <tr @if($item['parent_id'] == 0)style="background-color:#d6f6f6"@endif>
+                            <tr class="middle">
                                 <td class="text-center text-middle">{!! $stt + $key+1 !!}</td>
                                 <td class="text-center text-middle">{!! $item['role_name'] !!}</td>
                                 @if($is_boss == 1)
                                 <td class="text-center text-middle">{!! $item['role_group_menu_id'] !!}</td>
                                 <td class="text-center text-middle">{!! $item['role_group_permission'] !!}</td>
-                                <td>@if(isset($arrMember[$item['role_menu_project']])){{$arrMember[$item['role_menu_project']]}}@else -- @endif</td>
                                 @endif
                                 <td class="text-center text-middle">
                                     @if($item['role_status'] == 1)
@@ -74,7 +72,7 @@
                                     @endif
                                     @if($is_boss)
                                         <a href="{{URL::route('admin.editRole',array('id' => FunctionLib::inputId($item['role_menu_id']),'action_copy'=>1))}}" title="Copy item"><i class="fa fa-files-o fa-2x"></i></a>
-                                        <a href="javascript:void(0);" onclick="Admin.deleteItem({{$item['role_menu_id']}},4)" title="Xóa Item"><i class="fa fa-trash fa-2x"></i></a>
+                                        <a href="javascript:void(0);" onclick="Admin.deleteItem({{$item['role_menu_id']}},3)" title="Xóa Item"><i class="fa fa-trash fa-2x"></i></a>
                                     @endif
                                     <span class="img_loading" id="img_loading_{{$item['role_menu_id']}}"></span>
                                 </td>

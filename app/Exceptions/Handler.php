@@ -45,7 +45,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if(CGlobal::IS_DEV == 1){
+        $is_debug = env('IS_DEV', 0);
+        if($is_debug == 1){
             return parent::render($request, $exception);
         }
 		die('404');

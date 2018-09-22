@@ -16,7 +16,7 @@ use App\library\AdminFunction\Memcache;
 
 class GroupUser extends BaseModel{
 
-    protected $table = Define::TABLE_GROUP_USER;
+    protected $table = TABLE_GROUP_USER;
 
     public $timestamps = false;
 
@@ -26,7 +26,7 @@ class GroupUser extends BaseModel{
 
     public function permission()
     {
-        return $this->belongsToMany(Define::TABLE_PERMISSION, Define::TABLE_GROUP_USER_PERMISSION, 'group_user_id', 'permission_id');
+        return $this->belongsToMany(TABLE_PERMISSION, TABLE_GROUP_USER_PERMISSION, 'group_user_id', 'permission_id');
     }
 
     public static function createGroup($data, $arr_permission = array())
@@ -79,7 +79,7 @@ class GroupUser extends BaseModel{
 
             // tạo môi quan hê nhóm quyên
             if (is_array($arr_permission)) {
-                DB::table(Define::TABLE_GROUP_USER_PERMISSION)->where('group_user_id', $id)->delete();
+                DB::table(TABLE_GROUP_USER_PERMISSION)->where('group_user_id', $id)->delete();
                 $dataEx = array();
                 $group_user_id = $group_user->group_user_id;
                 if(count($arr_permission) > 0){

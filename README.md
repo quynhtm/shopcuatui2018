@@ -1,2 +1,2 @@
-# itomedic
-Công ty thiết bị y tế Nhận
+# full_human_2018
+Quản lý nhân sự

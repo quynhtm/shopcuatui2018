@@ -2,14 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\CarrierSetting;
-use App\Http\Models\Hr\HrMail;
-use App\Http\Models\MenuSystem;
-use App\Http\Models\RoleMenu;
-use App\Http\Models\User;
-use App\Http\Models\UserCarrierSetting;
-use App\Http\Models\UserSetting;
-use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Response;
 
 class BaseCronjobController extends Controller{

@@ -9,11 +9,10 @@
 namespace App\Http\Controllers;
 
 use App\Library\AdminFunction\CGlobal;
-use App\Library\AdminFunction\Define;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\MenuSystem;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use View;
 use App\Library\AdminFunction\FunctionLib;
@@ -26,21 +25,23 @@ class BaseAdminController extends Controller
     protected $user_group_menu = array();
     protected $is_root = false;
     protected $is_boss = false;
+    protected $is_tech = false;
     protected $user_id = 0;
     protected $user_project = 0;
     protected $user_object_id = 0;
     protected $user_depart_id = 0;
     protected $user_name = '';
-    protected $role_type = Define::ROLE_TYPE_CUSTOMER;
-    protected $languageSite = Define::VIETNAM_LANGUAGE;
+    protected $tab_top = '';
+    protected $role_type = 0;
+    protected $languageSite = VIETNAM_LANGUAGE;
 
-    public function __construct(){
-
+    public function __construct()
+    {
         $this->middleware(function ($request, $next) {
-            if (!User::isLogin()) {
+            if (!app('App\Http\Models\Admin\User')->isLogin()) {
                 Redirect::route('admin.login')->send();
             }
-            $this->user = User::user_login();
+            $this->user = app('App\Http\Models\Admin\User')->user_login();
             if (!empty($this->user)) {
                 if (sizeof($this->user['user_permission']) > 0) {
                     $this->permission = $this->user['user_permission'];
@@ -61,23 +62,31 @@ class BaseAdminController extends Controller
                     $this->user_project = $this->user['user_project'];
                 }
             }
-            if (in_array('is_boss', $this->permission) || $this->user['user_view'] == CGlobal::status_hide) {
+            if (in_array('is_boss', $this->permission) || $this->user['is_boss'] == CGlobal::status_hide) {
                 $this->is_boss = true;
             }
             if (in_array('root', $this->permission)) {
                 $this->is_root = true;
             }
-            $this->is_root = ($this->is_boss) ? true : $this->is_root;
-
-            $arrMenu = array();
-            if ($this->is_boss) {
-                $this->menuSystem = $this->getMenuSystem();
-            } else {
-                $arrMenu = $this->getMenuSystem();
+            if (in_array('is_tech', $this->permission)) {
+                $this->is_tech = true;
             }
+            $this->is_root = ($this->is_boss) ? true : $this->is_root;
+            $this->is_tech = ($this->is_boss) ? true : $this->is_tech;
+
+            //menu tab top
+            $tab_top = isset($_GET['tab_top']) ? $_GET['tab_top'] : 0;
+            if ($tab_top != 0) {
+                $request->session()->put('menu_tab_top', $tab_top, 60 * 24);
+                $this->tab_top = $tab_top;
+            } else {
+                $this->tab_top = Session::get('menu_tab_top');
+            }
+
+            $arrMenu = $this->getMenuSystem();
             if (!empty($arrMenu)) {
                 foreach ($arrMenu as $menu_id => $menu) {
-                    if ($menu['show_menu'] == CGlobal::status_show) {
+                    if ($menu['show_menu'] == CGlobal::status_show && ($menu['menu_tab_top_id'] == $this->tab_top || $menu['menu_tab_top_id'] == STATUS_HIDE)) {
                         if (!empty($menu['sub'])) {
                             $checkMenu = false;
                             foreach ($menu['sub'] as $ks => $sub) {
@@ -92,10 +101,10 @@ class BaseAdminController extends Controller
                     }
                 }
             }
-
+            //vmDebug($this->menuSystem);
             $error = isset($_GET['error']) ? $_GET['error'] : 0;
             $msg = array();
-            if ($error == Define::ERROR_PERMISSION) {
+            if ($error == ERROR_PERMISSION) {
                 $msg[] = 'Bạn không có quyền truy cập';
                 View::share('error', $msg);
             }
@@ -103,8 +112,8 @@ class BaseAdminController extends Controller
             //Get lang
             if (isset($_GET['lang']) && (int)$_GET['lang'] > 0) {
                 $get_lang = $_GET['lang'];
-                $lang = (isset(Define::$arrLanguage[$get_lang])) ? $get_lang : $this->languageSite;
-                $request->session()->put('languageSite', $lang, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                $lang = (isset(CGlobal::$arrLanguage[$get_lang])) ? $get_lang : $this->languageSite;
+                $request->session()->put('languageSite', $lang, CACHE_ONE_MONTH);
             }
             $this->languageSite = (Session::has('languageSite')) ? Session::get('languageSite') : $this->languageSite;
 
@@ -113,6 +122,7 @@ class BaseAdminController extends Controller
             View::share('aryPermissionMenu', $this->user_group_menu);
             View::share('is_root', $this->is_root);
             View::share('is_boss', $this->is_boss);
+            View::share('is_tech', $this->is_tech);
             View::share('role_type', $this->role_type);
             View::share('user_id', $this->user_id);
             View::share('user_depart_id', $this->user_depart_id);
@@ -120,28 +130,56 @@ class BaseAdminController extends Controller
             View::share('user_project', $this->user_project);
             View::share('user_name', $this->user_name);
             View::share('user', $this->user);
+            View::share('arrMenuTabTop', CGlobal::$arrMenuTabTop);
+            View::share('tab_top', $this->tab_top);
 
-            //Count mail notify
-            $newMailInbox = $this->countMailNotify();
-            View::share('newMailInbox', $newMailInbox);
+            View::share('newMailInbox', 0);
 
             return $next($request);
         });
     }
 
-    public function getMenuSystem(){
+    public function getMenuSystem()
+    {
         $menuTree = MenuSystem::buildMenuAdmin();
         return $menuTree;
     }
 
-    public function getControllerAction(){
+    public function getRouterNameSite(){
+        $route_name = [];
+        foreach (Route::getRoutes()->getRoutes() as $route) {
+            $action = $route->getAction();
+            if (array_key_exists('as', $action)) {
+                $route_name[] = $action['as'];
+            }
+        }
+        return $route_name;
+    }
+
+    public function getControllerAction()
+    {
         return $routerName = Route::currentRouteName();
     }
-    public function countMailNotify(){
-        $count = 0;
-        if(Cache::has(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $this->user['user_id'])){
-            $count = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $this->user['user_id']) : 0;
-        }
-        return $count;
+
+    /**
+     * @param string $permiss
+     * @return bool
+     */
+    public function checkPermiss($permiss = '')
+    {
+        return ($permiss != '') ? in_array($permiss, $this->permission) : false;
     }
+
+/**
+ * @param array $arrPermiss
+ * @return bool
+ */
+public function checkMultiPermiss($arrPermiss = []){
+    if($this->is_root) return true;
+    if(empty($arrPermiss)) return false;
+    foreach ($arrPermiss as $permiss){
+        return $this->checkPermiss($permiss);
+    }
+    return false;
+}
 }

@@ -17,7 +17,7 @@ use App\library\AdminFunction\Define;
 
 class GroupUserPermission extends BaseModel
 {
-    protected $table = Define::TABLE_GROUP_USER_PERMISSION;
+    protected $table = TABLE_GROUP_USER_PERMISSION;
 
     public $timestamps = false;
 

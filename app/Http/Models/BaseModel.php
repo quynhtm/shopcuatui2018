@@ -18,8 +18,6 @@ class BaseModel extends Model {
         return $data;
     }
 
-
-
     public function getDataArray($aryData = array(), $flgEncode = true) {
         $fields = $this->fillable;
         if(empty($fields) && empty($aryData)) {
@@ -34,5 +32,21 @@ class BaseModel extends Model {
             }
         }
         return $data;
+    }
+
+    function checkFieldInTable($dataInput = [])
+    {
+        $dataDB = array();
+        if (empty($dataInput) && empty($this->fillable))
+            return $dataDB;
+
+        if (!empty($this->fillable)) {
+            foreach ($this->fillable as $field) {
+                if (isset($dataInput[$field])) {
+                    $dataDB[$field] = $dataInput[$field];
+                }
+            }
+        }
+        return $dataDB;
     }
 }

@@ -27,14 +27,7 @@
                     </div>
                 @endif
                 <div style="float: left; width: 50%">
-                    <div class="col-sm-10">
-                        <div class="form-group">
-                            <label for="name" class="control-label">Thuộc Member</label>
-                            <select name="role_menu_project" id="role_menu_project" class="form-control input-sm">
-                                {!! $optionMember !!}
-                            </select>
-                        </div>
-                    </div>
+
                     <div class="col-sm-10">
                         <div class="form-group">
                             <label for="name" class="control-label">Phân quyền theo Role</label>
@@ -69,7 +62,7 @@
                                                        value="{{(int)$menu_id}}" />
                                             </td>
                                             <td class="text-left text-middle">
-                                                @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                                                @if(isset($languageSite) && $languageSite == VIETNAM_LANGUAGE)
                                                     <b>{{ $menu_name['menu_name'] }}</b>
                                                 @else
                                                     <b>{{ $menu_name['menu_name_en'] }}</b>

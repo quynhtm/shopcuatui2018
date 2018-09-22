@@ -7,7 +7,7 @@ use App\library\AdminFunction\Define;
 use Illuminate\Support\Facades\Cache;
 
 class Role extends BaseModel{
-    protected $table = Define::TABLE_ROLE;
+    protected $table = TABLE_ROLE;
     protected $primaryKey = 'role_id';
     public $timestamps = false;
 
@@ -127,16 +127,14 @@ class Role extends BaseModel{
     }
 
     public static function getOptionRole($project = 0) {
-        $user_project = app(User::class)->get_user_project();
-        $user_project = ($project > 0)? $project: $user_project;
-        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_OPTION_ROLE.'_'.$user_project):array();
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_OPTION_ROLE.'_'.$project):array();
         if (sizeof($data) == 0) {
-            $arr =  Role::getListAll($user_project);
+            $arr =  Role::getListAll($project);
             foreach ($arr as $value){
                 $data[$value->role_id] = $value->role_name;
             }
             if(!empty($data)){
-                Cache::put(Define::CACHE_OPTION_ROLE.'_'.$user_project, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Define::CACHE_OPTION_ROLE.'_'.$project, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
             }
         }
         return $data;

@@ -1,7 +1,7 @@
 @extends('admin.AdminLayouts.index')
 @section('content')
 <div class="main-content-inner">
-    <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+    <div class="breadcrumbs breadcrumbs-fixed top_nav" id="breadcrumbs">
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>

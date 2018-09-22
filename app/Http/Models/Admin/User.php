@@ -16,11 +16,11 @@ use App\library\AdminFunction\Memcache;
 
 class User extends BaseModel
 {
-    protected $table = Define::TABLE_USER;
+    protected $table = TABLE_USER_ADMIN;
     protected $primaryKey = 'user_id';
     public $timestamps = false;
 
-    protected $fillable = array('user_name', 'user_project', 'user_object_id', 'user_parent', 'user_password', 'user_full_name', 'user_email', 'user_phone',
+    protected $fillable = array('user_id','user_name', 'user_project', 'user_object_id', 'user_parent', 'user_password', 'user_full_name', 'user_email', 'user_phone',
         'user_status', 'user_sex', 'user_view', 'user_group', 'user_group_menu', 'user_last_login', 'user_last_ip', 'user_create_id', 'user_create_name',
         'user_edit_id', 'user_edit_name', 'user_created', 'user_updated', 'user_depart_id',
         'role_type', 'role_name', 'address', 'number_code', 'address_register', 'telephone');
@@ -29,19 +29,10 @@ class User extends BaseModel
      * @param $name
      * @return mixed
      */
-    public static function getUserByPersonId($person_id)
-    {
-        return User::where('user_object_id', $person_id)->first();
-    }
 
-    public static function getUserByName($name)
+    public function getUserByName($name)
     {
         return User::where('user_name', $name)->first();
-    }
-
-    public static function getUserByObjectId($object_id)
-    {
-        return User::where('user_object_id', $object_id)->first();
     }
 
     public static function updateUserPermissionWithRole($role)
@@ -54,7 +45,7 @@ class User extends BaseModel
                     $dataUpdate['user_group_menu'] = (isset($role->role_group_menu_id) && trim($role->role_group_menu_id) != '' && $role->role_status == Define::STATUS_SHOW) ? $role->role_group_menu_id : '';
                     $dataUpdate['role_type'] = $role->role_id;
                     $dataUpdate['role_name'] = $role->role_name;
-                    User::updateUser($user->user_id, $dataUpdate);
+                    app(User::class)->updateUser($user->user_id, $dataUpdate);
                 }
             }
         }
@@ -64,7 +55,7 @@ class User extends BaseModel
      * @param $id
      * @return mixed
      */
-    public static function getUserById($id)
+    public function getUserById($id)
     {
         $admin = User::find($id);
         return $admin;
@@ -74,12 +65,17 @@ class User extends BaseModel
      * @param $password
      * @return string
      */
-    public static function encode_password($password)
+    public function encode_password($password)
     {
-        return md5($password . CGlobal::project_name . '-haianhem!@!@!@13368');
+        return password_hash( User::stringCode($password),PASSWORD_DEFAULT);
     }
 
-    public static function updateLogin($user = array())
+    public function password_verify( $password='', $hash = ''){
+        $check= password_verify(User::stringCode($password), $hash)? true: false;
+        return $check;
+    }
+
+    public function updateLogin($user = array())
     {
         if ($user) {
             date_default_timezone_set('Asia/Ho_Chi_Minh') .
@@ -89,7 +85,7 @@ class User extends BaseModel
         }
     }
 
-    public static function user_login()
+    public function user_login()
     {
         $user = array();
         if (Session::has('user')) {
@@ -126,16 +122,7 @@ class User extends BaseModel
         return $user_project;
     }
 
-    public static function customer_login()
-    {
-        $user = array();
-        if (Session::has('customer')) {
-            $user = Session::get('customer');
-        }
-        return $user;
-    }
-
-    public static function user_id()
+    public function user_id()
     {
         $id = 0;
         if (Session::has('user')) {
@@ -145,7 +132,7 @@ class User extends BaseModel
         return $id;
     }
 
-    public static function user_name()
+    public function user_name()
     {
         $user_name = '';
         if (Session::has('user')) {
@@ -155,19 +142,13 @@ class User extends BaseModel
         return $user_name;
     }
 
-    public static function searchByCondition($data = array(), $limit = 0, $offset = 0, &$size)
+    public function searchByCondition($data = array(), $limit = 0, $offset = 0, &$size)
     {
         try {
             $query = User::where('user_id', '>', 0);
 
             if (isset($data['user_view']) && $data['user_view'] == 1) {
                 $query->whereIn('user_view', array(0, 1));
-            } else {
-                $user_project = app(User::class)->get_project_search();
-                if($user_project > Define::STATUS_SEARCH_ALL){
-                    $query->where('user_parent', $user_project );
-                }
-                $query->where('user_view', 1);
             }
 
             if (isset($data['user_id']) && $data['user_id'] > 0) {
@@ -206,7 +187,7 @@ class User extends BaseModel
         }
     }
 
-    public static function createNew($data)
+    public function createNew($data)
     {
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -228,7 +209,7 @@ class User extends BaseModel
         }
     }
 
-    public static function updateUser($id, $data)
+    public function updateUser($id, $data)
     {
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -247,7 +228,7 @@ class User extends BaseModel
         }
     }
 
-    public static function updatePassWord($id, $pass)
+    public function updatePassWord($id, $pass)
     {
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -263,7 +244,7 @@ class User extends BaseModel
         }
     }
 
-    public static function isLogin()
+    public function isLogin()
     {
         $result = 0;
         if (session()->has('user')) {
@@ -317,6 +298,10 @@ class User extends BaseModel
         return $data;
     }
 
+    public static function stringCode($string){
+        return $string . CGlobal::project_name . '-!@0938413368!@';
+    }
+
     public static function getListUserNameFullName()
     {
         $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_INFO_USER):array();
@@ -362,7 +347,7 @@ class User extends BaseModel
         return $data;
     }
 
-    public static function remove($user)
+    public function remove($user)
     {
         try {
             DB::connection()->getPdo()->beginTransaction();

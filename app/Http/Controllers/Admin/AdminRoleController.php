@@ -68,8 +68,7 @@ class AdminRoleController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($search['role_status']) ? $search['role_status'] : CGlobal::status_show);
-        $arrMember = app(MemberSite::class)->getAllMember();
-        $optionMember= FunctionLib::getOption($arrMember, isset($search['role_project']) ? $search['role_project'] : 0);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('admin.AdminRole.view',array_merge([
             'data'=>$data,
@@ -78,9 +77,9 @@ class AdminRoleController extends BaseAdminController{
             'start'=>($page_no - 1) * $limit,
             'paging'=>$paging,
             'arrStatus'=>$this->arrStatus,
-            'arrMember'=>$arrMember,
+            'arrMember'=>[],
             'optionStatus'=>$optionStatus,
-            'optionMember'=>$optionMember,
+            'optionMember'=>[],
         ],$this->viewPermission));
     }
     public function addRole($ids){
@@ -128,13 +127,10 @@ class AdminRoleController extends BaseAdminController{
         }
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status'])? $data['role_status'] : CGlobal::status_show);
-        $arrMember = app(MemberSite::class)->getAllMember();
-        $optionMember= FunctionLib::getOption($arrMember, isset($data['role_project']) ? $data['role_project'] : 0);
         return view('admin.AdminRole.ajaxLoadForm',
             array_merge([
                 'data'=>$data,
-                'optionStatus'=>$optionStatus,
-                'optionMember'=>$optionMember,
+                'optionStatus'=>$optionStatus
             ],$this->viewPermission));
     }
     private function valid($data=array()) {

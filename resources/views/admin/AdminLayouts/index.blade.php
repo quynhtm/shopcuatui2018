@@ -34,7 +34,7 @@
     <![endif]-->
 
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin_css.css')}}"/>
-    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/hr.min.css')}}"/>
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/vaymuon.min.css')}}"/>
     <!-- inline styles related to this page -->
 
     <!-- ace settings handler -->
@@ -87,7 +87,7 @@
     <script type="text/javascript" src="{{URL::asset('assets/lib/ckeditor/ckeditor.js')}}"></script>
 </head>
 
-<body class="no-skin" @if($languageSite == \App\Library\AdminFunction\Define::VIETNAM_LANGUAGE) lang="vi"
+<body class="no-skin" @if($languageSite == VIETNAM_LANGUAGE) lang="vi"
       @else lang="en" @endif>
 <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-container" id="navbar-container">
@@ -108,21 +108,14 @@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="light-blue">
-                    <a class="dropdown-toggle" href="{{URL::route('admin.viewShow')}}" title="Góp ý - Thắc mắc về hệ thống">
+                    <a class="dropdown-toggle" href="#" title="Góp ý - Thắc mắc về hệ thống">
                         <i class="fa fa-clipboard fa-2x marginTop5" aria-hidden="true">
 
                         </i>
                     </a>
                 </li>
-                {{--<li class="light-blue">
-                    <a class="dropdown-toggle" href="#" title="Góp ý - Thắc mắc về hệ thống">
-                        <i class="fa fa-comments fa-2x marginTop5" aria-hidden="true">
-                            <span class="msg_notify">13</span>
-                        </i>
-                    </a>
-                </li>--}}
                 <li class="light-blue">
-                    <a class="dropdown-toggle" href="{{URL::route('hr.HrMailViewGet')}}">
+                    <a class="dropdown-toggle" href="#">
                         <i class="fa fa-envelope-o fa-2x marginTop5" aria-hidden="true">
                             @if(isset($newMailInbox) && $newMailInbox > 0)<span class="msg_notify">{{$newMailInbox}}</span>@endif
                         </i>
@@ -144,23 +137,23 @@
                 </li>
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                        @if(isset($languageSite) && $languageSite == VIETNAM_LANGUAGE)
                             <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/vi.png"/>
                         @else
                             <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/en.png"/>
                         @endif
                     </a>
-                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" style="display: none">
-                        @if(isset($languageSite) && $languageSite == Define::ENGLISH_LANGUAGE)
+                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        @if(isset($languageSite) && $languageSite == ENGLISH_LANGUAGE)
                             <li>
-                                <a href="{{URL::route('admin.dashboard',array('lang'=>Define::VIETNAM_LANGUAGE))}}">
+                                <a href="{{URL::route('admin.dashboard',array('lang'=>VIETNAM_LANGUAGE))}}">
                                     <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/vi.png"/>
                                     Viet Nam
                                 </a>
                             </li>
                         @else
                             <li>
-                                <a href="{{URL::route('admin.dashboard',array('lang'=>Define::ENGLISH_LANGUAGE))}}">
+                                <a href="{{URL::route('admin.dashboard',array('lang'=>ENGLISH_LANGUAGE))}}">
                                     <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/en.png"/>
                                     English
                                 </a>
@@ -171,34 +164,25 @@
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <span class="user-info">
-                            <small>{{FunctionLib::viewLanguage('hello')}},</small>
+                            <small>{{viewLanguage('hello')}},</small>
                             @if(isset($user))
-                                {{$user['user_name']}}
+                                {{$user['user_full_name']}}
                             @endif
                         </span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
-                            <a href="{{URL::route('admin.user_change',array('id' => FunctionLib::inputId($user['user_id'])))}}">
+                            <a href="{{URL::route('admin.user_change',array('id' => setStrVar($user['user_id'])))}}">
                                 <i class="ace-icon fa fa-unlock"></i>
-                                {{FunctionLib::viewLanguage('changePass')}}
+                                {{viewLanguage('changePass')}}
                             </a>
                         </li>
                         <li class="divider"></li>
-                        @if(isset($user['user_object_id']) && $user['user_object_id'] > 0)
-                        <li>
-                            <a href="{{URL::route('hr.viewLuongDetailPerson')}}">
-                                <i class="ace-icon fa fa-usd"></i>
-                                Chi tiết lương
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        @endif
                         <li>
                             <a href="{{URL::route('admin.logout')}}">
                                 <i class="ace-icon fa fa-power-off"></i>
-                                {{FunctionLib::viewLanguage('logout')}}
+                                {{viewLanguage('logout')}}
                             </a>
                         </li>
                     </ul>
@@ -230,7 +214,7 @@
                             <a href="#" class="dropdown-toggle">
                                 <i class="menu-icon {{$item['icon']}}"></i>
                                 <span class="menu-text">
-                                @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                                @if(isset($languageSite) && $languageSite == VIETNAM_LANGUAGE)
                                         {{ $item['name'] }}
                                     @else
                                         {{ $item['name_en'] }}
@@ -246,7 +230,7 @@
                                             <li class="@if(strcmp(Route::currentRouteName(),$sub['RouteName']) == 0) active @endif">
                                                 <a href="{{URL::route($sub['RouteName'])}}">
                                                     <i class="menu-icon fa fa-caret-right"></i>
-                                                    @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                                                    @if(isset($languageSite) && $languageSite == VIETNAM_LANGUAGE)
                                                         {{ $sub['name'] }}
                                                     @else
                                                         {{ $sub['name_en'] }}
@@ -277,6 +261,17 @@
     </div>
 
     <div class="main-content">
+        {{---Menu tab top--}}
+        <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs" style="top: auto!important;">
+            <ul class="breadcrumb">
+                @foreach($arrMenuTabTop as $key_tab => $name_tab)
+                    <li class="li-nav-top @if(isset($tab_top) && $tab_top == $key_tab) active @endif" >
+                        <a href="{{URL::route('admin.dashboard',['tab_top'=> $key_tab])}}">{{$name_tab}}</a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+
         @yield('content')
     </div>
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-info">
@@ -294,13 +289,13 @@
             <div class="modal-header">
                 <button type="button" class="close bt_close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"
-                    id="myModalLabel">{{\App\Library\AdminFunction\FunctionLib::viewLanguage('csv_download_upload')}}</h4>
+                    id="myModalLabel">{{viewLanguage('csv_download_upload')}}</h4>
             </div>
             <div class="modal-body" id="ajax-csv-upload">
                 <form method="post" id="form-csv-upload" class="form-inline" enctype="multipart/form-data">
                     <div class="alert alert-info mg-b30 center">
-                        {{FunctionLib::viewLanguage('lg_txt_member_modal_csv_upload01')}}
-                        {{FunctionLib::viewLanguage('lg_txt_member_modal_csv_upload02')}}
+                        {{viewLanguage('lg_txt_member_modal_csv_upload01')}}
+                        {{viewLanguage('lg_txt_member_modal_csv_upload02')}}
                     </div>
 
                     <div class="alert alert-warning center">
@@ -308,7 +303,7 @@
                             <input type="file" id="csv_file" name="csv" style="display: none;" onchange="upload_csv();"
                                    accept="text/csv">
                             <button type="button" class="btn btn-lg btn-warning" onClick="$('#csv_file').click();"><i
-                                        class="fa fa-cloud-upload"></i>{{FunctionLib::viewLanguage('csv_upload')}}
+                                        class="fa fa-cloud-upload"></i>{{viewLanguage('csv_upload')}}
                             </button>
                         </div>
                     </div>
@@ -360,6 +355,12 @@
 <!--Popup Upload File-->
 
 <script>
+    $(document).ready(function() {
+        // document is loaded and DOM is ready
+        @if(!$is_tech)
+        $('.phpdebugbar-restore-btn').css('display','none');
+        @endif
+    });
     function showModal(event) {
         var url = event.getAttribute('ajax_url');
         var element = event.getAttribute('element');

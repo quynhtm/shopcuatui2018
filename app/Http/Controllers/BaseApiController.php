@@ -2,13 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\User;
-use App\Http\Models\MenuSystem;
-use App\Http\Models\UserSetting;
-use App\Http\Models\CarrierSetting;
-use App\Http\Models\UserCarrierSetting;
-use App\Http\Models\RoleMenu;
-
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;

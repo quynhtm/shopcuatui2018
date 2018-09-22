@@ -2,10 +2,9 @@
 Auth::routes();
 
 const Admin = "Admin";
-const HResources = "Hr";
-const Cronjob = "Cronjob";
-const News = "News";
-const Product = "Product";
+const Loan = "Loan";
+const Lender = "Lender";
+const Contracts = "Contracts";
 
 // Used for dev by Quynh
 $isDev = Request::get('is_debug','');
@@ -20,21 +19,26 @@ if(Session::has('is_debug_of_tech')){
 require __DIR__.'/site.php';
 
 //Quan tri CMS cho admin
-Route::get('/login', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@getLogin'));
-Route::post('/login',  array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@postLogin'));
+Route::get('/quan-tri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@getLogin'));
+Route::post('/quan-tri.html',  array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@postLogin'));
 
 Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 	require __DIR__.'/admin.php';
 });
 
-//Router HR
+//Router Loan
 Route::group(array('prefix' => 'manager', 'before' => ''), function(){
-	require __DIR__.'/hr.php';
+	require __DIR__.'/loan.php';
 });
 
-//Router Product
-Route::group(array('prefix' => 'manager', 'before' => ''), function(){
-	require __DIR__.'/product.php';
+//Router Lender
+Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
+    require __DIR__.'/lender.php';
+});
+
+//Router Contracts
+Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
+    require __DIR__.'/contracts.php';
 });
 
 //Router Api
@@ -42,14 +46,7 @@ Route::group(array('prefix' => 'api', 'before' => ''), function () {
     require __DIR__.'/api.php';
 });
 
-//Router Api
-Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
-    require __DIR__.'/cronjob.php';
-});
-
 //Router Ajax
 Route::group(array('prefix' => 'ajax', 'before' => ''), function () {
     Route::post('upload', array('as' => 'ajax.upload','uses' => 'AjaxUploadController@upload'));
 });
-
-Route::get('sentmail/mail',array('as' => 'admin.mail','uses' => 'MailSendController@sentEmail'));

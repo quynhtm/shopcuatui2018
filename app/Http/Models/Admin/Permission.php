@@ -17,14 +17,14 @@ use App\library\AdminFunction\Define;
 
 class Permission extends BaseModel{
 
-    protected $table = Define::TABLE_PERMISSION;
+    protected $table = TABLE_PERMISSION;
     public $timestamps = false;
     protected $primaryKey = 'permission_id';
     protected $fillable = array('permission_code','permission_name','permission_status','permission_group_name');
 
     public function groupuser()
     {
-        return $this->belongsToMany(Define::TABLE_GROUP_USER, Define::TABLE_GROUP_USER_PERMISSION);
+        return $this->belongsToMany(TABLE_GROUP_USER, TABLE_GROUP_USER_PERMISSION);
     }
 
     public static function createPermission($data)
@@ -41,19 +41,19 @@ class Permission extends BaseModel{
             $permission->save();
 
             // tạo môi quan hê nhóm quyên
-            if ($permission->permission_id == 1) {
+            /*if ($permission->permission_id == 1) {
                 $dataEx = array();
                 $permission_id = $permission->permission_id;
                 $dataEx['group_user_id'] = 1;
                 $dataEx['permission_id'] = $permission_id;
-                DB::table(Define::TABLE_GROUP_USER_PERMISSION)->insert($dataEx);
+                DB::table(TABLE_GROUP_USER_PERMISSION)->insert($dataEx);
 
                 $dataEx2['group_user_id'] = 1;
                 $dataEx2['group_user_name'] = $permission->permission_name;
                 $dataEx2['group_user_status'] = 1;
                 $dataEx2['group_user_type'] = 1;
-                DB::table(Define::TABLE_GROUP_USER)->insert($dataEx2);
-            }
+                DB::table(TABLE_GROUP_USER)->insert($dataEx2);
+            }*/
 
             DB::connection()->getPdo()->commit();
 
@@ -78,9 +78,8 @@ class Permission extends BaseModel{
             }
             $permission->save();
             // tạo môi quan hê nhóm quyên
-
-            if (is_array($arr_group)) {
-                DB::table(Define::TABLE_GROUP_USER_PERMISSION)->where('permission_id', $id)->delete();
+            /*if (is_array($arr_group)) {
+                DB::table(TABLE_GROUP_USER_PERMISSION)->where('permission_id', $id)->delete();
                 $dataEx = array();
                 $permission_id = $permission->permission_id;
                 if(count($arr_group) > 0){
@@ -88,9 +87,9 @@ class Permission extends BaseModel{
                         $dataEx[$k]['group_user_id'] = $group;
                         $dataEx[$k]['permission_id'] = $permission_id;
                     }
-                    DB::table(Define::TABLE_GROUP_USER_PERMISSION)->insert($dataEx);
+                    DB::table(TABLE_GROUP_USER_PERMISSION)->insert($dataEx);
                 }
-            }
+            }*/
             DB::connection()->getPdo()->commit();
             return true;
         }  catch (PDOException $e) {

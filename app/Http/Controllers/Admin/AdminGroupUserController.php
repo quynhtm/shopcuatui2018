@@ -300,7 +300,7 @@ class AdminGroupUserController extends BaseAdminController
         $search['role_id'] = (int)Request::get('role_id', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-        $dataSearch = RoleMenu::searchByCondition($search, $limit, $offset, $total);
+        $dataSearch = app(RoleMenu::class)->searchByCondition($search, $limit, $offset, $total);
         if (!empty($dataSearch)) {
             $data = $dataSearch;
         }
@@ -309,8 +309,6 @@ class AdminGroupUserController extends BaseAdminController
         //FunctionLib::debug($data);
         $arrRoleType = Role::getOptionRole();
         $optionStatus = FunctionLib::getOption($arrRoleType, $search['role_id']);
-        $arrMember = app(MemberSite::class)->getAllMember();
-        $optionMember= FunctionLib::getOption($arrMember, isset($search['role_menu_project']) ? $search['role_menu_project'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('admin.AdminGroupUser.viewRole', array_merge([
@@ -319,9 +317,8 @@ class AdminGroupUserController extends BaseAdminController
             'total' => $total,
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
-            'arrMember' => $arrMember,
-            'optionStatus' => $optionStatus,
-            'optionMember' => $optionMember,
+            'arrMember' => [],
+            'optionStatus' => $optionStatus
         ], $this->viewPermission));
     }
 
@@ -343,9 +340,6 @@ class AdminGroupUserController extends BaseAdminController
         $arrGroupUser = GroupUser::getListGroupUser($this->is_boss);
         $menuAdmin = MenuSystem::getListMenuPermission();
 
-        $arrMember = app(MemberSite::class)->getAllMember();
-        $optionMember= FunctionLib::getOption($arrMember, isset($data['role_menu_project']) ? $data['role_menu_project'] : 0);
-
         $arrRoleType = Role::getOptionRole();
         $optionRole = FunctionLib::getOption($arrRoleType, isset($data['role_id']) ? $data['role_id'] : 0);
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status']) ? $data['role_status'] : CGlobal::status_show);
@@ -356,7 +350,6 @@ class AdminGroupUserController extends BaseAdminController
             'id' => $id,
             'optionRole' => $optionRole,
             'optionStatus' => $optionStatus,
-            'optionMember' => $optionMember,
             'arrGroupUser' => $arrGroupUser,
             'menuAdmin' => $menuAdmin,
             'action_copy' => $action_copy,
@@ -406,19 +399,19 @@ class AdminGroupUserController extends BaseAdminController
                 $role_id = Role::createItem($role);
                 $dataInsert['role_id'] = $role_id;
                 //them moi
-                if (RoleMenu::createItem($dataInsert)) {
+                if (app(RoleMenu::class)->createItem($dataInsert)) {
                     return Redirect::route('admin.viewRole');
                 }
             }else{
                 $id = ($id == 0) ? $id_hiden : $id;
                 if ($id > 0) {
                     //cap nhat
-                    if (RoleMenu::updateItem($id, $dataInsert)) {
+                    if (app(RoleMenu::class)->updateItem($id, $dataInsert)) {
                         return Redirect::route('admin.viewRole');
                     }
                 } else {
                     //them moi
-                    if (RoleMenu::createItem($dataInsert)) {
+                    if (app(RoleMenu::class)->createItem($dataInsert)) {
                         return Redirect::route('admin.viewRole');
                     }
                 }
@@ -429,8 +422,6 @@ class AdminGroupUserController extends BaseAdminController
 
         $optionRole = FunctionLib::getOption($arrRoleType, isset($data['role_id']) ? $data['role_id'] : 0);
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status']) ? $data['role_status'] : CGlobal::status_show);
-        $arrMember = app(MemberSite::class)->getAllMember();
-        $optionMember= FunctionLib::getOption($arrMember, isset($data['role_menu_project']) ? $data['role_menu_project'] : 0);
         $this->viewPermission = $this->getPermissionPage();
         return view('admin.AdminGroupUser.addRole', array_merge([
             'data' => $data,
@@ -438,7 +429,6 @@ class AdminGroupUserController extends BaseAdminController
             'error' => $this->error,
             'optionRole' => $optionRole,
             'optionStatus' => $optionStatus,
-            'optionMember' => $optionMember,
             'arrGroupUser' => $arrGroupUser,
             'menuAdmin' => $menuAdmin,
         ], $this->viewPermission));
@@ -453,5 +443,18 @@ class AdminGroupUserController extends BaseAdminController
             'permission_create' => in_array($this->permission_role_create, $this->permission) ? 1 : 0,
             'permission_full' => in_array($this->permission_role_view, $this->permission) ? 1 : 0,
         ];
+    }
+
+    public function deleteGroupRole()
+    {
+        $data = array('isIntOk' => 0);
+        if(!$this->is_root && !in_array($this->permission_role_edit,$this->permission)){
+            return Response::json($data);
+        }
+        $id = (int)Request::get('id', 0);
+        if ($id > 0 && app(RoleMenu::class)->deleteItem($id)) {
+            $data['isIntOk'] = 1;
+        }
+        return Response::json($data);
     }
 }

@@ -230,14 +230,6 @@ class FunctionLib
         return strtoupper(substr($Str, 0, 1)) . substr($Str, 1, strlen($Str) - 1) . ($lang == 'vi' ? "đồng" : 'vnd');
     }
 
-    static function debug($array)
-    {
-        echo '<pre>';
-        print_r($array);
-        echo '</pre>';
-        die;
-    }
-
     static function getDateTime($time = '')
     {
         $time = (trim($time) != '') ? strtotime($time) : time();
@@ -1019,7 +1011,7 @@ class FunctionLib
     public static function viewLanguage($key)
     {
         $lang = Session::get('languageSite');
-        $lang = ((int)$lang > 0) ? $lang : Define::VIETNAM_LANGUAGE;
+        $lang = ((int)$lang > 0) ? $lang : VIETNAM_LANGUAGE;
         $path = storage_path() . "/language/" . Define::$arrLanguage[$lang] . ".json";
         $json = file_get_contents($path);
         $json = mb_convert_encoding($json, 'UTF8', 'auto');
@@ -1034,7 +1026,7 @@ class FunctionLib
      * @param int $lang
      * @return string
      */
-    public static function controLanguage($key, $lang = Define::VIETNAM_LANGUAGE)
+    public static function controLanguage($key, $lang = VIETNAM_LANGUAGE)
     {
         $path = storage_path() . "/language/" . Define::$arrLanguage[$lang] . ".json";
         $json = file_get_contents($path);

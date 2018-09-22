@@ -5,6 +5,7 @@
 * @Date      : 06/2016
 * @Version   : 1.0
 */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Models\Admin\MemberSite;
@@ -20,13 +21,18 @@ use App\Http\Models\Admin\GroupUserPermission;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\URL;
 
-class AdminLoginController extends Controller{
+class AdminLoginController extends Controller
+{
 
-    public function __construct(){
+    public $_user;
 
+    public function __construct(User $user)
+    {
+        $this->_user = $user;
     }
 
-    public function getLogin($url = ''){
+    public function getLogin($url = '')
+    {
         if (Session::has('user')) {
             if ($url === '' || $url === 'user') {
                 return Redirect::route('admin.dashboard');
@@ -34,19 +40,16 @@ class AdminLoginController extends Controller{
                 return Redirect::to(self::buildUrlDecode($url));
             }
         } else {
-            //call cronjob auto
-            $curl = Curl::getInstance();
-            $curl->get(URL::route('cr.callRunCronjob'));
-
             return view('admin.AdminUser.login');
         }
     }
 
-    public function postLogin(Request $request, $url = ''){
-        if(Session::has('user')){
-            if ($url === '' || $url === 'user'){
+    public function postLogin(Request $request, $url = '')
+    {
+        if (Session::has('user')) {
+            if ($url === '' || $url === 'user') {
                 return Redirect::route('admin.dashboard');
-            }else{
+            } else {
                 return Redirect::to(self::buildUrlDecode($url));
             }
         }
@@ -55,20 +58,17 @@ class AdminLoginController extends Controller{
         $username = $request->input('user_name', '');
         $password = $request->input('user_password', '');
         $error = '';
-        if(Session::token() === $token) {
+        if (Session::token() === $token) {
             if ($username != '' && $password != '') {
                 if (strlen($username) < 3 || strlen($username) > 50 || preg_match('/[^A-Za-z0-9_\.@]/', $username) || strlen($password) < 5) {
                     $error = 'Không tồn tại tên đăng nhập!';
                 } else {
-                    $user = User::getUserByName($username);
+                    $user = $this->_user->getUserByName($username);
                     if ($user !== NULL) {
-                        if ($user->user_status == CGlobal::status_hide ||$user->user_status == CGlobal::status_block ) {
+                        if ($user->user_status == CGlobal::status_hide || $user->user_status == CGlobal::status_block) {
                             $error = 'Tài khoản bị khóa!';
                         } elseif ($user->user_status == CGlobal::status_show || $user->user_view == CGlobal::status_hide) {
-                            $check_action_member = self::checkMemberAction($user->user_parent);
-                            if(!$check_action_member && $user->user_view != CGlobal::status_hide){
-                                $error = 'Tài khoản gốc bị khóa!';
-                            }elseif ($user->user_password == User::encode_password($password)) {
+                            if ($this->_user->password_verify($password, $user->user_password)) {
                                 $permission_code = array();
                                 $group = explode(',', $user->user_group);
                                 if ($group) {
@@ -90,12 +90,12 @@ class AdminLoginController extends Controller{
                                     'user_depart_id' => $user->user_depart_id,
                                     'user_is_admin' => $user->user_is_admin,
                                     'user_group_menu' => $user->user_group_menu,
-                                    'user_view' => $user->user_view,
+                                    'is_boss' => $user->user_view,
                                     'role_type' => $user->role_type,
                                     'user_permission' => $permission_code
                                 );
-								$request->session()->put('user', $data, 60 * 24);
-                                User::updateLogin($user);
+                                $request->session()->put('user', $data, 60 * 24);
+                                $this->_user->updateLogin($user);
                                 if ($url === '' || $url === 'login') {
                                     return Redirect::route('admin.dashboard');
                                 } else {
@@ -113,20 +113,12 @@ class AdminLoginController extends Controller{
                 $error = 'Chưa nhập thông tin đăng nhập!';
             }
         }
-        return view('admin.AdminUser.login',['error'=>$error, 'username'=>$username]);
+        return view('admin.AdminUser.login', ['error' => $error, 'username' => $username]);
     }
 
-    public function checkMemberAction($member_id){
-        if($member_id > 0){
-            $member = app(MemberSite::class)->getInforMemberById($member_id);
-            if(isset($member->member_id) && $member->member_status == Define::STATUS_SHOW){
-                return true;
-            }
-        }
-        return false;
-    }
-    public function logout(Request $request){
-		if($request->session()->has('user')){
+    public function logout(Request $request)
+    {
+        if ($request->session()->has('user')) {
             $request->session()->forget('user');
         }
         return Redirect::route('admin.login');

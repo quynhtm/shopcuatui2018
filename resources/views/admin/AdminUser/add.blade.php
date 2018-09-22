@@ -4,11 +4,11 @@
 @extends('admin.AdminLayouts.index')
 @section('content')
 <div class="main-content-inner">
-    <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+    <div class="breadcrumbs breadcrumbs-fixed top_nav" id="breadcrumbs">
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <<a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
+                <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li><a href="{{URL::route('admin.user_view')}}"> Danh sách tài khoản</a></li>
             <li class="active">Sửa tài khoản</li>
@@ -38,22 +38,12 @@
                     @if($id == 0)
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="name" class="control-label">Mật khẩu<span class="red"> (* Mặc định: Sms@!2017) </span></label>
-                            <input type="password"  id="user_password" name="user_password" class="form-control input-sm" value="Sms@!2017">
+                            <label for="name" class="control-label">Pass<span class="red"> (* Mặc định: Vaymuon4@!2018) </span></label>
+                            <input type="password"  id="user_password" name="user_password" class="form-control input-sm" value="Vaymuon4@!2018">
                         </div>
                     </div>
                     @endif
-                    @if($is_boss == 1)
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="name" class="control-label">Thuộc member<span class="red"> (*) </span></label>
-                            <select name="user_parent" id="user_parent" class="form-control input-sm">
-                                <option value="0">----Chọn member----</option>
-                                {!! $optionMember!!}
-                            </select>
-                        </div>
-                    </div>
-                    @endif
+
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="name" class="control-label">Tên nhân viên<span class="red"> (*) </span></label>
@@ -61,15 +51,6 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="name" class="control-label">Phòng ban<span class="red"> (*) </span></label>
-                            <select name="user_depart_id" id="user_depart_id" class="form-control input-sm">
-                                <option value="0">----Chọn phòng ban----</option>
-                                {!! $optionDepart !!}
-                            </select>
-                        </div>
-                    </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">Kiểu User<span class="red"> (*) </span></label>
@@ -95,19 +76,6 @@
                         <div class="form-group">
                             <label for="name" class="control-label">Telephone</label>
                             <input type="text" placeholder="Telephone" id="telephone" name="telephone"  class="form-control input-sm" value="@if(isset($data['telephone'])){{$data['telephone']}}@endif">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="name" class="control-label">Số đăng ký kinh doanh</label>
-                            <input type="text" placeholder="Số đăng ký kinh doanh" id="number_code" name="number_code"  class="form-control input-sm" value="@if(isset($data['number_code'])){{$data['number_code']}}@endif">
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="name" class="control-label">Địa chỉ kinh doanh</label>
-                            <input type="text" placeholder="Địa chỉ kinh doanh" id="address_register" name="address_register"  class="form-control input-sm" value="@if(isset($data['address_register'])){{$data['address_register']}}@endif">
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -142,7 +110,7 @@
                                                        value="{{(int)$menu_id}}" />
                                             </td>
                                             <td class="text-left text-middle">
-                                                @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                                                @if(isset($languageSite) && $languageSite == VIETNAM_LANGUAGE)
                                                     <b>{{ $menu_name['menu_name'] }}</b>
                                                 @else
                                                     <b>{{ $menu_name['menu_name_en'] }}</b>

@@ -3,7 +3,7 @@
 @extends('admin.AdminLayouts.index')
 @section('content')
 <div class="main-content-inner">
-    <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+    <div class="breadcrumbs breadcrumbs-fixed top_nav" id="breadcrumbs">
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
@@ -20,27 +20,33 @@
                 <div class="panel panel-info">
                     {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                     <div class="panel-body">
-                        {{--<div class="form-group col-lg-3">
+                        <div class="form-group col-lg-3">
                             <label for="banner_name">Tên</label>
                             <input type="text" class="form-control input-sm" id="banner_name" name="banner_name" placeholder="Tiêu đề banner" @if(isset($search['banner_name']) && $search['banner_name'] != '')value="{{$search['banner_name']}}"@endif>
                         </div>
 
                         <div class="form-group col-lg-3">
-                            <label for="category_status">Trạng thái</label>
-                            <select name="banner_status" id="banner_status" class="form-control input-sm">
-                                {{$optionStatus}}
+                            <label for="active">Trạng thái</label>
+                            <select name="active" id="active" class="form-control input-sm">
+                                {!! $optionStatus !!}
                             </select>
-                        </div>--}}
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="menu_tab_top_id">Menu top</label>
+                            <select name="menu_tab_top_id" id="menu_tab_top_id" class="form-control input-sm">
+                                {!! $optionMenuTabTop !!}
+                            </select>
+                        </div>
 
                         <div class="form-group col-lg-12 text-right">
                             @if($is_root || $permission_full ==1 || $permission_create == 1)
                                 <a class="btn btn-danger btn-sm" href="{{URL::route('admin.menuEdit',array('id' => FunctionLib::inputId(0)))}}">
                                     <i class="ace-icon fa fa-plus-circle"></i>
-                                    {{FunctionLib::viewLanguage('add')}}
+                                    {{viewLanguage('add')}}
                                 </a>
                             @endif
                                 {{--<button class="btn btn-warning btn-sm" type="submit" name="submit" value="2"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>--}}
-                                <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1"><i class="fa fa-search"></i> {{FunctionLib::viewLanguage('search')}}</button>
+                                <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1"><i class="fa fa-search"></i> {{viewLanguage('search')}}</button>
                         </div>
                     </div>
                     {{ Form::close() }}
@@ -55,7 +61,7 @@
                             <th width="2%" class="text-center">TT</th>
                             <th width="30%">Menu name</th>
                             <th width="8%" class="text-center">Icons</th>
-                            <th width="8%" class="text-center">Icons Sub</th>
+                            <th width="8%" class="text-center">Tab Top</th>
                             <th width="15%" class="text-center">Router name</th>
                             <th width="6%" class="text-center">Order</th>
                             <th width="6%" class="text-center">Status</th>
@@ -70,7 +76,7 @@
                             <tr @if($item['parent_id'] == 0)style="background-color:#d6f6f6"@endif>
                                 <td class="text-center text-middle">{!! $stt + $key+1 !!}</td>
                                 <td>
-                                    @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                                    @if(isset($languageSite) && $languageSite == VIETNAM_LANGUAGE)
                                         {!! $item['padding_left'].$item['padding_left'].$item['menu_name']!!}
                                     @else
                                         {!! $item['padding_left'].$item['padding_left'].$item['menu_name_en']!!}
@@ -78,13 +84,11 @@
 
                                 </td>
                                 <td class="text-center text-middle">
-                                    @if($item['parent_id'] == 0)
-                                        <i class="{!! $item['menu_icons'] !!} fa-3x "></i>
-                                    @endif
+                                    <i class="{!! $item['menu_icons'] !!} fa-3x "></i>
                                 </td>
                                 <td class="text-center text-middle">
-                                    @if($item['parent_id'] > 0)
-                                        <i class="{!! $item['menu_icons'] !!} fa-3x "></i>
+                                    @if(isset($menuTabTop[$item['menu_tab_top_id']]))
+                                        {{$menuTabTop[$item['menu_tab_top_id']]}}
                                     @endif
                                 </td>
                                 <td class="text-center text-middle">{!! $item['menu_url'] !!}</td>

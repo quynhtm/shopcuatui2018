@@ -3,7 +3,7 @@
 @extends('admin.AdminLayouts.index')
 @section('content')
 <div class="main-content-inner">
-    <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+    <div class="breadcrumbs breadcrumbs-fixed top_nav" id="breadcrumbs">
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
@@ -47,7 +47,17 @@
                             <input type="text" placeholder="Tên menu" id="menu_name_en" name="menu_name_en"  class="form-control input-sm" value="@if(isset($data['menu_name_en'])){{$data['menu_name_en']}}@endif">
                         </div>
                     </div>--}}
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Thuộc menu Top</label>
+                            <select name="menu_tab_top_id" id="menu_tab_top_id" class="form-control input-sm">
+                                <option value="0">--- Tất cả ---</option>
+                                {!! $optionMenuTabTop !!}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">Thuộc menu cha</label>
                             <select name="parent_id" id="parent_id" class="form-control input-sm">
@@ -61,7 +71,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">Icons menu</label>
-                            <input type="text" placeholder="Icons menu" id="menu_icons" name="menu_icons"  class="form-control input-sm" value="@if(isset($data['menu_icons'])){{$data['menu_icons']}}@endif">
+                            <input type="text" placeholder="Icons menu" id="menu_icons" name="menu_icons"  class="form-control input-sm" value="@if(isset($data['menu_icons'])){{$data['menu_icons']}}@else fa fa-cog icon-4x @endif">
                         </div>
                     </div>
                     <div class="col-sm-6">

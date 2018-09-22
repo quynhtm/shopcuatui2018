@@ -8,10 +8,8 @@ use Illuminate\Console\Command;
 
 use App\Library\AdminFunction\Define;
 use Illuminate\Support\Facades\DB;
-use App\Http\Models\Hr\Person;
 use App\Http\Models\Admin\User;
-use App\Mail\MailSystem;
-use Illuminate\Support\Facades\Mail;
+
 
 class resetUser extends Command{
     protected $signature = 'resetUser';
@@ -22,12 +20,9 @@ class resetUser extends Command{
     }
     public function handle()
     {
-        //Mail::to('nguyenduypt86@gmail.com')->send(new MailSystem());
-        //Mail::to('manhquynh1984@gmail.com')->send(new MailSystem());
-
         $dataUpdate['user_last_login'] = time();
         $dataUpdate['user_edit_name'] = 'cronjob';
-        $data = DB::table(Define::TABLE_USER)
+        $data = DB::table(TABLE_USER_ADMIN)
             ->where('user_status', '=', Define::STATUS_SHOW)
             ->get(array('user_id'));
         if($data){

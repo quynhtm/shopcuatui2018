@@ -6,6 +6,7 @@
  * Date: 5/30/2015
  * Time: 4:22 PM
  */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
@@ -25,6 +26,7 @@ class AdminPermissionController extends BaseAdminController
     private $permission_full = 'permission_full';
     private $permission_create = 'permission_create';
     private $permission_edit = 'permission_edit';
+
     private $arrStatus = array(-1 => 'Xóa', 0 => 'Tất cả', 1 => 'Hoạt động');
 
     public function __construct()
@@ -32,9 +34,10 @@ class AdminPermissionController extends BaseAdminController
         parent::__construct();
     }
 
-    public function view(){
-        if(!$this->is_root && !in_array($this->permission_full,$this->permission)){
-            return Redirect::route('admin.dashboard',array('error'=>1));
+    public function view()
+    {
+        if (!$this->is_root && !in_array($this->permission_full, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => 1));
         }
         /*echo strtotime('17-10-2016 14:30:41');
         echo '<br/>'.strtotime('17-10-2016 14:32:41');
@@ -50,24 +53,24 @@ class AdminPermissionController extends BaseAdminController
         $offset = ($page_no - 1) * $limit;
         $total = 0;
         $aryPermission = Permission::searchPermission($dataSearch, $limit, $offset, $total);
-        $paging = $total > 0 ? Pagging::getNewPager(3,$page_no,$total,$limit,$dataSearch) : '';
-        return view('admin.AdminPermission.view',[
-            'data'=>$aryPermission,
-            'dataSearch'=>$dataSearch,
-            'total'=>$total,
-            'start'=>($page_no - 1) * $limit,
-            'paging'=>$paging,
-            'arrStatus'=>$this->arrStatus,
-            'is_root'=>$this->is_root,
-            'permission_edit'=>in_array($this->permission_edit, $this->permission) ? 1 : 0,
-            'permission_create'=>in_array($this->permission_create, $this->permission) ? 1 : 0,
-            'permission_full'=>in_array($this->permission_full, $this->permission) ? 1 : 0,
+        $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $dataSearch) : '';
+        return view('admin.AdminPermission.view', [
+            'data' => $aryPermission,
+            'dataSearch' => $dataSearch,
+            'total' => $total,
+            'start' => ($page_no - 1) * $limit,
+            'paging' => $paging,
+            'arrStatus' => $this->arrStatus,
+            'is_root' => $this->is_root,
+            'permission_edit' => in_array($this->permission_edit, $this->permission) ? 1 : 0,
+            'permission_create' => in_array($this->permission_create, $this->permission) ? 1 : 0,
+            'permission_full' => in_array($this->permission_full, $this->permission) ? 1 : 0,
         ]);
     }
 
     public function createInfo()
     {
-        return view('admin.AdminPermission.create',[]);
+        return view('admin.AdminPermission.create', []);
     }
 
     public function create()
@@ -94,16 +97,16 @@ class AdminPermissionController extends BaseAdminController
             $error[] = 'Mã quyền đã tồn tại ';
         }
 
-        if ($error == null){
+        if ($error == null) {
             //insert dl
             if (Permission::createPermission($data)) {
                 return Redirect::route('admin.permission_view');
             }
         }
 
-        return view('admin.AdminPermission.create',[
-            'error'=>$error,
-            'data'=>$data,
+        return view('admin.AdminPermission.create', [
+            'error' => $error,
+            'data' => $data,
         ]);
     }
 
@@ -114,9 +117,9 @@ class AdminPermissionController extends BaseAdminController
 //            return Redirect::route('admin.dashboard',array('error'=>1));
 //        }
         $data = Permission::find($id);//lay dl permission theo id
-        return view('admin.AdminPermission.create',[
-            'arrStatus'=>$this->arrStatus,
-            'data'=>$data,
+        return view('admin.AdminPermission.create', [
+            'arrStatus' => $this->arrStatus,
+            'data' => $data,
         ]);
     }
 
@@ -126,6 +129,10 @@ class AdminPermissionController extends BaseAdminController
 //        if (!in_array($this->permission_edit, $this->permission)) {
 //            return Redirect::route('admin.dashboard',array('error'=>1));
 //        }
+        //DB::table(TABLE_PERMISSION)->truncate();
+        //DB::table(TABLE_GROUP_USER)->truncate();
+        //DB::table(TABLE_GROUP_USER_PERMISSION)->truncate();
+
         $error = array();
         $data['permission_code'] = htmlspecialchars(trim(Request::get('permission_code', '')));
         $data['permission_name'] = htmlspecialchars(trim(Request::get('permission_name', '')));
@@ -153,17 +160,17 @@ class AdminPermissionController extends BaseAdminController
                 $error[] = 'Lỗi truy xuất dữ liệu';
             }
         }
-        return view('admin.AdminPermission.create',[
-            'arrStatus'=>$this->arrStatus,
-            'error'=>$error,
-            'data'=>$data,
+        return view('admin.AdminPermission.create', [
+            'arrStatus' => $this->arrStatus,
+            'error' => $error,
+            'data' => $data,
         ]);
     }
 
     public function deletePermission()
     {
         $data = array('isIntOk' => 0);
-        if(!$this->is_root && !in_array($this->permission_full,$this->permission)){
+        if (!$this->is_root && !in_array($this->permission_full, $this->permission)) {
             return Response::json($data);
         }
         $id = (int)Request::get('id', 0);
@@ -173,23 +180,27 @@ class AdminPermissionController extends BaseAdminController
         return Response::json($data);
     }
 
-    public function addPermit(){
-        //die();
-        //die('tạm dừng chức năng này');
-        $arrPermit = ArrayPermission::$arrPermit;
+    public function addPermiss()
+    {
+        $arrPermit = ArrayPermission::$arrNewPermiss;
+        foreach ($arrPermit as $k => $group) {
+            foreach ($group['infor'] as $kk => $infor) {
+                $arrInsert = array(
+                    'permission_code' => $infor['code'],
+                    'permission_name' => $infor['name'],
+                    'permission_group_name' => $group['group_permiss'],
+                    'permission_status' => 1);
 
-        DB::table(Define::TABLE_PERMISSION)->truncate();
-        DB::table(Define::TABLE_GROUP_USER)->truncate();
-        DB::table(Define::TABLE_GROUP_USER_PERMISSION)->truncate();
-        foreach($arrPermit as $permit=> $infor){
-            $arrInsert = array('permission_code'=>$permit,
-                'permission_name'=>$infor['name_permit'],
-                'permission_group_name'=>$infor['group_permit'],
-                'permission_status'=>1);
-            if (!Permission::checkExitsPermissionCode($permit)) {
-                Permission::createPermission($arrInsert);
+                $data_per = Permission::checkExitsPermissionCode($infor['code']);
+                if (!$data_per) {
+                    Permission::createPermission($arrInsert);
+                } else {
+                    if (isset($data_per->permission_id) && $data_per->permission_id > 0) {
+                        Permission::updatePermission($data_per->permission_id, $arrInsert);
+                    }
+                }
             }
         }
-        FunctionLib::debug($arrPermit);
+        vmDebug($arrPermit);
     }
 }

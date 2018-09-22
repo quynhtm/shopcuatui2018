@@ -11,18 +11,18 @@ use App\Http\Models\Admin\User;
 
 class RoleMenu extends BaseModel
 {
-    protected $table = Define::TABLE_ROLE_MENU;
+    protected $table = TABLE_ROLE_MENU;
     protected $primaryKey = 'role_menu_id';
     public $timestamps = false;
 
-    protected $fillable = array('role_group_menu_id','role_menu_project','role_group_permission', 'role_status', 'role_id', 'role_name');
+    protected $fillable = array('role_group_menu_id','role_group_permission', 'role_status', 'role_id', 'role_name');
 
     public static function getInfoByRoleId($role_id){
         $infor = RoleMenu::where('role_id', $role_id)->first();
         return $infor;
     }
 
-    public static function createItem($data){
+    public function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
             $checkData = new RoleMenu();
@@ -44,7 +44,7 @@ class RoleMenu extends BaseModel
         }
     }
 
-    public static function updateItem($id,$data){
+    public function updateItem($id,$data){
         try {
             DB::connection()->getPdo()->beginTransaction();
             $checkData = new RoleMenu();
@@ -78,7 +78,7 @@ class RoleMenu extends BaseModel
         return $dataDB;
     }
 
-    public static function deleteItem($id){
+    public function deleteItem($id){
         if($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -96,7 +96,7 @@ class RoleMenu extends BaseModel
         }
     }
 
-    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
+    public function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
 //        FunctionLib::debug($dataSearch);
         try{
             $query = RoleMenu::where('role_menu_id','>',0);
@@ -105,7 +105,6 @@ class RoleMenu extends BaseModel
             }
 
             $total = $query->count();
-            $query->orderBy('role_menu_project', 'asc');
             $query->orderBy('role_menu_id', 'desc');
 
             //get field can lay du lieu

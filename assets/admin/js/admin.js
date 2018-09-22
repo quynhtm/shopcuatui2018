@@ -104,25 +104,13 @@ var Admin = {
             } else if (type == 2) {
                 url_ajax = 'deleteCustomer';
             } else if (type == 3) {
-                url_ajax = 'deleteBanner';
+                url_ajax = 'deleteGroupRole';
             } else if (type == 4) {
                 url_ajax = 'deleteMenu';
             } else if (type == 9) {
                 url_ajax = 'deletePermission';
-            } else if (type == 10) {
-                url_ajax = 'deleteCategory';
-            } else if (type == 11) {
-                url_ajax = 'deleteInfor';
-            } else if (type == 12) {
-                url_ajax = 'deleteContract';
-            } else if (type == 13) {
-                url_ajax = 'deleteSystemSetting';
-            } else if (type == 14) {
-                url_ajax = 'deleteCarrierSetting';
-            }else if (type == 15) {
-                url_ajax = 'deleteDeviceToken';
-            }else if (type == 16) {
-                url_ajax = 'deleteWageStepConfig';
+            } else if (type == 5) {
+                url_ajax = 'banner/deleteBanner';
             }
             if (url_ajax != '') {
                 $.ajax({

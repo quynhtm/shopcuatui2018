@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 class BaseSiteController extends Controller{
 
 	public function __construct(){}
-	public function header($catid=0){
+	public function header(){
        echo 'Header';
 	}
     public function slider(){
