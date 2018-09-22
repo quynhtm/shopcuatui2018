@@ -1,28 +1,28 @@
 $(document).ready(function () {
-    HR.clickAddParentDepartment();
-    HR.clickPostPageNext();
-    HR.showDate();
+    BE.clickAddParentDepartment();
+    BE.clickPostPageNext();
+    BE.showDate();
 
-    HR.clickSubmitMailDraft();
-    HR.submitMailSend();
-    HR.clickMailForward();
-    HR.clickMailReply();
+    BE.clickSubmitMailDraft();
+    BE.submitMailSend();
+    BE.clickMailForward();
+    BE.clickMailReply();
 
-    HR.clickViewDocument();
-    HR.clickDocumentForward();
-    HR.clickSubmitDocumentDraft();
-    HR.submitDocumentSend();
-    HR.clickDocumentReply();
+    BE.clickViewDocument();
+    BE.clickDocumentForward();
+    BE.clickSubmitDocumentDraft();
+    BE.submitDocumentSend();
+    BE.clickDocumentReply();
 
-    HR.exportDevice();
-    HR.exportViewTienLuongCongChuc();
+    BE.exportDevice();
+    BE.exportViewTienLuongCongChuc();
 
-    HR.changeValueViewCurriculumVitae('curriculum_desc_history1', 1);
-    HR.changeValueViewCurriculumVitae('curriculum_desc_history2', 2);
-    HR.changeValueViewCurriculumVitae('curriculum_foreign_relations1', 3);
-    HR.changeValueViewCurriculumVitae('curriculum_foreign_relations2', 4);
+    BE.changeValueViewCurriculumVitae('curriculum_desc_history1', 1);
+    BE.changeValueViewCurriculumVitae('curriculum_desc_history2', 2);
+    BE.changeValueViewCurriculumVitae('curriculum_foreign_relations1', 3);
+    BE.changeValueViewCurriculumVitae('curriculum_foreign_relations2', 4);
 });
-HR = {
+BE = {
     editItem: function (id, $url) {
         var _token = $('meta[name="csrf-token"]').attr('content');
         $("#loading").fadeIn().fadeOut(10);
@@ -86,7 +86,7 @@ HR = {
             return false;
         } else {
             $(btnSubmit).attr("disabled", 'true');
-            var data = HR.getFormData(elementForm);
+            var data = BE.getFormData(elementForm);
             var _token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 type: 'post',
@@ -107,6 +107,7 @@ HR = {
     resetItem: function (elementKey, elementValue) {
         $("#loading").fadeIn().fadeOut(10);
         $('input[type="text"]').val('');
+        $('textarea').val('');
         $(elementKey).val(elementValue);
         $('.frmHead').text('Thêm mới');
         $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
@@ -196,11 +197,11 @@ HR = {
                 data: {parent_id: parent_id},
                 success: function (res) {
                    $('#getItemCurrent').append(res);
-                   HR.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
-                   HR.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
+                   BE.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
+                   BE.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
                    CKEDITOR.replace('hr_mail_content');
-                   HR.clickSubmitMailDraft();
-                   HR.submitMailSend();
+                   BE.clickSubmitMailDraft();
+                   BE.submitMailSend();
                 }
             });
         });
@@ -219,11 +220,11 @@ HR = {
                 data: {parent_id: parent_id},
                 success: function (res) {
                     $('#getItemCurrent').append(res);
-                    HR.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
-                    HR.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
+                    BE.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
+                    BE.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
                     CKEDITOR.replace('hr_mail_content');
-                    HR.clickSubmitMailDraft();
-                    HR.submitMailSend();
+                    BE.clickSubmitMailDraft();
+                    BE.submitMailSend();
                 }
             });
         });
@@ -286,11 +287,11 @@ HR = {
                 data: {parent_id: parent_id},
                 success: function (res) {
                     $('#getItemCurrent').append(res);
-                    HR.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
-                    HR.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
+                    BE.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
+                    BE.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
                     CKEDITOR.replace('hr_document_content');
-                    HR.clickSubmitDocumentDraft();
-                    HR.submitDocumentSend();
+                    BE.clickSubmitDocumentDraft();
+                    BE.submitDocumentSend();
                 }
             });
         });
@@ -309,11 +310,11 @@ HR = {
                 data: {parent_id: parent_id},
                 success: function (res) {
                     $('#getItemCurrent').append(res);
-                    HR.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
-                    HR.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
+                    BE.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
+                    BE.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
                     CKEDITOR.replace('hr_document_content');
-                    HR.clickSubmitDocumentDraft();
-                    HR.submitDocumentSend();
+                    BE.clickSubmitDocumentDraft();
+                    BE.submitDocumentSend();
                 }
             });
         });
@@ -361,7 +362,7 @@ HR = {
             return false;
         } else {
             $('#'+btnSubmit).attr("disabled", 'true');
-            var data = HR.getFormData(elementForm);
+            var data = BE.getFormData(elementForm);
             var _token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 type: 'post',
@@ -444,7 +445,7 @@ HR = {
             return false;
         } else {
             $('#'+btnSubmit).attr("disabled", 'true');
-            var data = HR.getFormData(elementForm);
+            var data = BE.getFormData(elementForm);
             var _token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 type: 'post',
@@ -589,5 +590,10 @@ HR = {
         if (a) {
             window.location.href = url;
         }
+    },
+    scrolleTop:function(){
+        $('.editItem').click(function(){
+            $("html, body").animate({scrollTop: 0}, 500);
+        });
     }
 }

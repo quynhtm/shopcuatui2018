@@ -165,4 +165,9 @@ class Memcache{
     const CACHE_CONTRACT_DOCUMENT_ENTITY_ATTRIBUTE_VALUE_ID = 'cache_contract_document_entity_attribute_value_id_';
 
     const CACHE_CONTRACT_DOCUMENT_ENTITY_ID = 'cache_contract_document_entity_id_';
+
+
+
+    const CACHE_DEPARTMENT_ID = 'cache_department_id_';
+    
 }
