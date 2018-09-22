@@ -2,9 +2,7 @@
 Auth::routes();
 
 const Admin = "Admin";
-const Loan = "Loan";
-const Lender = "Lender";
-const Contracts = "Contracts";
+const Shop = "Shop";
 
 // Used for dev by Quynh
 $isDev = Request::get('is_debug','');
@@ -26,19 +24,8 @@ Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 	require __DIR__.'/admin.php';
 });
 
-//Router Loan
 Route::group(array('prefix' => 'manager', 'before' => ''), function(){
-	require __DIR__.'/loan.php';
-});
-
-//Router Lender
-Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
-    require __DIR__.'/lender.php';
-});
-
-//Router Contracts
-Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
-    require __DIR__.'/contracts.php';
+	require __DIR__.'/shop.php';
 });
 
 //Router Api
