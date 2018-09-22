@@ -52,6 +52,12 @@ define('TABLE_MEMBER', PREFIX.'member');
 /**************************************************************************************************************
  * định nghĩa quyền
  **************************************************************************************************************/
+//member
+define('PERMISS_MEMBER_FULL', 'memberFull');
+define('PERMISS_MEMBER_VIEW', 'memberView');
+define('PERMISS_MEMBER_CREATE', 'memberCreate');
+define('PERMISS_MEMBER_DELETE', 'memberDelete');
+
 //permiss banner
 define('PERMISS_BANNER_FULL', 'bannerFull');
 define('PERMISS_BANNER_VIEW', 'bannerView');
