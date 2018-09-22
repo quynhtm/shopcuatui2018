@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label for="member_name">{{viewLanguage('Mô tả')}}</label>
-                <textarea name="define_note" id="define_note" cols="30" rows="2" class="form-control input-required">@if(isset($data['define_note'])){{$data['define_note']}}@endif</textarea>
+                <textarea name="define_note" id="define_note" cols="30" rows="2" class="form-control">@if(isset($data['define_note'])){{$data['define_note']}}@endif</textarea>
             </div>
             <div class="form-group">
                 <label for="member_status">{{viewLanguage('Trạng thái')}}</label>
@@ -26,10 +26,10 @@
                     {!! $optionStatus !!}
                 </select>
             </div>
-            <a class="btn btn-success" id="submit" onclick="VM.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/member/post/' + '{{$data["id"]}}')">
+            <a class="btn btn-success" id="submit" onclick="BE.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/member/post/' + '{{$data["member_id"]}}')">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i> {{viewLanguage('Lưu')}}
             </a>
-            <a class="btn btn-default" id="cancel" onclick="VM.resetItem('#id_hiden', '0')">
+            <a class="btn btn-default" id="cancel" onclick="BE.resetItem('#id_hiden', '0')">
                 <i class="fa fa-undo" aria-hidden="true"></i> {{viewLanguage('Làm lại')}}
             </a>
         </form>

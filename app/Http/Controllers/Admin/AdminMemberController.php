@@ -105,7 +105,6 @@ class AdminMemberController extends BaseAdminController{
 
         $id = $_POST['id'];
         $data = (($id > 0)) ? app(Member::class)->getItemById($id) : [];
-
         $this->_getDataDefault();
         $optionStatus = getOption($this->arrStatus, isset($data['member_status']) ? $data['member_status'] : STATUS_SHOW);
 

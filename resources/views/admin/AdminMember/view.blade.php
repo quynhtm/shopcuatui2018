@@ -66,22 +66,21 @@
                                     <td>{{$item->member_name}}</td>
                                     <td class="text-center">{{$item->define_note}}</td>
                                     <td class="text-center">
-                                    @if($item->member_status == STATUS_SHOW)
-                                        @if($item['active'] == 1)
+                                        @if($item->member_status == STATUS_SHOW)
                                             <a href="javascript:void(0);" title="Hiện"><i class="fa fa-check fa-2x"></i></a>
                                         @else
                                             <a href="javascript:void(0);" style="color: red" title="Ẩn"><i class="fa fa-close fa-2x"></i></a>
                                         @endif
                                     </td>
-                                     @endif
+
                                     <td class="text-center middle" align="center">
                                         @if($is_root || $permission_full || $permission_create)
-                                            <a class="editItem" onclick="BE.editItem('{{$item->id}}', WEB_ROOT + '/manager/member/ajaxLoad')" title="{{viewLanguage('Sửa')}}">
+                                            <a class="editItem" onclick="BE.editItem('{{$item->member_id}}', WEB_ROOT + '/manager/member/ajaxLoad')" title="{{viewLanguage('Sửa')}}">
                                                 <i class="fa fa-edit fa-2x"></i>
                                             </a>
                                         @endif
                                         @if($is_root || $permission_full || $permission_delete)
-                                            <a href="javascript:void(0);" onclick="BE.deleteItem('{{$item->id}}', WEB_ROOT + '/manager/member/delete')" title="{{viewLanguage('Xóa')}}">
+                                            <a href="javascript:void(0);" onclick="BE.deleteItem('{{$item->member_id}}', WEB_ROOT + '/manager/member/delete')" title="{{viewLanguage('Xóa')}}">
                                                 <i class="fa fa-trash fa-2x"></i>
                                             </a>
                                         @endif
@@ -111,7 +110,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="member_name">{{viewLanguage('Mô tả')}}</label>
-                                <textarea name="define_note" id="define_note" cols="30" rows="2" class="form-control input-required" id="member_name"></textarea>
+                                <textarea name="define_note" id="define_note" cols="30" rows="2" class="form-control" id="member_name"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="member_status">{{viewLanguage('Trạng thái')}}</label>

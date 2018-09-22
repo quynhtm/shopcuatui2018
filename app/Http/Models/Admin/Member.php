@@ -36,8 +36,8 @@ class Member extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->id, $item);
-            return $item->id;
+            self::removeCache($item->member_id, $item);
+            return $item->member_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
@@ -55,7 +55,7 @@ class Member extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->id, $item);
+            self::removeCache($item->member_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
