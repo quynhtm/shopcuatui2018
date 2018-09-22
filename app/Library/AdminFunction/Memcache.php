@@ -8,4 +8,6 @@ class Memcache{
 
     const CACHE_INFO_MEMBER_ID = 'cache_info_member_id_';
     const CACHE_ALL_MEMBER = 'cache_all_member';
+
+    const CACHE_DEPARTMENT_ID = 'cache_department_id_';
 }
