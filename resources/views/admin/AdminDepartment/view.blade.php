@@ -111,7 +111,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="define_name">{{viewLanguage('Thứ thự')}}</label>
-                                <input name="department_order" title="{{viewLanguage('Thứ thự')}}" class="form-control input-required" id="department_order" type="text">
+                                <input name="department_order" title="{{viewLanguage('Thứ thự')}}" class="form-control" id="department_order" type="text">
                             </div>
 
                             <div class="form-group">
