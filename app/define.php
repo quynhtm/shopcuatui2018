@@ -45,7 +45,7 @@ define('TABLE_PERMISSION', PREFIX.'permission');
 define('TABLE_MENU_SYSTEM', PREFIX.'menu_system');
 define('TABLE_ROLE_MENU', PREFIX.'role_menu');
 define('TABLE_ROLE', PREFIX.'role');
-define('TABLE_GROUP_USER_PERMISSION', PREFIX.'user_permission');
+define('TABLE_GROUP_USER_PERMISSION', PREFIX.'group_user_permission');
 define('TABLE_MEMBER', PREFIX.'member');
 
 
