@@ -63,7 +63,7 @@ class DepartmentController extends BaseAdminController{
 
         $optionStatusSearch = getOption($this->arrStatus, $search['department_status']);
 
-        return view('admin.AdminDepartment.view', array_merge([
+        return view('shop.ShopDepartment.view', array_merge([
             'data' => $data,
             'search' => $search,
             'total' => $total,
@@ -115,7 +115,7 @@ class DepartmentController extends BaseAdminController{
 
         $optionStatus = getOption($this->arrStatus, isset($data['department_status']) ? $data['department_status'] : STATUS_SHOW);
 
-        return view('admin.AdminDepartment.component.ajax_load_item',
+        return view('shop.ShopDepartment.component.ajax_load_item',
             array_merge([
                 'data' => $data,
                 'optionStatus' => $optionStatus,
