@@ -49,6 +49,8 @@ define('TABLE_GROUP_USER_PERMISSION', PREFIX.'group_user_permission');
 define('TABLE_MEMBER', PREFIX.'member');
 define('TABLE_PROVIDER', PREFIX.'provider');
 define('TABLE_BANNER', PREFIX.'banner');
+define('TABLE_ORDER', PREFIX.'order');
+define('TABLE_ORDER_ITEM', PREFIX.'order_item');
 
 define('TABLE_DEPARTMENT', PREFIX.'department');
 define('TABLE_INFOR_SALE', PREFIX.'infor_sale');
