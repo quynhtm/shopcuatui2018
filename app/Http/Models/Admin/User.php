@@ -94,7 +94,7 @@ class User extends BaseModel
         return $user;
     }
 
-    public function get_user_project()
+    public function getMemberIdUser()
     {
         $user_member = -1;
         if (Session::has('user')) {
