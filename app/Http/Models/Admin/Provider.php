@@ -33,7 +33,7 @@ class Provider extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->id, $item);
+            self::removeCache($item->provider_id, $item);
             return $item->id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -52,7 +52,7 @@ class Provider extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->id, $item);
+            self::removeCache($item->provider_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -123,7 +123,7 @@ class Provider extends BaseModel
                 $query->where('member_id', $dataSearch['member_id']);
             }
             $total = $query->count();
-            $query->orderBy('provider_time_creater', 'desc');
+            $query->orderBy('provider_status', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();

@@ -62,6 +62,12 @@ define('PERMISS_MEMBER_VIEW', 'memberView');
 define('PERMISS_MEMBER_CREATE', 'memberCreate');
 define('PERMISS_MEMBER_DELETE', 'memberDelete');
 
+//Type NCC
+define('PERMISS_PROVIDER_FULL', 'providerFull');
+define('PERMISS_PROVIDER_VIEW', 'providerView');
+define('PERMISS_PROVIDER_CREATE', 'providerCreate');
+define('PERMISS_PROVIDER_DELETE', 'providerDelete');
+
 //Permiss banner
 define('PERMISS_BANNER_FULL', 'bannerFull');
 define('PERMISS_BANNER_VIEW', 'bannerView');

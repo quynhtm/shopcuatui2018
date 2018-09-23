@@ -96,7 +96,7 @@ class User extends BaseModel
 
     public function getMemberIdUser()
     {
-        $user_member = -1;
+        $user_member = 0;
         if (Session::has('user')) {
             $user = Session::get('user');
             if (!empty($user)) {
