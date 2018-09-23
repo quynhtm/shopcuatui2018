@@ -14,4 +14,5 @@ class Memcache{
     const CACHE_ALL_MEMBER = 'cache_all_member';
 
     const CACHE_DEPARTMENT_ID = 'cache_department_id_';
+    const CACHE_INFOR_SALE_ID = 'cache_infor_sale_id';
 }
