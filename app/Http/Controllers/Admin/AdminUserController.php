@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\GroupUser;
+use App\Http\Models\Admin\Member;
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\MenuSystem;
 use App\Http\Models\Admin\RoleMenu;
@@ -54,7 +55,7 @@ class AdminUserController extends BaseAdminController{
             CGlobal::status_hide => FunctionLib::controLanguage('sex_girl',$this->languageSite),
             CGlobal::status_show => FunctionLib::controLanguage('sex_boy',$this->languageSite));
         $this->arrDepart = [];
-        $this->arrMember = [];
+        $this->arrMember = app(Member::class)->getAllMember();
     }
     public function view(){
         CGlobal::$pageAdminTitle  = "Quản trị User | Admin CMS";
