@@ -56,7 +56,7 @@ class InfosaleController extends BaseAdminController{
         $this->_getDataDefault();
         $this->_outDataView($data);
 
-        return view('admin.AdminInfosale.view', array_merge([
+        return view('shop.ShopInfosale.view', array_merge([
             'data' => $data,
             'search' => $search,
             'total' => $total,
@@ -69,11 +69,11 @@ class InfosaleController extends BaseAdminController{
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
         $data = (($id > 0)) ? app(Infosale::class)->getItemById($id) : [];
-
+        //vmDebug($data);
         $this->_getDataDefault();
         $this->_outDataView($data);
 
-        return view('admin.AdminInfosale.add', array_merge([
+        return view('shop.ShopInfosale.add', array_merge([
             'data' => $data,
             'id' => $id,
         ], $this->viewPermission, $this->viewOptionData));
@@ -86,17 +86,21 @@ class InfosaleController extends BaseAdminController{
         $data = $_POST;
         if($this->_validData($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
-            if($data['department_name'] != ''){
-                $data['department_alias'] = safe_title($data['department_name']);
-            }
+
+            $data['member_id'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
+            $data['infor_sale_uid'] = isset($this->user['infor_sale_uid']) ? $this->user['infor_sale_uid'] : 0;
+
             if($id > 0) {
-                app(Department::class)->updateItem($id, $data);
+                app(Infosale::class)->updateItem($id, $data);
             }else{
-                app(Department::class)->createItem($data);
+                app(Infosale::class)->createItem($data);
             }
+            return Redirect::route('shop.infosale');
         }
-        $_data['url'] = URL::route('shop.department');
-        return Response::json($_data);
+        return view('shop.ShopInfosale.add', array_merge([
+            'data' => $data,
+            'id' => $id,
+        ], $this->viewPermission, $this->viewOptionData));
     }
     public function deleteItem(){
         $data = array('isIntOk' => 0);
@@ -120,6 +124,12 @@ class InfosaleController extends BaseAdminController{
                 $this->error[] = 'Null';
             }
             if (isset($data['infor_sale_phone']) && trim($data['infor_sale_phone']) == '') {
+                $this->error[] = 'Null';
+            }
+            if (isset($data['infor_sale_mail']) && trim($data['infor_sale_mail']) == '') {
+                $this->error[] = 'Null';
+            }
+            if (isset($data['infor_sale_address']) && trim($data['infor_sale_address']) == '') {
                 $this->error[] = 'Null';
             }
         }
