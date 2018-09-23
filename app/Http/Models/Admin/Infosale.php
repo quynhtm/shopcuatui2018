@@ -1,0 +1,115 @@
+<?php
+/*
+* @Created by: DUYNX
+* @Author    : nguyenduypt86@gmail.com
+* @Date      : 09/2018
+* @Version   : 1.0
+*/
+namespace App\Http\Models\Admin;
+
+use App\Http\Models\BaseModel;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use App\library\AdminFunction\Memcache;
+
+class Infosale extends BaseModel{
+    protected $table = TABLE_INFOR_SALE;
+    protected $primaryKey = 'infor_sale_id';
+    public $timestamps = true;
+    protected $fillable = array('infor_sale_id', 'member_id', 'infor_sale_uid', 'infor_sale_name', 'infor_sale_phone',
+        'infor_sale_mail', 'infor_sale_skype', 'infor_sale_address', 'infor_sale_sotaikhoan',
+        'infor_sale_vanchuyen', 'created_at', 'updated_at');
+
+    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total){
+        try {
+            $query = Infosale::where('infor_sale_id', '>', 0);
+            if (isset($dataSearch['infor_sale_name']) && $dataSearch['infor_sale_name'] != '') {
+                $query->where('infor_sale_name', 'LIKE', '%' . $dataSearch['infor_sale_name'] . '%');
+            }
+            if (isset($dataSearch['infor_sale_phone']) && $dataSearch['infor_sale_phone'] != '') {
+                $query->where('infor_sale_phone', 'LIKE', '%' . $dataSearch['infor_sale_phone'] . '%');
+            }
+            $total = $query->count();
+            $query->orderBy('infor_sale_id', 'desc');
+
+            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
+            if (!empty($fields)) {
+                $result = $query->take($limit)->skip($offset)->get($fields);
+            } else {
+                $result = $query->take($limit)->skip($offset)->get();
+            }
+            return $result;
+
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+    }
+    public function createItem($data){
+        try {
+            DB::connection()->getPdo()->beginTransaction();
+            $fieldInput = $this->checkFieldInTable($data);
+            $item = new Infosale();
+            if(is_array($fieldInput) && count($fieldInput) > 0) {
+                foreach ($fieldInput as $k => $v) {
+                    $item->$k = $v;
+                }
+            }
+            $item->save();
+            DB::connection()->getPdo()->commit();
+            self::removeCache($item->infor_sale_id, $item);
+            return $item->infor_sale_id;
+        } catch (PDOException $e) {
+            DB::connection()->getPdo()->rollBack();
+            throw new PDOException();
+        }
+    }
+    public function updateItem($id, $data){
+        try {
+            DB::connection()->getPdo()->beginTransaction();
+            $fieldInput = $this->checkFieldInTable($data);
+            $item = self::getItemById($id);
+            foreach ($fieldInput as $k => $v) {
+                $item->$k = $v;
+            }
+            $item->update();
+            DB::connection()->getPdo()->commit();
+            self::removeCache($item->infor_sale_id, $item);
+            return true;
+        } catch (PDOException $e) {
+            DB::connection()->getPdo()->rollBack();
+            throw new PDOException();
+        }
+    }
+    public function getItemById($id){
+        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_INFOR_SALE_ID.$id): [];
+        if (sizeof($data) == 0) {
+            $data = Infosale::find($id);
+            if($data){
+                Cache::put(Memcache::CACHE_INFOR_SALE_ID.$id, $data, CACHE_ONE_MONTH);
+            }
+        }
+        return $data;
+    }
+    public function deleteItem($id){
+        if ($id <= 0) return false;
+        try {
+            DB::connection()->getPdo()->beginTransaction();
+            $item = self::getItemById($id);
+            if ($item) {
+                $item->delete();
+            }
+            DB::connection()->getPdo()->commit();
+            self::removeCache($id, $item);
+            return true;
+        } catch (PDOException $e) {
+            DB::connection()->getPdo()->rollBack();
+            throw new PDOException();
+            return false;
+        }
+    }
+    public function removeCache($id = 0, $data){
+        if ($id > 0) {
+            Cache::forget(Memcache::CACHE_INFOR_SALE_ID.$id);
+        }
+    }
+}
