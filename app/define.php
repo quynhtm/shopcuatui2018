@@ -49,6 +49,7 @@ define('TABLE_GROUP_USER_PERMISSION', PREFIX.'group_user_permission');
 define('TABLE_MEMBER', PREFIX.'member');
 
 define('TABLE_DEPARTMENT', PREFIX.'department');
+define('TABLE_INFOR_SALE', PREFIX.'infor_sale');
 
 
 /**************************************************************************************************************
@@ -71,4 +72,10 @@ define('PERMISS_DEPARTMENT_FULL', 'departmentFull');
 define('PERMISS_DEPARTMENT_VIEW', 'departmentView');
 define('PERMISS_DEPARTMENT_CREATE', 'departmentCreate');
 define('PERMISS_DEPARTMENT_DELETE', 'departmentDelete');
+
+//Info sale
+define('PERMISS_INFOSALE_FULL', 'infosaleFull');
+define('PERMISS_INFOSALE_VIEW', 'infosaleView');
+define('PERMISS_INFOSALE_CREATE', 'infosaleCreate');
+define('PERMISS_INFOSALE_DELETE', 'infosaleDelete');
 
