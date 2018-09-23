@@ -12,15 +12,15 @@ use App\library\AdminFunction\Memcache;
 
 class Banners extends BaseModel
 {
-    protected $table = TABLE_BANNERS;
-    protected $primaryKey = 'id';
+    protected $table = TABLE_BANNER;
+    protected $primaryKey = 'banner_id';
     public $timestamps = true;
     protected $fillable = array('name', 'url', 'image', 'status', 'position', 'url_image', 'created_at', 'updated_at');
 
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
     {
         try {
-            $query = Banners::where('id', '>', 0);
+            $query = Banners::where('banner_id', '>', 0);
             if (isset($dataSearch['name']) && $dataSearch['name'] != '') {
                 $query->where('name', 'LIKE', '%' . $dataSearch['name'] . '%');
             }
@@ -28,7 +28,7 @@ class Banners extends BaseModel
                 $query->where('status', $dataSearch['status']);
             }
             $total = $query->count();
-            $query->orderBy('id', 'desc');
+            $query->orderBy('banner_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -58,7 +58,7 @@ class Banners extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->id, $item);
+            self::removeCache($item->banner_id, $item);
             return $item->id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -77,7 +77,7 @@ class Banners extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->id, $item);
+            self::removeCache($item->banner_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
