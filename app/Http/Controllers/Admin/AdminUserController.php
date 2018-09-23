@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\GroupUser;
+use App\Http\Models\Admin\GroupUserPermission;
 use App\Http\Models\Admin\Member;
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\MenuSystem;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class AdminUserController extends BaseAdminController{
     private $permission_view = 'user_view';
@@ -88,10 +90,12 @@ class AdminUserController extends BaseAdminController{
                 'start'=>($page_no - 1) * $limit,
                 'paging'=>$paging,
                 'arrStatus'=>$this->arrStatus,
+                'arrMember'=>$this->arrMember,
                 'arrDepart'=>$this->arrDepart,
                 'arrGroupUser'=>$arrGroupUser,
                 'optionRoleType'=>$optionRoleType,
                 'is_root'=>$this->is_root,
+                'is_boss'=>$this->is_boss,
                 'permission_edit'=>in_array($this->permission_edit, $this->permission) ? 1 : 0,
                 'permission_create'=>in_array($this->permission_create, $this->permission) ? 1 : 0,
                 'permission_change_pass'=>in_array($this->permission_change_pass, $this->permission) ? 1 : 0,
@@ -443,5 +447,49 @@ class AdminUserController extends BaseAdminController{
             'permission_change_pass'=>in_array($this->permission_change_pass, $this->permission) ? 1 : 0,
             'permission_remove'=>in_array($this->permission_remove, $this->permission) ? 1 : 0,
         ]);
+    }
+
+    public function loginAsUser($ids) {
+        if(!$this->is_boss){
+            return Redirect::route('admin.dashboard',array('error'=>1));
+        }
+        $user_id = getStrVar($ids);
+        if($user_id > 0){
+            $user = app(User::class)->getUserById($user_id);
+            if($user){
+                //xoa session cũ
+                if (Session::has('user')) {
+                    Session::forget('user');//xóa session
+                }
+                $permission_code = array();
+                $group = explode(',', $user->user_group);
+                if ($group) {
+                    $permission = GroupUserPermission::getListPermissionByGroupId($group);
+                    if ($permission) {
+                        foreach ($permission as $v) {
+                            $permission_code[] = $v->permission_code;
+                        }
+                    }
+                }
+                $data = array(
+                    'user_id' => $user->user_id,
+                    'user_project' => $user->user_project,//ko dung
+                    'user_object_id' => $user->user_object_id,
+                    'user_parent' => $user->user_parent,
+                    'member_id' => $user->user_parent,//member
+                    'user_name' => $user->user_name,
+                    'user_full_name' => $user->user_full_name,
+                    'user_email' => $user->user_email,
+                    'user_depart_id' => $user->user_depart_id,
+                    'user_is_admin' => $user->user_is_admin,
+                    'user_group_menu' => $user->user_group_menu,
+                    'is_boss' => $user->user_view,
+                    'role_type' => $user->role_type,
+                    'user_permission' => $permission_code
+                );
+                Session::put('user', $data, 60*24);
+            }
+        }
+        return Redirect::route('admin.dashboard');
     }
 }

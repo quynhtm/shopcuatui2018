@@ -9,6 +9,7 @@ Route::get('test',array('as' => 'admin.test','uses' => Admin.'\TestDataControlle
 Route::match(['GET','POST'],'user/view', array('as' => 'admin.user_view','uses' => Admin.'\AdminUserController@view'));
 Route::get('user/edit/{id}',array('as' => 'admin.user_edit','uses' => Admin.'\AdminUserController@editInfo'));
 Route::post('user/edit/{id}',array('as' => 'admin.user_edit','uses' => Admin.'\AdminUserController@edit'));
+Route::get('user/loginAsUser/{id}',array('as' => 'admin.loginAsUser','uses' => Admin.'\AdminUserController@loginAsUser'));
 Route::get('user/profile',array('as' => 'admin.user_profile','uses' => Admin.'\AdminUserController@getProfile'));
 Route::post('user/profile',array('as' => 'admin.user_profile','uses' => Admin.'\AdminUserController@postProfile'));
 Route::get('user/change/{id}',array('as' => 'admin.user_change','uses' => Admin.'\AdminUserController@changePassInfo'));

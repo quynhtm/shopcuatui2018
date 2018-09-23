@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Models\Admin\MemberSite;
+use App\Http\Models\Admin\Member;
 use App\Library\AdminFunction\Curl;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
