@@ -49,7 +49,7 @@ class InfosaleController extends BaseAdminController{
 
         $search['infor_sale_name'] = addslashes(Request::get('infor_sale_name', ''));
         $search['infor_sale_phone'] = addslashes(Request::get('infor_sale_phone', ''));
-        $search['field_get'] = 'infor_sale_id,infor_sale_uid,infor_sale_name,infor_sale_phone,infor_sale_mail,infor_sale_skype,infor_sale_address,infor_sale_sotaikhoan,infor_sale_vanchuyen';
+        $search['field_get'] = 'infor_sale_id,infor_sale_uid,infor_sale_name,infor_sale_phone,infor_sale_mail,infor_sale_skype,infor_sale_address,infor_sale_sotaikhoan,infor_sale_vanchuyen,created_at,updated_at';
         $data = app(Infosale::class)->searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
 
