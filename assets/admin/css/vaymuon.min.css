@@ -36,9 +36,6 @@ table th {
 .clred{
     color: #ff0000;
 }
-.table.bg-head-table > thead > tr > th:last-child{
-    border: 1px solid #ddd;
-}
 .line{
     display: inline-block;
     clear: both;
