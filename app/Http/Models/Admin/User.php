@@ -96,30 +96,30 @@ class User extends BaseModel
 
     public function get_user_project()
     {
-        $user_project = 0;
+        $user_member = -1;
         if (Session::has('user')) {
             $user = Session::get('user');
             if (!empty($user)) {
-                $user_project = (isset($user['user_project'])) ? $user['user_project'] : 0;
+                $user_member = (isset($user['member_id'])) ? $user['member_id'] : $user_member;
             }
         }
-        return $user_project;
+        return $user_member;
     }
 
     public function get_project_search()
     {
-        $user_project = 0;
+        $user_member = -1;
         if (Session::has('user')) {
             $user = Session::get('user');
             if (!empty($user)) {
                 if(isset($user['user_view']) && $user['user_view'] == CGlobal::status_hide){
-                    $user_project = Define::STATUS_SEARCH_ALL;
-                    return $user_project;
+                    $user_member = Define::STATUS_SEARCH_ALL;
+                    return $user_member;
                 }
-                $user_project = (isset($user['user_project'])) ? $user['user_project'] : 0;
+                $user_member = (isset($user['member_id'])) ? $user['member_id'] : 0;
             }
         }
-        return $user_project;
+        return $user_member;
     }
 
     public function user_id()
@@ -280,17 +280,6 @@ class User extends BaseModel
 
     public static function getOptionUserFullName($role_type = 0)
     {
-//        $data = Cache::get(Define::CACHE_OPTION_USER);
-//        if (sizeof($data) == 0) {
-//            $arr =  User::getList($role_type);
-//            foreach ($arr as $value){
-//                $data[$value->user_id] = $value->user_name.' - '.$value->user_full_name;
-//            }
-//            if(!empty($data)){
-//                Cache::put(Define::CACHE_OPTION_USER, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
-//            }
-//        }
-
         $arr = User::getList($role_type);
         foreach ($arr as $value) {
             $data[$value->user_id] = $value->user_name . ' - ' . $value->user_full_name;
