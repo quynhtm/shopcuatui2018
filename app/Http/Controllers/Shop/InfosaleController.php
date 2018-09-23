@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\Infosale;
+use App\Http\Models\Admin\User;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -47,10 +48,7 @@ class InfosaleController extends BaseAdminController{
 
         $search['infor_sale_name'] = addslashes(Request::get('infor_sale_name', ''));
         $search['infor_sale_phone'] = addslashes(Request::get('infor_sale_phone', ''));
-
-        if(!$this->is_boss){
-            $search['infor_sale_uid'] = $this->user['user_id'];
-        }
+        $search['member_id'] = app(User::class)->getMemberIdUser();
         
         $search['field_get'] = 'infor_sale_id,infor_sale_uid,infor_sale_name,infor_sale_phone,infor_sale_mail,infor_sale_skype,infor_sale_address,infor_sale_sotaikhoan,infor_sale_vanchuyen,created_at,updated_at';
         $data = app(Infosale::class)->searchByCondition($search, $limit, $offset, $total);
@@ -71,8 +69,13 @@ class InfosaleController extends BaseAdminController{
         if (!$this->checkMultiPermiss([PERMISS_INFOSALE_FULL, PERMISS_INFOSALE_CREATE])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
+
+        $member_id = app(User::class)->getMemberIdUser();
+        $exist = app(Infosale::class)->getItemByMemberId($member_id);
+
+        $id = (isset($exist) && $exist) ? $exist->infor_sale_id : 0;
         $data = (($id > 0)) ? app(Infosale::class)->getItemById($id) : [];
-        //vmDebug($data);
+
         $this->_getDataDefault();
         $this->_outDataView($data);
 
@@ -88,9 +91,8 @@ class InfosaleController extends BaseAdminController{
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
         if($this->_validData($data) && empty($this->error)) {
-            $id = ($id == 0) ? $id_hiden : $id;
+            $id = $id_hiden;
 
-            $data['member_id'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
             $data['infor_sale_uid'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
 
             if($id > 0) {

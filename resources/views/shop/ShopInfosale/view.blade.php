@@ -28,7 +28,7 @@
                         </div>
                         <div class="panel-footer text-right">
                             @if($is_root || $permission_full || $permission_create)
-                                <a class="btn btn-danger btn-sm" href="{{URL::route('shop.infosale')}}">
+                                <a class="btn btn-danger btn-sm" href="{{URL::route('shop.infosaleGet', ['id'=>0])}}">
                                     <i class="ace-icon fa fa-plus-circle"></i>
                                     {{viewLanguage('Thêm mới')}}
                                 </a>
@@ -65,11 +65,6 @@
                                         @if($is_root || $permission_full || $permission_create)
                                             <a href="{{URL::route('shop.infosaleGet',array('id' => $item->infor_sale_id))}}" title="{{viewLanguage('Sửa')}}">
                                                 <i class="fa fa-edit fa-2x"></i>
-                                            </a>
-                                        @endif
-                                        @if($is_root || $permission_full || $permission_delete)
-                                            <a href="javascript:void(0);" onclick="BE.deleteItem('{{$item->infor_sale_id}}', WEB_ROOT + '/manager/infosale/delete')" title="{{viewLanguage('Xóa')}}">
-                                                <i class="fa fa-trash fa-2x"></i>
                                             </a>
                                         @endif
                                     </td>
