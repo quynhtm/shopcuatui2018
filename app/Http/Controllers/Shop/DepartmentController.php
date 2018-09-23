@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\Department;
+use App\Http\Models\Admin\User;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -54,6 +55,9 @@ class DepartmentController extends BaseAdminController{
 
         $search['department_name'] = addslashes(Request::get('department_name', ''));
         $search['department_status'] = addslashes(Request::get('department_status', STATUS_DEFAULT));
+
+        $search['member_id'] = app(User::class)->getMemberIdUser();
+
         $search['field_get'] = 'department_id,department_name,department_order,department_status,created_at,updated_at';
         $data = app(Department::class)->searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';

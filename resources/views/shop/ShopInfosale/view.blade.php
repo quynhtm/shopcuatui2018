@@ -12,11 +12,8 @@
     </div>
     <div class="page-content">
         <div class="row">
-            <div class="col-md-12 panel-content">
-                <div class="panel panel-primary">
-                    <div class="panel-heading paddingTop1 paddingBottom1">
-                        <h4><i class="fa fa-list" aria-hidden="true"></i> {{$pageAdminTitle}}</h4>
-                    </div>
+            <div class="col-xs-12">
+                <div class="panel panel-info">
                     <form method="get" action="" role="form">
                         {{ csrf_field() }}
                         <div class="panel-body">
@@ -31,7 +28,7 @@
                         </div>
                         <div class="panel-footer text-right">
                             @if($is_root || $permission_full || $permission_create)
-                                <a class="btn btn-danger btn-sm" href="{{URL::route('shop.infosale')}}">
+                                <a class="btn btn-danger btn-sm" href="{{URL::route('shop.infosaleGet', ['id'=>0])}}">
                                     <i class="ace-icon fa fa-plus-circle"></i>
                                     {{viewLanguage('Thêm mới')}}
                                 </a>
@@ -39,21 +36,25 @@
                             <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> {{viewLanguage('Tìm kiếm')}}</button>
                         </div>
                     </form>
-                    <div class="panel-body line" id="element">
-                        <table class="table table-bordered bg-head-table">
-                            <thead>
-                            <tr>
-                                <th class="text-center w10">{{viewLanguage('STT')}}</th>
-                                <th>{{viewLanguage('Tên người bán')}}</th>
-                                <th>{{viewLanguage('SĐT')}}</th>
-                                <th>{{viewLanguage('Ngày tạo')}}</th>
-                                <th>{{viewLanguage('Ngày cập nhật')}}</th>
-                                <th class="text-center">{{viewLanguage('Hoạt động')}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @if(isset($data) && sizeof($data))
-                                @foreach($data as $k=>$item)
+                </div>
+                <br/>
+                <div class="span clearfix">  Có tổng số <b>{{$total}}</b> item</div>
+                <br/>
+                <div class="line" id="element">
+                    <table class="table table-bordered bg-head-table">
+                        <thead>
+                        <tr>
+                            <th class="text-center w10">{{viewLanguage('STT')}}</th>
+                            <th>{{viewLanguage('Tên người bán')}}</th>
+                            <th>{{viewLanguage('SĐT')}}</th>
+                            <th>{{viewLanguage('Ngày tạo')}}</th>
+                            <th>{{viewLanguage('Ngày cập nhật')}}</th>
+                            <th class="text-center">{{viewLanguage('Hoạt động')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if(isset($data) && sizeof($data))
+                            @foreach($data as $k=>$item)
                                 <tr>
                                     <td class="text-center">{{$stt + $k + 1}}</td>
                                     <td>{{$item->infor_sale_name}}</td>
@@ -66,19 +67,18 @@
                                                 <i class="fa fa-edit fa-2x"></i>
                                             </a>
                                         @endif
-                                        @if($is_root || $permission_full || $permission_delete)
+                                        @if($is_root)
                                             <a href="javascript:void(0);" onclick="BE.deleteItem('{{$item->infor_sale_id}}', WEB_ROOT + '/manager/infosale/delete')" title="{{viewLanguage('Xóa')}}">
                                                 <i class="fa fa-trash fa-2x"></i>
                                             </a>
                                         @endif
                                     </td>
                                 </tr>
-                                @endforeach
-                            @endif
-                            </tbody>
-                        </table>
-                        {!! $paging !!}
-                    </div>
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
+                    {!! $paging !!}
                 </div>
             </div>
         </div>

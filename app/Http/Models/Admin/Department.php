@@ -16,7 +16,7 @@ class Department extends BaseModel{
     protected $table = TABLE_DEPARTMENT;
     protected $primaryKey = 'department_id';
     public $timestamps = true;
-    protected $fillable = array('department_id', 'department_name', 'department_alias', 'department_order', 'department_status', 'created_at', 'updated_at');
+    protected $fillable = array('department_id', 'member_id', 'department_name', 'department_alias', 'department_order', 'department_status', 'created_at', 'updated_at');
 
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total){
         try {
@@ -24,9 +24,15 @@ class Department extends BaseModel{
             if (isset($dataSearch['department_name']) && $dataSearch['department_name'] != '') {
                 $query->where('department_name', 'LIKE', '%' . $dataSearch['department_name'] . '%');
             }
+
+            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > -1) {
+             $query->where('member_id', $dataSearch['member_id']);
+            }
+
             if (isset($dataSearch['department_status']) && $dataSearch['department_status'] > -1) {
                 $query->where('department_status', $dataSearch['department_status']);
             }
+
             $total = $query->count();
             $query->orderBy('department_order', 'asc');
 
@@ -52,6 +58,10 @@ class Department extends BaseModel{
                     $item->$k = $v;
                 }
             }
+
+            $member_id = app(User::class)->getMemberIdUser();
+            $item->member_id = $member_id;
+
             $item->save();
             DB::connection()->getPdo()->commit();
             self::removeCache($item->department_id, $item);
@@ -69,6 +79,10 @@ class Department extends BaseModel{
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
+
+            $member_id = app(User::class)->getMemberIdUser();
+            $item->member_id = $member_id;
+
             $item->update();
             DB::connection()->getPdo()->commit();
             self::removeCache($item->department_id, $item);
