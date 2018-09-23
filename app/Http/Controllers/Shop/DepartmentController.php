@@ -113,8 +113,9 @@ class DepartmentController extends BaseAdminController{
         }
 
         $id = $_POST['id'];
-        $data = (($id > 0)) ? app(Department::class)->getItemById($id) : [];
-
+        $item = app(Department::class)->getItemById($id);
+        $member_id = app(User::class)->getMemberIdUser();
+        $data = ($item && isset($item->member_id) && $item->member_id != $member_id ) ? [] : $item;
         $this->_getDataDefault();
 
         $optionStatus = getOption($this->arrStatus, isset($data['department_status']) ? $data['department_status'] : STATUS_SHOW);

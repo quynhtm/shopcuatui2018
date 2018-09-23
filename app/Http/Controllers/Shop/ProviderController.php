@@ -107,7 +107,10 @@ class ProviderController extends BaseAdminController{
         }
 
         $id = $_POST['id'];
-        $data = (($id > 0)) ? app(Provider::class)->getItemById($id) : [];
+        $item = app(Provider::class)->getItemById($id);
+        $member_id = app(User::class)->getMemberIdUser();
+        $data = ($item && isset($item->member_id) && $item->member_id != $member_id ) ? [] : $item;
+
         $this->_getDataDefault();
         $optionStatus = getOption($this->arrStatus, isset($data['provider_status']) ? $data['provider_status'] : STATUS_SHOW);
         return view('shop.ShopProvider.component.ajax_load_item',

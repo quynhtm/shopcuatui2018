@@ -96,11 +96,9 @@ class Department extends BaseModel{
         }
     }
     public function getItemById($id){
-        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_DEPARTMENT_ID.$id): [];
-        if (sizeof($data) == 0) {
+        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_DEPARTMENT_ID.$id): false;
+        if ($data || $data->count() == 0) {
             $data = Department::find($id);
-            $member_id = app(User::class)->getMemberIdUser();
-            if($data->member_id != $member_id) return [];
             if($data){
                 Cache::put(Memcache::CACHE_DEPARTMENT_ID.$id, $data, CACHE_ONE_MONTH);
             }
