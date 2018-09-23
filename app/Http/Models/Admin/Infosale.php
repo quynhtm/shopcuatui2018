@@ -77,16 +77,16 @@ class Infosale extends BaseModel{
             DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
             $item = self::getItemById($id);
-            foreach ($fieldInput as $k => $v) {
-                $item->$k = $v;
+            if($item){
+                foreach ($fieldInput as $k => $v) {
+                    $item->$k = $v;
+                }
+                $member_id = app(User::class)->getMemberIdUser();
+                $item->member_id = $member_id;
+                $item->update();
+                self::removeCache($item->infor_sale_id, $item);
             }
-
-            $member_id = app(User::class)->getMemberIdUser();
-            $item->member_id = $member_id;
-
-            $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->infor_sale_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();

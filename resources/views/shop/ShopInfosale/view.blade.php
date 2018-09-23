@@ -67,6 +67,11 @@
                                                 <i class="fa fa-edit fa-2x"></i>
                                             </a>
                                         @endif
+                                        @if($is_root)
+                                            <a href="javascript:void(0);" onclick="BE.deleteItem('{{$item->infor_sale_id}}', WEB_ROOT + '/manager/infosale/delete')" title="{{viewLanguage('Xóa')}}">
+                                                <i class="fa fa-trash fa-2x"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
