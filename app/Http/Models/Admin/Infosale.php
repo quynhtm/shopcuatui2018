@@ -28,7 +28,11 @@ class Infosale extends BaseModel{
             }
 
             if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > -1) {
-                $query->where('member_id', $dataSearch['member_id']);
+                if($dataSearch['member_id'] == 0){
+                    $query->where('member_id','>=', $dataSearch['member_id']);
+                }else{
+                    $query->where('member_id', $dataSearch['member_id']);
+                }
             }
 
             if (isset($dataSearch['infor_sale_phone']) && $dataSearch['infor_sale_phone'] != '') {
@@ -76,12 +80,12 @@ class Infosale extends BaseModel{
         try {
             DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
+            $member_id = app(User::class)->getMemberIdUser();
             $item = self::getItemById($id);
-            if($item){
+            if($item && isset($item->member_id) && $item->member_id == $member_id){
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
-                $member_id = app(User::class)->getMemberIdUser();
                 $item->member_id = $member_id;
                 $item->update();
                 self::removeCache($item->infor_sale_id, $item);
@@ -97,6 +101,8 @@ class Infosale extends BaseModel{
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_INFOR_SALE_ID.$id): [];
         if (sizeof($data) == 0) {
             $data = Infosale::find($id);
+            $member_id = app(User::class)->getMemberIdUser();
+            if($data->member_id != $member_id) return [];
             if($data){
                 Cache::put(Memcache::CACHE_INFOR_SALE_ID.$id, $data, CACHE_ONE_MONTH);
             }

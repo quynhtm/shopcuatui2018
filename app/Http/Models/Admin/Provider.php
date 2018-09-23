@@ -30,6 +30,8 @@ class Provider extends BaseModel
                     $item->$k = $v;
                 }
             }
+            $member_id = app(User::class)->getMemberIdUser();
+            $item->member_id = $member_id;
             $item->save();
 
             DB::connection()->getPdo()->commit();
@@ -46,13 +48,17 @@ class Provider extends BaseModel
         try {
             DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
+            $member_id = app(User::class)->getMemberIdUser();
             $item = self::getItemById($id);
-            foreach ($fieldInput as $k => $v) {
-                $item->$k = $v;
+            if($item && isset($item->member_id) && $item->member_id == $member_id){
+                foreach ($fieldInput as $k => $v) {
+                    $item->$k = $v;
+                }
+                $item->member_id = $member_id;
+                $item->update();
+                self::removeCache($item->provider_id, $item);
             }
-            $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->provider_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -64,6 +70,8 @@ class Provider extends BaseModel
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_PROVIDER_ID.$id): [];
         if (sizeof($data) == 0) {
             $data = Provider::find($id);
+            $member_id = app(User::class)->getMemberIdUser();
+            if($data->member_id != $member_id) return [];
             if($data){
                 Cache::put(Memcache::CACHE_PROVIDER_ID.$id, $data, CACHE_ONE_MONTH);
             }
@@ -115,6 +123,13 @@ class Provider extends BaseModel
             }
             if (isset($dataSearch['provider_status']) && $dataSearch['provider_status'] != -1) {
                 $query->where('provider_status', $dataSearch['provider_status']);
+            }
+            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] != -1) {
+                if($dataSearch['member_id'] == 0){
+                    $query->where('member_id','>=', $dataSearch['member_id']);
+                }else{
+                    $query->where('member_id', $dataSearch['member_id']);
+                }
             }
             if (isset($dataSearch['provider_id']) && $dataSearch['provider_id'] > 0) {
                 $query->where('provider_id', $dataSearch['provider_id']);

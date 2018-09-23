@@ -26,7 +26,11 @@ class Department extends BaseModel{
             }
 
             if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > -1) {
-             $query->where('member_id', $dataSearch['member_id']);
+                if($dataSearch['member_id'] == 0){
+                    $query->where('member_id','>=', $dataSearch['member_id']);
+                }else{
+                    $query->where('member_id', $dataSearch['member_id']);
+                }
             }
 
             if (isset($dataSearch['department_status']) && $dataSearch['department_status'] > -1) {
@@ -58,10 +62,8 @@ class Department extends BaseModel{
                     $item->$k = $v;
                 }
             }
-
             $member_id = app(User::class)->getMemberIdUser();
             $item->member_id = $member_id;
-
             $item->save();
             DB::connection()->getPdo()->commit();
             self::removeCache($item->department_id, $item);
@@ -75,15 +77,16 @@ class Department extends BaseModel{
         try {
             DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
-            $item = self::getItemById($id);
-            foreach ($fieldInput as $k => $v) {
-                $item->$k = $v;
-            }
-
             $member_id = app(User::class)->getMemberIdUser();
-            $item->member_id = $member_id;
-
-            $item->update();
+            $item = self::getItemById($id);
+            if($item && isset($item->member_id) && $item->member_id == $member_id){
+                foreach ($fieldInput as $k => $v) {
+                    $item->$k = $v;
+                }
+                $item->member_id = $member_id;
+                $item->update();
+                self::removeCache($item->department_id, $item);
+            }
             DB::connection()->getPdo()->commit();
             self::removeCache($item->department_id, $item);
             return true;
@@ -96,6 +99,8 @@ class Department extends BaseModel{
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_DEPARTMENT_ID.$id): [];
         if (sizeof($data) == 0) {
             $data = Department::find($id);
+            $member_id = app(User::class)->getMemberIdUser();
+            if($data->member_id != $member_id) return [];
             if($data){
                 Cache::put(Memcache::CACHE_DEPARTMENT_ID.$id, $data, CACHE_ONE_MONTH);
             }
