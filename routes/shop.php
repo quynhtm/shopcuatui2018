@@ -3,10 +3,10 @@
 //vi du
 Route::get('product', array('as' => 'shop.index','uses' => Shop.'\LoanController@index'));
 
-Route::get('provider', array('as' => 'shop.provider','uses' => Shop.'\DepartmentController@view'));
-Route::post('provider/post/{id?}', array('as' => 'shop.providerGet','uses' => Shop.'\DepartmentController@postItem'))->where('id', '[0-9]+');
-Route::get('provider/delete',array('as' => 'shop.providerDelete','uses' => Shop.'\DepartmentController@deleteItem'));
-Route::post('provider/ajaxLoad', array('as' => 'shop.providerAjax','uses' => Shop.'\DepartmentController@ajaxLoadForm'));
+Route::get('provider', array('as' => 'shop.provider','uses' => Shop.'\ProviderController@view'));
+Route::post('provider/post/{id?}', array('as' => 'shop.providerGet','uses' => Shop.'\ProviderController@postItem'))->where('id', '[0-9]+');
+Route::get('provider/delete',array('as' => 'shop.providerDelete','uses' => Shop.'\ProviderController@deleteItem'));
+Route::post('provider/ajaxLoad', array('as' => 'shop.providerAjax','uses' => Shop.'\ProviderController@ajaxLoadForm'));
 
 Route::get('department', array('as' => 'shop.department','uses' => Shop.'\DepartmentController@view'));
 Route::post('department/post/{id?}', array('as' => 'shop.departmentGet','uses' => Shop.'\DepartmentController@postItem'))->where('id', '[0-9]+');
