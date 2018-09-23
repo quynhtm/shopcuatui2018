@@ -14,11 +14,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
-use Illuminate\Support\Facades\URL;
 
 class InfosaleController extends BaseAdminController{
     private $error = array();
-    private $arrStatus = array();
     private $viewOptionData = array();
     private $viewPermission = array();
 
@@ -49,6 +47,11 @@ class InfosaleController extends BaseAdminController{
 
         $search['infor_sale_name'] = addslashes(Request::get('infor_sale_name', ''));
         $search['infor_sale_phone'] = addslashes(Request::get('infor_sale_phone', ''));
+
+        if(!$this->is_boss){
+            $search['infor_sale_uid'] = $this->user['user_id'];
+        }
+        
         $search['field_get'] = 'infor_sale_id,infor_sale_uid,infor_sale_name,infor_sale_phone,infor_sale_mail,infor_sale_skype,infor_sale_address,infor_sale_sotaikhoan,infor_sale_vanchuyen,created_at,updated_at';
         $data = app(Infosale::class)->searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
@@ -88,7 +91,7 @@ class InfosaleController extends BaseAdminController{
             $id = ($id == 0) ? $id_hiden : $id;
 
             $data['member_id'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
-            $data['infor_sale_uid'] = isset($this->user['infor_sale_uid']) ? $this->user['infor_sale_uid'] : 0;
+            $data['infor_sale_uid'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
 
             if($id > 0) {
                 app(Infosale::class)->updateItem($id, $data);
