@@ -54,6 +54,10 @@ define('TABLE_ORDER_ITEM', PREFIX.'order_item');
 
 define('TABLE_DEPARTMENT', PREFIX.'department');
 define('TABLE_INFOR_SALE', PREFIX.'infor_sale');
+define('TABLE_CATEGORY', PREFIX.'category');
+
+//Fix Id
+define('CATEGORY_PRODUCT', 5);
 
 
 /**************************************************************************************************************
@@ -88,4 +92,10 @@ define('PERMISS_INFOSALE_FULL', 'infosaleFull');
 define('PERMISS_INFOSALE_VIEW', 'infosaleView');
 define('PERMISS_INFOSALE_CREATE', 'infosaleCreate');
 define('PERMISS_INFOSALE_DELETE', 'infosaleDelete');
+
+//Category
+define('PERMISS_CATEGORY_FULL', 'categoryFull');
+define('PERMISS_CATEGORY_VIEW', 'categoryView');
+define('PERMISS_CATEGORY_CREATE', 'categoryCreate');
+define('PERMISS_CATEGORY_DELETE', 'categoryDelete');
 

@@ -20,9 +20,10 @@ Route::get('infosale/delete',array('as' => 'shop.infosaleDelete','uses' => Shop.
 
 
 Route::get('category', array('as' => 'shop.category','uses' =>  Shop.'\CategoryController@view'));
-Route::get('category/get/{id?}', array('as' => 'shop.categoryEdit','uses' => Shop.'\CategoryController@getItem'))->where('id', '[0-9]+');
-Route::post('category/get/{id?}', array('as' => 'admin.categoryEdit','uses' => Shop.'\CategoryController@postItem'))->where('id', '[0-9]+');
+Route::get('category/get/{id?}', array('as' => 'shop.categoryGet','uses' => Shop.'\CategoryController@getItem'))->where('id', '[0-9]+');
+Route::post('category/get/{id?}', array('as' => 'shop.categorPost','uses' => Shop.'\CategoryController@postItem'))->where('id', '[0-9]+');
+Route::get('category/delete', array('as' => 'shop.categoryDelete','uses' => Shop.'\CategoryController@deleteItem'));
 
-Route::post('category/deleteCategory', array('as' => 'admin.deltete_category_post','uses' => Shop.'\CategoryController@deleteCategory'));
+
 Route::post('category/updateStatusCategory', array('as' => 'admin.status_category_post','uses' => Shop.'\CategoryController@updateStatusCategory'));
 Route::post('category/updatePositionStatusCategory', array('as' => 'admin.status_category_position','uses' => Shop.'\CategoryController@updatePositionStatusCategory'));
