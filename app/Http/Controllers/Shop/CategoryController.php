@@ -24,12 +24,20 @@ class CategoryController extends BaseAdminController{
 
     private $category_type = CATEGORY_PRODUCT;
     private $arrCategoryParent = array();
+    private $arrStatus = array();
+    private $arrMenu = array();
+    private $arrMenuRight = array();
 
     public function __construct(){
         parent::__construct();
         CGlobal::$pageAdminTitle = 'Quản lý danh mục';
     }
     public function _getDataDefault(){
+        $this->arrStatus = $this->arrMenu = $this->arrMenuRight = array(
+            STATUS_DEFAULT => viewLanguage('status_choose', $this->languageSite),
+            STATUS_SHOW => viewLanguage('status_show', $this->languageSite),
+            STATUS_HIDE => viewLanguage('status_hidden', $this->languageSite));
+
         //Out put permiss
         $this->viewPermission = [
             'is_root' => $this->is_root,
@@ -65,7 +73,6 @@ class CategoryController extends BaseAdminController{
             $data =  app(Category::class)->getTreeCategory($data);
             $data = !empty($data) ? $data : $dataSearch;
         }
-        $paging = '';
 
         $this->_getDataDefault();
         $this->_outDataView($data);
@@ -83,22 +90,30 @@ class CategoryController extends BaseAdminController{
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
 
-        $member_id = app(User::class)->getMemberIdUser();
-        $exist = app(Category::class)->getItemByMemberId($member_id);
+        if($id > 0){
+            $data = (($id > 0)) ? app(Category::class)->getItemById($id) : [];
+        }
 
-        $id = (isset($exist) && $exist) ? $exist->category_id : 0;
-        $data = (($id > 0)) ? app(Category::class)->getItemById($id) : [];
+        $type = $this->category_type;
+        if($id > 0) {
+            $type = isset($data['category_type']) ? $data['category_type'] : $type;
+        }
+        $category_type = (int)Request::get('category_type', $type);
+        $this->arrCategoryParent = app(Category::class)->getAllParentCateWithType($category_type);
 
         $this->_getDataDefault();
         $this->_outDataView($data);
 
+        $optionCategoryParent = FunctionLib::getOption($this->arrCategoryParent, isset($data['category_parent_id'])? $data['category_parent_id'] : 0);
+
         return view('shop.ShopCategory.add', array_merge([
             'data' => $data,
             'id' => $id,
+            'optionCategoryParent' => $optionCategoryParent,
         ], $this->viewPermission, $this->viewOptionData));
     }
     public function postItem($id){
-        if(!$this->checkMultiPermiss([PERMISS_DEPARTMENT_FULL, PERMISS_DEPARTMENT_CREATE])) {
+        if(!$this->checkMultiPermiss([PERMISS_CATEGORY_FULL, PERMISS_CATEGORY_CREATE])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
         $id_hiden = (int)Request::get('id_hiden', 0);
@@ -106,16 +121,16 @@ class CategoryController extends BaseAdminController{
         if($this->_validData($data) && empty($this->error)) {
             $id = $id_hiden;
 
-            $data['infor_sale_uid'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
+            $data['member_id'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
 
             if($id > 0) {
-                app(Infosale::class)->updateItem($id, $data);
+                app(Category::class)->updateItem($id, $data);
             }else{
-                app(Infosale::class)->createItem($data);
+                app(Category::class)->createItem($data);
             }
-            return Redirect::route('shop.infosale');
+            return Redirect::route('shop.category');
         }
-        return view('shop.ShopInfosale.add', array_merge([
+        return view('shop.ShopCategory.add', array_merge([
             'data' => $data,
             'id' => $id,
         ], $this->viewPermission, $this->viewOptionData));
@@ -132,12 +147,17 @@ class CategoryController extends BaseAdminController{
         return Response::json($data);
     }
     public function _outDataView($data){
-        $this->category_type = (int)Request::get('category_type', 0);
-        $this->arrCategoryParent = app(Category::class)->getAllParentCateWithType($this->category_type);
+
+        $optionStatus = getOption($this->arrStatus, isset($data['category_status']) ? $data['category_status'] : STATUS_HIDE);
+        $optionMenu = getOption($this->arrMenu, isset($data['category_menu_status']) ? $data['category_menu_status'] : STATUS_HIDE);
+        $optionMenuRight = getOption($this->arrMenuRight, isset($data['category_menu_right']) ? $data['category_menu_right'] : STATUS_HIDE);
 
         return $this->viewOptionData = [
             'pageAdminTitle' => CGlobal::$pageAdminTitle,
             'arrCategoryParent' => $this->arrCategoryParent,
+            'optionStatus' => $optionStatus,
+            'optionMenu' => $optionMenu,
+            'optionMenuRight' => $optionMenuRight,
         ];
     }
     private function _validData($data = array()){

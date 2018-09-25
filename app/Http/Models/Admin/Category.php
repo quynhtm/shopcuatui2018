@@ -215,7 +215,7 @@ class Category extends BaseModel{
                 }
             }
             if($data && Memcache::CACHE_ON){
-                Cache::put(Memcache::CACHE_ALL_PARENT_CATEGORY, $data, Memcache::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Memcache::CACHE_ALL_PARENT_CATEGORY, $data,CACHE_ONE_MONTH);
             }
         }
         return $data;
@@ -234,7 +234,7 @@ class Category extends BaseModel{
                 }
             }
             if($data && Memcache::CACHE_ON){
-                Cache::put(Memcache::CACHE_ALL_PARENT_CATEGORY.'_'.$category_type, $data, Memcache::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Memcache::CACHE_ALL_PARENT_CATEGORY.'_'.$category_type, $data,CACHE_ONE_MONTH);
             }
         }
         return $data;
@@ -252,7 +252,7 @@ class Category extends BaseModel{
                 }
             }
             if($data && Memcache::CACHE_ON){
-                Cache::put(Memcache::CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID.$parentId, $data, Memcache::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Memcache::CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID.$parentId, $data,CACHE_ONE_MONTH);
             }
         }
         return $data;
@@ -333,7 +333,7 @@ class Category extends BaseModel{
                 ->take($limit)
                 ->orderBy('category_order','asc')->get();
             if($data && Memcache::CACHE_ON){
-                Cache::put(Memcache::CACHE_ALL_CATEGORY_BY_TYPE.$type, $data, Memcache::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Memcache::CACHE_ALL_CATEGORY_BY_TYPE.$type, $data,CACHE_ONE_MONTH);
             }
         }
         return $data;
@@ -384,7 +384,7 @@ class Category extends BaseModel{
                 }
 
                 if($result && Memcache::CACHE_ON){
-                    Cache::put(Memcache::CACHE_ALL_CATEGORY_RIGHT, $result, Memcache::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                    Cache::put(Memcache::CACHE_ALL_CATEGORY_RIGHT, $result,CACHE_ONE_MONTH);
                 }
             }
             return $result;
