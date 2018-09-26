@@ -55,6 +55,7 @@ define('TABLE_ORDER_ITEM', PREFIX.'order_item');
 define('TABLE_DEPARTMENT', PREFIX.'department');
 define('TABLE_INFOR_SALE', PREFIX.'infor_sale');
 define('TABLE_CATEGORY', PREFIX.'category');
+define('TABLE_PRODUCT', PREFIX.'product');
 
 //Fix Id
 define('CATEGORY_PRODUCT', 5);

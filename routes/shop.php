@@ -1,8 +1,5 @@
 <?php
 
-//vi du
-Route::get('product', array('as' => 'shop.index','uses' => Shop.'\LoanController@index'));
-
 Route::get('provider', array('as' => 'shop.provider','uses' => Shop.'\ProviderController@view'));
 Route::post('provider/post/{id?}', array('as' => 'shop.providerGet','uses' => Shop.'\ProviderController@postItem'))->where('id', '[0-9]+');
 Route::get('provider/delete',array('as' => 'shop.providerDelete','uses' => Shop.'\ProviderController@deleteItem'));
@@ -17,6 +14,12 @@ Route::get('infosale', array('as' => 'shop.infosale','uses' => Shop.'\InfosaleCo
 Route::get('infosale/get/{id?}', array('as' => 'shop.infosaleGet','uses' => Shop.'\InfosaleController@getItem'))->where('id', '[0-9]+');
 Route::post('infosale/get/{id?}', array('as' => 'shop.infosalePost','uses' => Shop.'\InfosaleController@postItem'))->where('id', '[0-9]+');
 Route::get('infosale/delete',array('as' => 'shop.infosaleDelete','uses' => Shop.'\InfosaleController@deleteItem'));
+
+//*thông tin Product */
+Route::match(['GET','POST'],'product',array('as' => 'shop.bannerView','uses' => Shop.'\ProductController@view'));
+Route::get('product/edit/{id?}', array('as' => 'shop.bannerEdit','uses' => Shop.'\ProductController@getItem'));
+Route::post('product/edit/{id?}', array('as' => 'shop.bannerEdit','uses' => Shop.'\ProductController@postItem'));
+Route::post('product/deleteProduct', array('as' => 'shop.deleteProduct','uses' => Shop.'\ProductController@deleteProduct'));//ajax
 
 
 Route::get('category', array('as' => 'shop.category','uses' =>  Shop.'\CategoryController@view'));

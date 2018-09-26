@@ -6,6 +6,8 @@ class Memcache{
 
     const CACHE_BANNER_ID = 'cache_banner_id_';
 
+    const CACHE_PRODUCT_ID = 'cache_product_id_';
+
     const CACHE_PROVIDER_ID = 'cache_provider_id_';
     const CACHE_ALL_PROVIDER = 'cache_all_provider';
     const CACHE_LIST_PROVIDER_BY_MEMBER_ID = 'cache_list_provider_by_member_id_';
