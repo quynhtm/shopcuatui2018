@@ -8,6 +8,10 @@ class Memcache{
 
     const CACHE_PRODUCT_ID = 'cache_product_id_';
 
+    const CACHE_PRODUCT_STORAGE_ID = 'cache_product_storage_id_';
+
+    const CACHE_STORAGE_LOG_ID = 'cache_storage_log_id_';
+
     const CACHE_PROVIDER_ID = 'cache_provider_id_';
     const CACHE_ALL_PROVIDER = 'cache_all_provider';
     const CACHE_LIST_PROVIDER_BY_MEMBER_ID = 'cache_list_provider_by_member_id_';

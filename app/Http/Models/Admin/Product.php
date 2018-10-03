@@ -259,7 +259,7 @@ class Product extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->banner_id, $item);
+            self::removeCache($item->product_id, $item);
             return $item->id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -278,7 +278,7 @@ class Product extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->banner_id, $item);
+            self::removeCache($item->product_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();

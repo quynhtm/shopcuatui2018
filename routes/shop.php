@@ -16,9 +16,9 @@ Route::post('infosale/get/{id?}', array('as' => 'shop.infosalePost','uses' => Sh
 Route::get('infosale/delete',array('as' => 'shop.infosaleDelete','uses' => Shop.'\InfosaleController@deleteItem'));
 
 //*thông tin Product */
-Route::match(['GET','POST'],'product',array('as' => 'shop.bannerView','uses' => Shop.'\ProductController@view'));
-Route::get('product/edit/{id?}', array('as' => 'shop.bannerEdit','uses' => Shop.'\ProductController@getItem'));
-Route::post('product/edit/{id?}', array('as' => 'shop.bannerEdit','uses' => Shop.'\ProductController@postItem'));
+Route::match(['GET','POST'],'product',array('as' => 'shop.productView','uses' => Shop.'\ProductController@view'));
+Route::get('product/edit/{id?}', array('as' => 'shop.productEdit','uses' => Shop.'\ProductController@getItem'));
+Route::post('product/edit/{id?}', array('as' => 'shop.productEdit','uses' => Shop.'\ProductController@postItem'));
 Route::post('product/deleteProduct', array('as' => 'shop.deleteProduct','uses' => Shop.'\ProductController@deleteProduct'));//ajax
 
 

@@ -56,6 +56,7 @@ define('TABLE_DEPARTMENT', PREFIX.'department');
 define('TABLE_INFOR_SALE', PREFIX.'infor_sale');
 define('TABLE_CATEGORY', PREFIX.'category');
 define('TABLE_PRODUCT', PREFIX.'product');
+define('TABLE_PRODUCT_STORAGE', PREFIX.'product_storage');
 
 //Fix Id
 define('CATEGORY_PRODUCT', 5);
@@ -81,6 +82,12 @@ define('PERMISS_BANNER_FULL', 'bannerFull');
 define('PERMISS_BANNER_VIEW', 'bannerView');
 define('PERMISS_BANNER_CREATE', 'bannerCreate');
 define('PERMISS_BANNER_DELETE', 'bannerDelete');
+
+//Permiss product
+define('PERMISS_PRODUCT_FULL', 'productFull');
+define('PERMISS_PRODUCT_VIEW', 'productView');
+define('PERMISS_PRODUCT_CREATE', 'productCreate');
+define('PERMISS_PRODUCT_DELETE', 'productDelete');
 
 //Type dategory
 define('PERMISS_DEPARTMENT_FULL', 'departmentFull');
