@@ -14,6 +14,7 @@ class Upload{
 		}
 		
 		if($_name!='' && isset($_FILES[$_name]) && count($_FILES[$_name])>0){
+
 			if($_max_file_size){
 				$max_file_size = $_max_file_size;
 			}else{
@@ -26,15 +27,14 @@ class Upload{
 			$ext=0;
 			$name = date('h-i-s-d-m-Y',time()).'-'.Upload::preg_replace_string_upload($file_name);
 			$link = $name ? $name : '';
-			
+
 			if(!in_array($file_ext, $_file_ext)){
 				$ext = 0;
 			}else{
 				$ext = 1;
 			}
-			
 			if($file_name!='' && $ext==1 && $file_size <= $max_file_size){
-				if($_folder!=''){
+			    if($_folder!=''){
 				 	$folder_upload = Config::get('config.DIR_ROOT').'uploads/'.$_folder;
 				}else{
 				 	$folder_upload = Config::get('config.DIR_ROOT').'uploads/';

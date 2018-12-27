@@ -30,13 +30,21 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">{{viewLanguage('Tên banner')}}<span class="red"> (*) </span></label>
-                            <input type="text" id="name" name="name"  class="form-control input-sm" value="@if(isset($data['name'])){{$data['name']}}@endif">
+                            <input type="text" id="name" name="banner_name"  class="form-control input-sm" value="@if(isset($data['banner_name'])){{$data['banner_name']}}@endif">
                         </div>
                     </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="name" class="control-label">{{viewLanguage('ảnh')}}</label>
+                            <input type="file" name="banner_image">
+                        </div>
+                    </div>
+
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">{{viewLanguage('Url')}}<span class="red"> (*) </span></label>
-                            <input type="text" id="url" name="url"  class="form-control input-sm" value="@if(isset($data['url'])){{$data['url']}}@endif">
+                            <input type="text" id="url" name="banner_link"  class="form-control input-sm" value="@if(isset($data['banner_link'])){{$data['banner_link']}}@endif">
                         </div>
                     </div>
 
@@ -44,7 +52,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">{{viewLanguage('Trạng thái')}}</label>
-                            <select name="status" id="status" class="form-control input-sm">
+                            <select name="banner_status" id="status" class="form-control input-sm">
                                 {!! $optionStatus !!}}
                             </select>
                         </div>
@@ -52,7 +60,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="sort" class="control-label">{{viewLanguage('Thứ tự hiển thị')}}</label>
-                            <input type="text" id="sort" name="sort"  class="form-control input-sm" value="@if(isset($data['sort'])){{$data['sort']}}@endif">
+                            <input type="text" id="sort" name="position"  class="form-control input-sm" value="@if(isset($data['position'])){{$data['position']}}@endif">
                         </div>
                     </div>
                     <div class="clearfix"></div>

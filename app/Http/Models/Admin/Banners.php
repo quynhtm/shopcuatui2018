@@ -14,18 +14,18 @@ class Banners extends BaseModel
 {
     protected $table = TABLE_BANNER;
     protected $primaryKey = 'banner_id';
-    public $timestamps = true;
-    protected $fillable = array('name', 'url', 'image', 'status', 'position', 'url_image', 'created_at', 'updated_at');
-
+    public $timestamps = false;
+    protected $fillable = array('banner_name','banner_image', 'banner_link','position', 'url_image', 'banner_status', 'created_at', 'updated_at');
+    //, 'position', 'url_image' sau banner_status
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {
             $query = Banners::where('banner_id', '>', 0);
-            if (isset($dataSearch['name']) && $dataSearch['name'] != '') {
-                $query->where('name', 'LIKE', '%' . $dataSearch['name'] . '%');
+            if (isset($dataSearch['banner_name']) && $dataSearch['banner_name'] != '') {
+                $query->where('banner_name', 'LIKE', '%' . $dataSearch['banner_name'] . '%');
             }
-            if (isset($dataSearch['status']) && $dataSearch['status'] > -1) {
-                $query->where('status', $dataSearch['status']);
+            if (isset($dataSearch['banner_status']) && $dataSearch['banner_status'] > -1) {
+                $query->where('banner_status', $dataSearch['banner_status']);
             }
             $total = ($is_total)?$query->count():0;
             $query->orderBy('banner_id', 'desc');

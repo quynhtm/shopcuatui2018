@@ -149,7 +149,7 @@ class MenuSystem extends BaseModel
         $data = $menuTree = array();
         $menuTree = (Define::CACHE_ON) ? Cache::get(Define::CACHE_TREE_MENU) : array();
         $total = 0;
-        if (sizeof($menuTree) == 0) {
+        if (    empty($menuTree)) {
             $search['active'] = Define::STATUS_SHOW;
             $dataSearch = app(MenuSystem::class)->searchByCondition($search, 200, 0, $total);
             if (!empty($dataSearch)) {
