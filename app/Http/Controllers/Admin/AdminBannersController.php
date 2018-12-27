@@ -23,7 +23,7 @@ class AdminBannersController extends BaseAdminController
     public function __construct()
     {
         parent::__construct();
-        CGlobal::$pageAdminTitle = 'Quản lý Banner quảng cáo';
+        CGlobal::$pageAdminTitle = 'Quản lý Banner quảng cáo mới';
     }
 
     public function _getDataDefault()
