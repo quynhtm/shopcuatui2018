@@ -21,8 +21,6 @@ class AdminBannersController extends BaseAdminController
     private $viewOptionData = array();
     private $viewPermission = array();
 
-
-
     public function __construct()   //hàm tạo
     {
         parent::__construct();  //gọi đến hàm __construct mà hàm này kế thừa và hàm __construct này ở trong baseAdminController - hàm parent ngoài gọi để kế thừa ,mở rộng hàm cha còn có thể dùng để ghi đè lên hàm cha
@@ -44,6 +42,14 @@ class AdminBannersController extends BaseAdminController
             'permission_delete' => $this->checkPermiss(PERMISS_BANNER_DELETE),
         ];
     }
+    public function _outDataView($data)
+    {
+        $optionStatus = getOption($this->arrStatus, isset($data['banner_status']) ? $data['banner_status'] : STATUS_SHOW);
+        return $this->viewOptionData = [
+            'optionStatus' => $optionStatus,
+            'pageTitle' => CGlobal::$pageAdminTitle,//thêm biến
+        ];
+    }
 
     public function view()     //hiển thị
     {
@@ -63,28 +69,22 @@ class AdminBannersController extends BaseAdminController
         $search['banner_status'] = (int)Request::get('banner_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-        $data = app(Banners::class)->searchByCondition($search, $limit, $offset, $total);
+        $data = app(Banners::class)->searchByCondition($search, $limit, $offset);
         // dd($data); kiểm tra lấy dữ liệu
+        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
 
-        $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
-        $optionStatus = getOption($this->arrStatus, $search['banner_status']);
         //vmDebug($data);
+        $this->_outDataView($search);
         return view('admin.AdminBanners.view', array_merge([
             'data' => $data['data'],
-// sai ở đoạn đường dẫn lúc đầu chỉ lấy ở 'data' => $data tức là đang foreach cả cục
-//  "data" => Collection {#409 ▶}    dùng lệnh dd($data) để hiển thị
-//  "total" => 0
-// sửa như sau 'data' => $data['data'] : tức là vào hẳn đường dẫn data rồi foreach để hiển thị dữ liệu trong data
-
             'search' => $search,
-            'total' => $total,
+            'total' => $data['total'],
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
-            'optionStatus' => $optionStatus,
-        ], $this->viewPermission));
+        ], $this->viewPermission, $this->viewOptionData));
     }
 
-    public function getItem($id)
+    public function getItem($id=0)
     {
         if (!$this->checkMultiPermiss([PERMISS_BANNER_FULL, PERMISS_BANNER_CREATE])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
@@ -98,7 +98,7 @@ class AdminBannersController extends BaseAdminController
         ], $this->viewPermission, $this->viewOptionData));
     }
 
-    public function postItem($id)
+    public function postItem($id=0)
     {
         if (!$this->checkMultiPermiss([PERMISS_BANNER_FULL, PERMISS_BANNER_CREATE])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
@@ -138,13 +138,7 @@ class AdminBannersController extends BaseAdminController
         ], $this->viewPermission, $this->viewOptionData));
     }
 
-    public function _outDataView($data)
-    {
-        $optionStatus = getOption($this->arrStatus, isset($data['status']) ? $data['status'] : STATUS_SHOW);
-        return $this->viewOptionData = [
-            'optionStatus' => $optionStatus,
-        ];
-    }
+
 
     public function deleteBanner()
     {
@@ -163,7 +157,11 @@ class AdminBannersController extends BaseAdminController
     {
         if (!empty($data)) {
             if (isset($data['banner_name']) && trim($data['banner_name']) == '') {
-                $this->error[] = 'Null';
+                $this->error[] = 'Tên banner không được bỏ trống';
+            }
+
+            if (isset($data['banner_link']) && trim($data['banner_link']) == ''){
+                $this->error[] = 'Tên URL không được bỏ trống';
             }
         }
         return true;

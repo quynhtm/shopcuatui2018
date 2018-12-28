@@ -9,7 +9,7 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
-            <li class="active">Quản lý Banner</li>
+            <li class="active">{{$pageTitle}}</li>
         </ul>
     </div>
 
@@ -30,7 +30,6 @@
                                     {!! $optionStatus !!}}
                                 </select>
                             </div>
-
                         </div>
                         <div class="panel-footer text-right">
                             @if($is_root || $permission_full || $permission_create)
