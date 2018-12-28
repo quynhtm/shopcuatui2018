@@ -15,11 +15,11 @@ use App\Library\AdminFunction\Pagging;
 
 class AdminBannersController extends BaseAdminController
 {
-    private $error = array();           //lỗi
-    private $arrStatus = array();       //trạng thái
-    private $arrMenuParent = array();   //
-    private $viewOptionData = array();  //dữ liệu tùy chọn
-    private $viewPermission = array();  //check quyen
+    private $error = array();
+    private $arrStatus = array();
+    private $arrMenuParent = array();
+    private $viewOptionData = array();
+    private $viewPermission = array();
 
 
 
