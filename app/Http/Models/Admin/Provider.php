@@ -16,99 +16,9 @@ class Provider extends BaseModel
     protected $primaryKey = 'provider_id';
     public $timestamps = true;
     protected $fillable = array('member_id', 'provider_id', 'provider_name', 'provider_phone', 'provider_address', 'provider_email',
-        'provider_shop_id', 'provider_shop_name', 'provider_status',
-        'provider_note', 'provider_time_creater', 'created_at', 'updated_at');
+        'provider_shop_id', 'provider_shop_name', 'provider_status', 'provider_note', 'provider_time_creater', 'created_at', 'updated_at');
 
-    public function createItem($data)
-    {
-        try {
-            DB::connection()->getPdo()->beginTransaction();
-            $fieldInput = $this->checkFieldInTable($data);
-            $item = new Provider();
-            if (is_array($fieldInput) && count($fieldInput) > 0) {
-                foreach ($fieldInput as $k => $v) {
-                    $item->$k = $v;
-                }
-            }
-            $member_id = app(User::class)->getMemberIdUser();
-            $item->member_id = $member_id;
-            $item->save();
-
-            DB::connection()->getPdo()->commit();
-            self::removeCache($item->provider_id, $item);
-            return $item->id;
-        } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
-            throw new PDOException();
-        }
-    }
-
-    public function updateItem($id, $data)
-    {
-        try {
-            DB::connection()->getPdo()->beginTransaction();
-            $fieldInput = $this->checkFieldInTable($data);
-            $member_id = app(User::class)->getMemberIdUser();
-            $item = self::getItemById($id);
-            if ($item && isset($item->member_id) && $item->member_id == $member_id) {
-                foreach ($fieldInput as $k => $v) {
-                    $item->$k = $v;
-                }
-                $item->member_id = $member_id;
-                $item->update();
-                self::removeCache($item->provider_id, $item);
-            }
-            DB::connection()->getPdo()->commit();
-            return true;
-        } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
-            throw new PDOException();
-        }
-    }
-
-    public function getItemById($id)
-    {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PROVIDER_ID . $id) : false;
-        if ($data || $data->count() == 0) {
-            $data = Provider::find($id);
-            if ($data) {
-                Cache::put(Memcache::CACHE_PROVIDER_ID . $id, $data, CACHE_ONE_MONTH);
-            }
-        }
-        return $data;
-    }
-
-    public function deleteItem($id)
-    {
-        if ($id <= 0) return false;
-        try {
-            DB::connection()->getPdo()->beginTransaction();
-            $item = $dataOld = self::getItemById($id);
-            if ($item) {
-                $item->delete();
-            }
-            DB::connection()->getPdo()->commit();
-            self::removeCache($id, $dataOld);
-            return true;
-        } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
-            throw new PDOException();
-            return false;
-        }
-    }
-
-    public function removeCache($id = 0, $data)
-    {
-        if ($id > 0) {
-            Cache::forget(Memcache::CACHE_PROVIDER_ID . $id);
-        }
-        if ($data) {
-            Cache::forget(Memcache::CACHE_LIST_PROVIDER_BY_MEMBER_ID . $data->member_id);
-        }
-        Cache::forget(Memcache::CACHE_ALL_PROVIDER);
-    }
-
-    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
+    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {
             $query = Provider::where('provider_id', '>', 0);
@@ -137,7 +47,7 @@ class Provider extends BaseModel
             if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > 0) {
                 $query->where('member_id', $dataSearch['member_id']);
             }
-            $total = $query->count();
+            $total = ($is_total) ? $query->count() : 0;
             $query->orderBy('provider_status', 'desc');
 
             //get field can lay du lieu
@@ -147,12 +57,96 @@ class Provider extends BaseModel
             } else {
                 $result = $query->take($limit)->skip($offset)->get();
             }
-            return $result;
+            return ['data'=>$result,'total'=>$total];
 
         } catch (PDOException $e) {
             throw new PDOException();
         }
     }
+
+    public function createItem($data)
+    {
+        try {
+            $fieldInput = $this->checkFieldInTable($data);
+            $item = new Provider();
+            if (is_array($fieldInput) && count($fieldInput) > 0) {
+                foreach ($fieldInput as $k => $v) {
+                    $item->$k = $v;
+                }
+                $member_id = app(User::class)->getMemberIdUser();
+                $item->member_id = $member_id;
+                $item->created_at = getCurrentFull();
+                $item->save();
+                self::removeCache($item->provider_id, $item);
+                return $item->id;
+            }
+            return 0;
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+    }
+
+    public function updateItem($id, $data)
+    {
+        try {
+            $fieldInput = $this->checkFieldInTable($data);
+            $member_id = app(User::class)->getMemberIdUser();
+            $item = self::getItemById($id);
+            if ($item && isset($item->member_id) && $item->member_id == $member_id) {
+                foreach ($fieldInput as $k => $v) {
+                    $item->$k = $v;
+                }
+                $item->member_id = $member_id;
+                $item->updated_at = getCurrentFull();
+                $item->update();
+                self::removeCache($item->provider_id, $item);
+            }
+            return true;
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+    }
+
+    public function getItemById($id)
+    {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PROVIDER_ID . $id) : false;
+        if ($data || $data->count() == 0) {
+            $data = Provider::find($id);
+            if ($data) {
+                Cache::put(Memcache::CACHE_PROVIDER_ID . $id, $data, CACHE_ONE_MONTH);
+            }
+        }
+        return $data;
+    }
+
+    public function deleteItem($id)
+    {
+        if ($id <= 0) return false;
+        try {
+            $item = $dataOld = self::getItemById($id);
+            if ($item) {
+                $item->delete();
+            }
+            self::removeCache($id, $dataOld);
+            return true;
+        } catch (PDOException $e) {
+            throw new PDOException();
+            return false;
+        }
+    }
+
+    public function removeCache($id = 0, $data)
+    {
+        if ($id > 0) {
+            Cache::forget(Memcache::CACHE_PROVIDER_ID . $id);
+        }
+        if ($data) {
+            Cache::forget(Memcache::CACHE_LIST_PROVIDER_BY_MEMBER_ID . $data->member_id);
+        }
+        Cache::forget(Memcache::CACHE_ALL_PROVIDER);
+    }
+
+
 
     public function getProviderShopByID($id, $member_id)
     {

@@ -5,6 +5,7 @@
 * @Date      : 09/2018
 * @Version   : 1.0
 */
+
 namespace App\Http\Models\Admin;
 
 use App\Http\Models\BaseModel;
@@ -12,13 +13,15 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
 
-class Department extends BaseModel{
+class Department extends BaseModel
+{
     protected $table = TABLE_DEPARTMENT;
     protected $primaryKey = 'department_id';
     public $timestamps = true;
     protected $fillable = array('department_id', 'member_id', 'department_name', 'department_alias', 'department_order', 'department_status', 'created_at', 'updated_at');
 
-    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total){
+    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
+    {
         try {
             $query = Department::where('department_id', '>', 0);
             if (isset($dataSearch['department_name']) && $dataSearch['department_name'] != '') {
@@ -26,9 +29,9 @@ class Department extends BaseModel{
             }
 
             if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > -1) {
-                if($dataSearch['member_id'] == 0){
-                    $query->where('member_id','>=', $dataSearch['member_id']);
-                }else{
+                if ($dataSearch['member_id'] == 0) {
+                    $query->where('member_id', '>=', $dataSearch['member_id']);
+                } else {
                     $query->where('member_id', $dataSearch['member_id']);
                 }
             }
@@ -37,7 +40,7 @@ class Department extends BaseModel{
                 $query->where('department_status', $dataSearch['department_status']);
             }
 
-            $total = $query->count();
+            $total = ($is_total) ? $query->count() : 0;
             $query->orderBy('department_order', 'asc');
 
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -46,40 +49,41 @@ class Department extends BaseModel{
             } else {
                 $result = $query->take($limit)->skip($offset)->get();
             }
-            return $result;
+            return ['data' => $result, 'total' => $total];
 
         } catch (PDOException $e) {
             throw new PDOException();
         }
     }
-    public function createItem($data){
+
+    public function createItem($data)
+    {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
             $item = new Department();
-            if(is_array($fieldInput) && count($fieldInput) > 0) {
+            if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
+                $member_id = app(User::class)->getMemberIdUser();
+                $item->member_id = $member_id;
+                $item->save();
+                self::removeCache($item->department_id, $item);
+                return $item->department_id;
             }
-            $member_id = app(User::class)->getMemberIdUser();
-            $item->member_id = $member_id;
-            $item->save();
-            DB::connection()->getPdo()->commit();
-            self::removeCache($item->department_id, $item);
-            return $item->department_id;
+            return 0;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
-    public function updateItem($id, $data){
+
+    public function updateItem($id, $data)
+    {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
             $member_id = app(User::class)->getMemberIdUser();
             $item = self::getItemById($id);
-            if($item && isset($item->member_id) && $item->member_id == $member_id){
+            if ($item && isset($item->member_id) && $item->member_id == $member_id) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
@@ -87,44 +91,45 @@ class Department extends BaseModel{
                 $item->update();
                 self::removeCache($item->department_id, $item);
             }
-            DB::connection()->getPdo()->commit();
             self::removeCache($item->department_id, $item);
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
-    public function getItemById($id){
-        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_DEPARTMENT_ID.$id): false;
+
+    public function getItemById($id)
+    {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_DEPARTMENT_ID . $id) : false;
         if ($data || $data->count() == 0) {
             $data = Department::find($id);
-            if($data){
-                Cache::put(Memcache::CACHE_DEPARTMENT_ID.$id, $data, CACHE_ONE_MONTH);
+            if ($data) {
+                Cache::put(Memcache::CACHE_DEPARTMENT_ID . $id, $data, CACHE_ONE_MONTH);
             }
         }
         return $data;
     }
-    public function deleteItem($id){
+
+    public function deleteItem($id)
+    {
         if ($id <= 0) return false;
         try {
-            DB::connection()->getPdo()->beginTransaction();
-            $item = self::getItemById($id);
+            $item = $dataOld = self::getItemById($id);
             if ($item) {
                 $item->delete();
+                self::removeCache($id, $dataOld);
             }
-            DB::connection()->getPdo()->commit();
-            self::removeCache($id, $item);
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
             return false;
         }
     }
-    public function removeCache($id = 0, $data){
+
+    public function removeCache($id = 0, $data)
+    {
         if ($id > 0) {
-            Cache::forget(Memcache::CACHE_DEPARTMENT_ID.$id);
+            Cache::forget(Memcache::CACHE_DEPARTMENT_ID . $id);
         }
     }
 }
