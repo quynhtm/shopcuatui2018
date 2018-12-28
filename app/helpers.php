@@ -315,15 +315,17 @@ function substring($str, $length = 100, $replacer = '...')
     return substr($str, 0, $posSpace) . $replacer;
 }
 
-function viewLanguage($key)
+function viewLanguage($key) // ngôn ngữ hiển thị
 {
-    $lang = Session::get('languageSite');
+    //Session để lưu trữ giá trị cần lưu trữ của người dùng thường được dùng trong các trường hợp đăng nhập -đăng ký-giỏ hàng
+    $lang = Session::get('languageSite');    // lưu trữ trang web ngôn ngữ được truyền vào
     $lang = ((int)$lang > 0) ? $lang : VIETNAM_LANGUAGE;
-    $path = storage_path() . "/language/" . Define::$arrLanguage[$lang] . ".json";
+    $path = storage_path() . "/language/" . Define::$arrLanguage[$lang] . ".json"; //lưu trữ định nghĩa của 1 ngon ngữ
     $json = file_get_contents($path);
-    $json = mb_convert_encoding($json, 'UTF8', 'auto');
-    $language = json_decode($json, true);
-    return isset($language[$key]) ? $language[$key] : $key;
+    $json = mb_convert_encoding($json, 'UTF8', 'auto');  //chuyển đổi mã hóa ngôn ngữ thành utf8
+    $language = json_decode($json, true);  //nhận và giải mã chuỗi mã hóa
+    return isset($language[$key]) ? $language[$key] : $key;  //nếu tồn tại biến language[$key] thì ( ? ) lấy $language[$key] nếu không( : ) thì lấy $key
+//hàm isset là để kiểm tra xem biến đã được khởi tạo trong bộ nhớ chưa
 }
 
 function khoangcachngay($p_strngay1, $p_strngay2, $p_strkieu = 'ngay')
