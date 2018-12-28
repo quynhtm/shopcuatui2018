@@ -112,6 +112,7 @@ class AdminBannersController extends BaseAdminController
             $_file_ext = 'jpg,jpeg,png,gif';
             $pathFileUpload = app(Upload::class)->uploadFile('banner_image', $_file_ext, $_max_file_size, $folder);
             $data['banner_image'] = trim($pathFileUpload) != ''? $pathFileUpload: '';
+
         }
 
         if ($this->_validData($data) && empty($this->error)) {

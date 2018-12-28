@@ -62,13 +62,10 @@
                             </thead>
                             <tbody>
                             @foreach ($data as $key => $item)
-
                                 <tr>
                                     <td class="text-center middle">{{ $stt+1 }}</td>
                                     <td>{{ $item['banner_name'] }}</td>
-                                    @if(count($item) > 0)
 {{--image--}}                           <td><img src="{{Config::get('config.WEB_ROOT')}}/uploads/banner/{{$item->banner_image}}" height="70px" width="100px"></td>
-                                    @endif
                                     <td>{{ $item['banner_link'] }}</td>
                                     <td class="text-center middle">
                                         @if($item['banner_status'] == STATUS_SHOW)

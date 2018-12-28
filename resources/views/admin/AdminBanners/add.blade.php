@@ -33,14 +33,12 @@
                             <input type="text" id="name" name="banner_name"  class="form-control input-sm" value="@if(isset($data['banner_name'])){{$data['banner_name']}}@endif">
                         </div>
                     </div>
-
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="name" class="control-label">{{viewLanguage('ảnh')}}</label>
                             <input type="file" name="banner_image">
                         </div>
                     </div>
-
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">{{viewLanguage('Url')}}<span class="red"> (*) </span></label>
