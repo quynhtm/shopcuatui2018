@@ -75,14 +75,6 @@ class AdminBannersController extends BaseAdminController
         $this->_outDataView($search);
         return view('admin.AdminBanners.view', array_merge([
             'data' => $data['data'],
-<<<<<<< HEAD
-=======
-        // sai ở đoạn đường dẫn lúc đầu chỉ lấy ở 'data' => $data tức là đang foreach cả cục
-        //  "data" => Collection {#409 ▶}    dùng lệnh dd($data) để hiển thị
-        //  "total" => 0
-        // sửa như sau 'data' => $data['data'] : tức là vào hẳn đường dẫn data rồi foreach để hiển thị dữ liệu trong data
-
->>>>>>> developer
             'search' => $search,
             'total' => $data['total'],
             'stt' => ($pageNo - 1) * $limit,
@@ -144,19 +136,7 @@ class AdminBannersController extends BaseAdminController
             'error' => $this->error,
         ], $this->viewPermission, $this->viewOptionData));
     }
-<<<<<<< HEAD
 
-
-
-=======
-    public function _outDataView($data)
-    {
-        $optionStatus = getOption($this->arrStatus, isset($data['status']) ? $data['status'] : STATUS_SHOW);
-        return $this->viewOptionData = [
-            'optionStatus' => $optionStatus,
-        ];
-    }
->>>>>>> developer
     public function deleteBanner()
     {
         $data = array('isIntOk' => 0);
