@@ -10,7 +10,7 @@
                 <a href="{{URL::route('admin.dashboard')}}">{{viewLanguage('Trang chủ')}}</a>
             </li>
             <li><a href="{{URL::route('admin.bannerView')}}"> {{viewLanguage('Danh sách banners')}}</a></li>
-            <li class="active">@if($id > 0){{viewLanguage('Cập nhật')}}@else {{viewLanguage('Tạo mới')}} @endif</li>
+            <li class="active">@if($id > 0){{viewLanguage('Cập nhật')}}@else {{$pageTitle}} @endif</li>
         </ul><!-- /.breadcrumb -->
     </div>
 
