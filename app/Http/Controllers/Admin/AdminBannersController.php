@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\Banners;
-use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
-use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\Upload;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -71,10 +69,10 @@ class AdminBannersController extends BaseAdminController
         //vmDebug($data);
         return view('admin.AdminBanners.view', array_merge([
             'data' => $data['data'],
-// sai ở đoạn đường dẫn lúc đầu chỉ lấy ở 'data' => $data tức là đang foreach cả cục
-//  "data" => Collection {#409 ▶}    dùng lệnh dd($data) để hiển thị
-//  "total" => 0
-// sửa như sau 'data' => $data['data'] : tức là vào hẳn đường dẫn data rồi foreach để hiển thị dữ liệu trong data
+        // sai ở đoạn đường dẫn lúc đầu chỉ lấy ở 'data' => $data tức là đang foreach cả cục
+        //  "data" => Collection {#409 ▶}    dùng lệnh dd($data) để hiển thị
+        //  "total" => 0
+        // sửa như sau 'data' => $data['data'] : tức là vào hẳn đường dẫn data rồi foreach để hiển thị dữ liệu trong data
 
             'search' => $search,
             'total' => $total,
@@ -105,6 +103,7 @@ class AdminBannersController extends BaseAdminController
         }
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
+
         if(isset($_FILES['banner_image']) && count($_FILES['banner_image'])>0 && $_FILES['banner_image']['name'] != '') {
 
             $folder = 'banner';
@@ -137,7 +136,6 @@ class AdminBannersController extends BaseAdminController
             'error' => $this->error,
         ], $this->viewPermission, $this->viewOptionData));
     }
-
     public function _outDataView($data)
     {
         $optionStatus = getOption($this->arrStatus, isset($data['status']) ? $data['status'] : STATUS_SHOW);
@@ -145,7 +143,6 @@ class AdminBannersController extends BaseAdminController
             'optionStatus' => $optionStatus,
         ];
     }
-
     public function deleteBanner()
     {
         $data = array('isIntOk' => 0);
