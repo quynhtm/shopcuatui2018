@@ -50,11 +50,11 @@
                             <thead class="thin-border-bottom">
                             <tr class="">
                                 <th width="5%" class="text-center">{{viewLanguage('STT')}}</th>
-                                <th width="20%">{{viewLanguage('Tên banner')}}</th>
-                                <th width="20%">{{viewLanguage('Image')}}</th>
-                                <th width="40%">{{viewLanguage('Url')}}</th>
-                                <th width="10%" class="text-center">{{viewLanguage('Trạng thái')}}</th>
-                                <th width="15%" class="text-center">{{viewLanguage('Thao tác')}}</th>
+                                <th width="10%">{{viewLanguage('Image')}}</th>
+                                <th width="30%">{{viewLanguage('Tên banner')}}</th>
+                                <th width="30%">{{viewLanguage('Url')}}</th>
+                                <th width="5%" class="text-center">{{viewLanguage('Trạng thái')}}</th>
+                                <th width="20%" class="text-center">{{viewLanguage('Thao tác')}}</th>
 
                             </tr>
 
@@ -63,8 +63,8 @@
                             @foreach ($data as $key => $item)
                                 <tr>
                                     <td class="text-center middle">{{ $stt+1 }}</td>
+{{--image--}}                       <td><img src="{{Config::get('config.WEB_ROOT')}}/uploads/banner/{{$item->banner_image}}" height="70px" width="100px"></td>
                                     <td>{{ $item['banner_name'] }}</td>
-{{--image--}}                           <td><img src="{{Config::get('config.WEB_ROOT')}}/uploads/banner/{{$item->banner_image}}" height="70px" width="100px"></td>
                                     <td>{{ $item['banner_link'] }}</td>
                                     <td class="text-center middle">
                                         @if($item['banner_status'] == STATUS_SHOW)

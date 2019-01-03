@@ -61,25 +61,16 @@ class AdminBannersController extends BaseAdminController
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
-        $total = 0;
 
         $search['banner_name'] = addslashes(Request::get('banner_name', ''));
         $search['banner_status'] = (int)Request::get('banner_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
         $data = app(Banners::class)->searchByCondition($search, $limit, $offset);
-        // dd($data); kiểm tra lấy dữ liệu
         $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
-
-        //vmDebug($data);
         $this->_outDataView($search);
         return view('admin.AdminBanners.view', array_merge([
             'data' => $data['data'],
-//         sai ở đoạn đường dẫn lúc đầu chỉ lấy ở 'data' => $data tức là đang foreach cả cục
-//          "data" => Collection {#409 ▶}    dùng lệnh dd($data) để hiển thị
-//          "total" => 0
-//         sửa như sau 'data' => $data['data'] : tức là vào hẳn đường dẫn data rồi foreach để hiển thị dữ liệu trong data
-//
             'search' => $search,
             'total' => $data['total'],
             'stt' => ($pageNo - 1) * $limit,
@@ -110,13 +101,11 @@ class AdminBannersController extends BaseAdminController
         $data = $_POST;
 
         if(isset($_FILES['banner_image']) && count($_FILES['banner_image'])>0 && $_FILES['banner_image']['name'] != '') {
-
             $folder = 'banner';
             $_max_file_size = 10* 1024* 1024;
             $_file_ext = 'jpg,jpeg,png,gif';
             $pathFileUpload = app(Upload::class)->uploadFile('banner_image', $_file_ext, $_max_file_size, $folder);
             $data['banner_image'] = trim($pathFileUpload) != ''? $pathFileUpload: '';
-
         }
 
         if ($this->_validData($data) && empty($this->error)) {
@@ -141,7 +130,6 @@ class AdminBannersController extends BaseAdminController
             'error' => $this->error,
         ], $this->viewPermission, $this->viewOptionData));
     }
-
 
     public function deleteBanner()
     {
