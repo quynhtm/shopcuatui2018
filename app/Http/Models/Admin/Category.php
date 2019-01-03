@@ -105,10 +105,13 @@ class Category extends BaseModel
         }
     }
 
+/*lý do phải sửa sizeof($data) -> chuyển thành (!$data)  và Array()-> chuyển thành (false)  --- ở phần getItembyId($id)
+ * vì mỗi bản php có 1 cách viết , hỗ trợ khác nhau nên ở đây ta phải chuyển thành như vậy
+ */
     public function getItemById($id)
     {
         $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_CATEGORY_ID . $id) : false;
-        if ($data || sizeof($data) == 0) {
+        if (!$data) {
             $data = Category::find($id);
             if ($data) {
                 Cache::put(Memcache::CACHE_CATEGORY_ID . $id, $data, CACHE_ONE_MONTH);
@@ -153,8 +156,8 @@ class Category extends BaseModel
 
     public function getItemByMemberId($member_id)
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_CATEGORY_MEMBER_ID . $member_id) : [];
-        if (sizeof($data) == 0) {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_CATEGORY_MEMBER_ID . $member_id) : false;  //[]
+        if (!$data) {
             $data = Category::where('member_id', $member_id)->first();
             if ($data) {
                 Cache::put(Memcache::CACHE_CATEGORY_MEMBER_ID . $member_id, $data, CACHE_ONE_MONTH);
@@ -219,8 +222,8 @@ class Category extends BaseModel
 
     public function getAllParentCategoryId()
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_PARENT_CATEGORY) : array();
-        if (sizeof($data) == 0) {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_PARENT_CATEGORY) : false;
+        if (!$data) {
             $category = Category::where('category_id', '>', 0)
                 ->where('category_parent_id', 0)
                 ->where('category_status', CGlobal::status_show)
@@ -239,8 +242,8 @@ class Category extends BaseModel
 
     public function getAllParentCateWithType($category_type)
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_PARENT_CATEGORY . '_' . $category_type) : array();
-        if (sizeof($data) == 0) {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_PARENT_CATEGORY . '_' . $category_type) : false;
+        if (!$data) {
             $category = Category::where('category_id', '>', 0)
                 ->where('category_parent_id', 0)
                 ->where('category_status', CGlobal::status_show)
@@ -260,8 +263,8 @@ class Category extends BaseModel
 
     public function getAllChildCategoryIdByParentId($parentId = 0)
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID . $parentId) : array();
-        if (sizeof($data) == 0 && $parentId > 0) {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_CHILD_CATEGORY_BY_PARENT_ID . $parentId) : false;
+        if (!$data == 0 && $parentId > 0) {
             $category = Category::where('category_id', '>', 0)
                 ->where('category_parent_id', '=', $parentId)
                 ->where('category_status', CGlobal::status_show)
@@ -355,8 +358,8 @@ class Category extends BaseModel
 
     public function getAllCategoryByType($type = 0, $limit = 5)
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_CATEGORY_BY_TYPE . $type) : array();
-        if (sizeof($data) == 0) {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_CATEGORY_BY_TYPE . $type) : false;
+        if (!$data) {
             $data = Category::where('category_id', '>', 0)
                 ->where('category_status', CGlobal::status_show)
                 ->where('category_type', $type)

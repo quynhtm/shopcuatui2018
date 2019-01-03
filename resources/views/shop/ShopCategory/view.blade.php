@@ -28,7 +28,7 @@
                         </div>
                         <div class="panel-footer text-right">
                             @if($is_root || $permission_full || $permission_create)
-                                <a class="btn btn-danger btn-sm" href="{{URL::route('shop.infosaleGet', ['id'=>0])}}">
+                                <a class="btn btn-danger btn-sm" href="{{URL::route('shop.categoryGet', ['id'=>0])}}">
                                     <i class="ace-icon fa fa-plus-circle"></i>
                                     {{viewLanguage('Thêm mới')}}
                                 </a>
@@ -55,8 +55,8 @@
                         <tbody>
                         @if(isset($data) && sizeof($data))
                             @foreach($data as $k=>$item)
-                                <tr @if($item['category_parent_id'] == 0)style="background-color:#d6f6f6"@endif>
-                                    <td class="text-center">{{$stt + $k + 1}}</td>
+                                <tr @if($item['category_parent_id'] == 0) style="background-color:#d6f6f6" @endif >
+                                    <td class="text-center">{{$stt + 1}}</td>
                                     <td>
                                         @if($item->category_parent_id==0)
                                             <b>{{ $item->padding_left.$item->category_name }}</b>

@@ -24,17 +24,25 @@
                         @endforeach
                     </div>
                 @endif
-                <div class="line">
-                    <div class="col-sm-2">
+                {{--<div class="line">--}}
+                    {{--<div class="col-sm-2">--}}
+                        {{--<div class="form-group">--}}
+                            {{--<label for="name" class="control-label"><i>{{viewLanguage('Tên danh mục')}}<span class="red"> (*) </span></i></label>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label"><i>{{viewLanguage('Tên danh mục')}}<span class="red"> (*) </span></i></label>
+                            <input type="text" id="name" name="category_name"  class="form-control input-sm" value="@if(isset($data['category_name'])){{$data['category_name']}}@endif">
                         </div>
                     </div>
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <input type="text" id="category_name" name="category_name"  class="form-control input-sm" value="@if(isset($data['category_name'])){{$data['category_name']}}@endif">
-                        </div>
-                    </div>
+
+                    {{--<div class="col-sm-8">--}}
+                        {{--<div class="form-group">--}}
+                            {{--<input type="text" id="category_name" name="category_name"  class="form-control input-sm" value="@if(isset($data['category_name'])){{$data['category_name']}}@endif">--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <div class="clearfix"></div>
                     <div class="col-sm-2">
                         <div class="form-group">
@@ -139,7 +147,7 @@
 
                     <div class="col-sm-8">
                         <div class="form-group">
-                            <a class="btn btn-warning" href="{{URL::route('shop.infosale')}}"><i class="fa fa-reply"></i> {{viewLanguage('back')}}</a>
+                            <a class="btn btn-warning" href="{{URL::route('shop.category')}}"><i class="fa fa-reply"></i> {{viewLanguage('back')}}</a>
                             <button  class="btn btn-primary"><i class="fa fa-floppy-o"></i> {{viewLanguage('Lưu')}}</button>
                             <input type="hidden" id="id_hiden" name="id_hiden" value="{{$id}}"/>
                         </div>

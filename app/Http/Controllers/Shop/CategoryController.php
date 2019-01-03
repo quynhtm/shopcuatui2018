@@ -30,7 +30,7 @@ class CategoryController extends BaseAdminController{
 
     public function __construct(){
         parent::__construct();
-        CGlobal::$pageAdminTitle = 'Quản lý danh mục';
+        CGlobal::$pageAdminTitle = 'Quản Lý Danh Mục';
     }
     public function _getDataDefault(){
         $this->arrStatus = $this->arrMenu = $this->arrMenuRight = array(
@@ -47,6 +47,21 @@ class CategoryController extends BaseAdminController{
             'permission_delete' => $this->checkPermiss(PERMISS_CATEGORY_DELETE),
         ];
     }
+    public function _outDataView($data){
+
+        $optionStatus = getOption($this->arrStatus, isset($data['category_status']) ? $data['category_status'] : STATUS_HIDE);
+        $optionMenu = getOption($this->arrMenu, isset($data['category_menu_status']) ? $data['category_menu_status'] : STATUS_HIDE);
+        $optionMenuRight = getOption($this->arrMenuRight, isset($data['category_menu_right']) ? $data['category_menu_right'] : STATUS_HIDE);
+
+        return $this->viewOptionData = [
+            'pageAdminTitle' => CGlobal::$pageAdminTitle,
+            'arrCategoryParent' => $this->arrCategoryParent,
+            'optionStatus' => $optionStatus,
+            'optionMenu' => $optionMenu,
+            'optionMenuRight' => $optionMenuRight,
+        ];
+    }
+
     public function view(){
         if (!$this->checkMultiPermiss([PERMISS_CATEGORY_FULL, PERMISS_CATEGORY_VIEW])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
@@ -56,7 +71,6 @@ class CategoryController extends BaseAdminController{
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
-        $total = 0;
 
         $search['category_name'] = addslashes(Request::get('category_name', ''));
         $search['category_status'] = (int)Request::get('category_status',-1);
@@ -66,8 +80,8 @@ class CategoryController extends BaseAdminController{
         $search['member_id'] = app(User::class)->getMemberIdUser();
         
         $search['field_get'] = '';
-        $dataSearch = app(Category::class)->searchByCondition($search, $limit, $offset, $total);
-        $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
+        $data = app(Category::class)->searchByCondition($search, $limit, $offset);
+        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
 
         if(!empty($dataSearch)){
             $data =  app(Category::class)->getTreeCategory($data);
@@ -78,9 +92,9 @@ class CategoryController extends BaseAdminController{
         $this->_outDataView($data);
 
         return view('shop.ShopCategory.view', array_merge([
-            'data' => $data,
+            'data' => $data['data'],
             'search' => $search,
-            'total' => $total,
+            'total' => $data['total'], //$data['total']
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
         ], $this->viewPermission, $this->viewOptionData));
@@ -89,7 +103,7 @@ class CategoryController extends BaseAdminController{
         if (!$this->checkMultiPermiss([PERMISS_CATEGORY_FULL, PERMISS_CATEGORY_CREATE])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
-
+        $data=[];
         if($id > 0){
             $data = (($id > 0)) ? app(Category::class)->getItemById($id) : [];
         }
@@ -146,24 +160,15 @@ class CategoryController extends BaseAdminController{
         }
         return Response::json($data);
     }
-    public function _outDataView($data){
 
-        $optionStatus = getOption($this->arrStatus, isset($data['category_status']) ? $data['category_status'] : STATUS_HIDE);
-        $optionMenu = getOption($this->arrMenu, isset($data['category_menu_status']) ? $data['category_menu_status'] : STATUS_HIDE);
-        $optionMenuRight = getOption($this->arrMenuRight, isset($data['category_menu_right']) ? $data['category_menu_right'] : STATUS_HIDE);
-
-        return $this->viewOptionData = [
-            'pageAdminTitle' => CGlobal::$pageAdminTitle,
-            'arrCategoryParent' => $this->arrCategoryParent,
-            'optionStatus' => $optionStatus,
-            'optionMenu' => $optionMenu,
-            'optionMenuRight' => $optionMenuRight,
-        ];
-    }
     private function _validData($data = array()){
         if(!empty($data)) {
             if (isset($data['category_name']) && trim($data['category_name']) == '') {
-                $this->error[] = 'Null';
+                $this->error[] = 'Không được bỏ trống name';
+            }
+
+            if (isset($data['category_status']) && trim($data['category_status']) == '') {
+                $this->error[] = 'Không được bỏ trống status';
             }
         }
         return true;
