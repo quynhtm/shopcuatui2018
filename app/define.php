@@ -38,25 +38,29 @@ define('CACHE_FIVE_YEAR', 155520000);
 /**************************************************************************************************************
  * định nghĩa Table vaymuon
  **************************************************************************************************************/
-define('PREFIX', 'shop_');
-define('TABLE_USER_ADMIN', PREFIX.'user_admin');
-define('TABLE_GROUP_USER', PREFIX.'group_user');
-define('TABLE_PERMISSION', PREFIX.'permission');
-define('TABLE_MENU_SYSTEM', PREFIX.'menu_system');
-define('TABLE_ROLE_MENU', PREFIX.'role_menu');
-define('TABLE_ROLE', PREFIX.'role');
-define('TABLE_GROUP_USER_PERMISSION', PREFIX.'group_user_permission');
-define('TABLE_MEMBER', PREFIX.'member');
-define('TABLE_PROVIDER', PREFIX.'provider');
-define('TABLE_BANNER', PREFIX.'banner');
-define('TABLE_ORDER', PREFIX.'order');
-define('TABLE_ORDER_ITEM', PREFIX.'order_item');
-
-define('TABLE_DEPARTMENT', PREFIX.'department');
-define('TABLE_INFOR_SALE', PREFIX.'infor_sale');
-define('TABLE_CATEGORY', PREFIX.'category');
-define('TABLE_PRODUCT', PREFIX.'product');
-define('TABLE_PRODUCT_STORAGE', PREFIX.'product_storage');
+define('PREFIX_SHOP', 'shop_');
+define('PREFIX_WEB', 'web_');
+define('TABLE_USER_ADMIN', PREFIX_SHOP.'user_admin');
+define('TABLE_GROUP_USER', PREFIX_SHOP.'group_user');
+define('TABLE_PERMISSION', PREFIX_SHOP.'permission');
+define('TABLE_MENU_SYSTEM', PREFIX_SHOP.'menu_system');
+define('TABLE_ROLE_MENU', PREFIX_SHOP.'role_menu');
+define('TABLE_ROLE', PREFIX_SHOP.'role');
+define('TABLE_GROUP_USER_PERMISSION', PREFIX_SHOP.'group_user_permission');
+define('TABLE_MEMBER', PREFIX_SHOP.'member');
+define('TABLE_PROVIDER', PREFIX_SHOP.'provider');
+define('TABLE_BANNER', PREFIX_SHOP.'banner');
+define('TABLE_ORDER', PREFIX_SHOP.'order');
+define('TABLE_ORDER_ITEM', PREFIX_SHOP.'order_item');
+define('TABLE_PROVINCE', PREFIX_SHOP.'province');
+define('TABLE_DISTRICTS', PREFIX_SHOP.'districts');
+define('TABLE_WARDS', PREFIX_SHOP.'wards');
+define('TABLE_CONTACT', PREFIX_SHOP.'contact');
+define('TABLE_DEPARTMENT', PREFIX_SHOP.'department');
+define('TABLE_INFOR_SALE', PREFIX_SHOP.'infor_sale');
+define('TABLE_CATEGORY', PREFIX_SHOP.'category');
+define('TABLE_PRODUCT', PREFIX_SHOP.'product');
+define('TABLE_PRODUCT_STORAGE', PREFIX_SHOP.'product_storage');
 
 //Fix Id
 define('CATEGORY_PRODUCT', 5);

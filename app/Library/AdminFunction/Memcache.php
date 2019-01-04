@@ -6,6 +6,14 @@ class Memcache{
 
     const CACHE_BANNER_ID = 'cache_banner_id_';
 
+    const CACHE_WARDS_ID = 'cache_wards_id_';
+
+    const CACHE_DISTRICTS_ID = 'cache_districts_id_';
+
+    const CACHE_PROVINCE_ID = 'cache_province_id_';
+
+    const CACHE_CONTACT_ID = 'cache_contact_id_';
+
     const CACHE_PRODUCT_ID = 'cache_product_id_';
 
     const CACHE_PRODUCT_STORAGE_ID = 'cache_product_storage_id_';
