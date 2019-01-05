@@ -1,5 +1,5 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
-<?php use App\Library\AdminFunction\Define; ?>
+<?php use App\Library\AdminFunction\Define; ?> banner
 @extends('admin.AdminLayouts.index')
 @section('content')
 <div class="main-content-inner">
@@ -51,10 +51,10 @@
                             <tr class="">
                                 <th width="5%" class="text-center">{{viewLanguage('STT')}}</th>
                                 <th width="10%">{{viewLanguage('Image')}}</th>
-                                <th width="30%">{{viewLanguage('Tên banner')}}</th>
-                                <th width="30%">{{viewLanguage('Url')}}</th>
+                                <th width="20%">{{viewLanguage('Tên banner')}}</th>
+                                <th width="50%">{{viewLanguage('Url')}}</th>
                                 <th width="5%" class="text-center">{{viewLanguage('Trạng thái')}}</th>
-                                <th width="20%" class="text-center">{{viewLanguage('Thao tác')}}</th>
+                                <th width="10%" class="text-center">{{viewLanguage('Thao tác')}}</th>
 
                             </tr>
 
