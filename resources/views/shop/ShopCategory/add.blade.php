@@ -14,7 +14,7 @@
             </ul>
         </div>
         <div class="page-content">
-            <div class="row">
+            <div class="row" style="width: 50%">
                 <div class="col-md-12">
                     {{Form::open(array('method' => 'POST','role'=>'form','files' => true))}}
                     @if(isset($error) && !empty($error))
@@ -32,9 +32,6 @@
                                 <input type="text" id="name" name="category_name"  class="form-control input-sm" value="@if(isset($data['category_name'])){{$data['category_name']}}@endif">
                             </div>
                         </div>
-
-
-                        <div class="clearfix"></div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Thuộc danh mục cha')}}</i></label>
@@ -54,7 +51,7 @@
                         </div>
 
 
-                        <div class="clearfix"></div>
+
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Trạng thái')}}</i></label>
@@ -63,9 +60,7 @@
                                 </select>
                             </div>
                         </div>
-
-
-                        <div class="clearfix"></div>
+                    <div class="clearfix"></div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Hiển thị ở menu')}}</i></label>
@@ -74,9 +69,6 @@
                                 </select>
                             </div>
                         </div>
-
-
-                        <div class="clearfix"></div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Menu Tin bên phải')}}</i></label>
@@ -91,29 +83,28 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Meta title')}}</i></label>
-                                <input type="text" id="name" name="meta_title"  class="form-control input-sm" value="@if(isset($data['meta_title'])){{$data['meta_title']}}@endif">
+                                <input type="text" id="name" name="meta_title"  class="form-control input-sm" cols="30" rows="5" value="@if(isset($data['meta_title'])){{$data['meta_title']}}@endif">
                             </div>
                         </div>
 
 
                         <div class="clearfix"></div>
                         <div class="col-sm-6">
-                            <div class="form-group">
+                            <div class="form-group ">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Meta keyword')}}</i></label>
-                                <textarea name="meta_keywords" id="name" class="form-control input-sm" cols="30" rows="5">
-                                    @if(isset($data['meta_keywords'])){!! $data['meta_keywords'] !!}@endif
-                                </textarea>
+                                <input type="text" name="meta_keywords" id="name" class="form-control input-sm  " value="@if(isset($data['meta_keywords'])){!! $data['meta_keywords'] !!}@endif">
+                                    {{--@if(isset($data['meta_keywords'])){!! $data['meta_keywords'] !!}@endif--}}
                             </div>
                         </div>
 
 
                         <div class="clearfix"></div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 ">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Meta description')}}</i></label>
-                                <textarea name="meta_description" id="name" class="form-control input-sm" cols="30" rows="5">
-                                    @if(isset($data['meta_description'])){!! $data['meta_description'] !!}@endif
-                                </textarea>
+                                <input type="text" name="meta_description" id="name" class="form-control input-sm"
+                                       aria-current="" value="@if(isset($data['meta_description'])){!! $data['meta_description'] !!}@endif">
+                                    {{--@if(isset($data['meta_description'])){!! $data['meta_description'] !!}@endif--}}
                             </div>
                         </div>
 
