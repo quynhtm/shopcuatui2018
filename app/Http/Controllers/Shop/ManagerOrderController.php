@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Admin\Department;
+use App\Http\Models\Shop\Department;
 use App\Http\Models\Admin\User;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Redirect;

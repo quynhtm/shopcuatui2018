@@ -10,29 +10,26 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
 
-class ProductStorage extends BaseModel
+class Wards extends BaseModel
 {
-    protected $table = TABLE_PRODUCT_STORAGE;
-    protected $primaryKey = 'storage_id';
-    public $timestamps = true;
-    protected $fillable = array('warehouse_id', 'member_id', 'product_id', 'total_item', 'total_hold',
-        'created_at','updated_at','user_id_creater','user_name_creater','user_id_update', 'user_name_update');
+    protected $table = TABLE_WARDS;
+    protected $primaryKey = 'wards_id';
+    public $timestamps = false;
+    protected $fillable = array('wards_name', 'district_id', 'wards_status', 'wards_alias', 'wards_order',
+    'user_id_creater','user_name_creater','user_id_update','user_name_update', 'created_at', 'updated_at');
 
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {
-            $query = ProductStorage::where('storage_id', '>', 0);
-            if (isset($dataSearch['user_name_creater']) && $dataSearch['user_name_creater'] != '') {
-                $query->where('user_name_creater', 'LIKE', '%' . $dataSearch['user_name_creater'] . '%');
+            $query = Wards::where('wards_id', '>', 0);
+            if (isset($dataSearch['wards_name']) && $dataSearch['wards_name'] != '') {
+                $query->where('wards_name', 'LIKE', '%' . $dataSearch['wards_name'] . '%');
             }
-            if (isset($dataSearch['warehouse_id']) && $dataSearch['warehouse_id'] > -1) {
-                $query->where('warehouse_id', $dataSearch['warehouse_id']);
+            if (isset($dataSearch['district_status']) && $dataSearch['district_status'] > -1) {
+                $query->where('district_status', $dataSearch['district_status']);
             }
-            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > -1) {
-                $query->where('member_id', $dataSearch['member_id']);
-            }
-            $total = ($is_total)?$query->count():0;
-            $query->orderBy('storage_id', 'desc');
+            $total = ($is_total) ? $query->count() : 0;
+            $query->orderBy('wards_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -41,7 +38,7 @@ class ProductStorage extends BaseModel
             } else {
                 $result = $query->take($limit)->skip($offset)->get();
             }
-            return ['data'=>$result,'total'=>$total];
+            return ['data' => $result, 'total' => $total];
 
         } catch (PDOException $e) {
             throw new PDOException();
@@ -51,23 +48,21 @@ class ProductStorage extends BaseModel
     public function createItem($data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
-            $item = new ProductStorage();
+            $item = new Wards();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
+                $item->user_id_creater = app(User::class)->user_id();
+                $item->user_name_creater = app(User::class)->user_name();
+                $item->created_at = getCurrentFull();
+                $item->save();
+                self::removeCache($item->wards_id, $item);
+                return $item->wards_id;
             }
-            $item->user_id_creater = app(User::class)->user_id();
-            $item->user_name_creater = app(User::class)->user_name();
-            $item->save();
-
-            DB::connection()->getPdo()->commit();
-            self::removeCache($item->storage_id, $item);
-            return $item->storage_id;
+            return false;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
@@ -75,21 +70,20 @@ class ProductStorage extends BaseModel
     public function updateItem($id, $data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
+            if(empty($fieldInput))
+                return false;
             $item = self::getItemById($id);
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
             $item->user_id_update = app(User::class)->user_id();
             $item->user_name_update = app(User::class)->user_name();
+            $item->updated_at = getCurrentFull();
             $item->update();
-
-            DB::connection()->getPdo()->commit();
-            self::removeCache($item->storage_id, $item);
+            self::removeCache($item->wards_id, $item);
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
@@ -98,28 +92,25 @@ class ProductStorage extends BaseModel
     {
         if ($id <= 0) return false;
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $item = $dataOld = self::getItemById($id);
             if ($item) {
                 $item->delete();
                 self::removeCache($id, $dataOld);
             }
-            DB::connection()->getPdo()->commit();
-
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
             return false;
         }
     }
 
-    public function getItemById($id) {
-        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_PRODUCT_STORAGE_ID.$id):false;
+    public function getItemById($id)
+    {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_WARDS_ID . $id) : false;
         if (!$data) {
-            $data = ProductStorage::find($id);
-            if($data){
-                Cache::put(Memcache::CACHE_PRODUCT_STORAGE_ID.$id, $data, CACHE_THREE_MONTH);
+            $data = Wards::find($id);
+            if ($data) {
+                Cache::put(Memcache::CACHE_WARDS_ID . $id, $data, CACHE_THREE_MONTH);
             }
         }
         return $data;
@@ -128,9 +119,9 @@ class ProductStorage extends BaseModel
     public function removeCache($id = 0, $data)
     {
         if ($id > 0) {
-            Cache::forget(Memcache::CACHE_PRODUCT_STORAGE_ID.$id);
+            Cache::forget(Memcache::CACHE_WARDS_ID . $id);
         }
-        if($data){
+        if ($data) {
 
         }
     }

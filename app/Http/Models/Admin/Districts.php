@@ -10,26 +10,26 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
 
-class Banners extends BaseModel
+class Districts extends BaseModel
 {
-    protected $table = TABLE_BANNER;
-    protected $primaryKey = 'banner_id';
+    protected $table = TABLE_DISTRICTS;
+    protected $primaryKey = 'district_id';
     public $timestamps = false;
-    protected $fillable = array('banner_name', 'banner_image', 'banner_link', 'position', 'url_image', 'banner_status', 'created_at', 'updated_at');
+    protected $fillable = array('district_name', 'district_province_id', 'district_status', 'district_position', 'district_in_area',
+    'user_id_creater','user_name_creater','user_id_update','user_name_update', 'created_at', 'updated_at');
 
-    //, 'position', 'url_image' sau banner_status
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {
-            $query = Banners::where('banner_id', '>', 0);
-            if (isset($dataSearch['banner_name']) && $dataSearch['banner_name'] != '') {
-                $query->where('banner_name', 'LIKE', '%' . $dataSearch['banner_name'] . '%');
+            $query = Districts::where('district_id', '>', 0);
+            if (isset($dataSearch['district_name']) && $dataSearch['district_name'] != '') {
+                $query->where('district_name', 'LIKE', '%' . $dataSearch['district_name'] . '%');
             }
-            if (isset($dataSearch['banner_status']) && $dataSearch['banner_status'] > -1) {
-                $query->where('banner_status', $dataSearch['banner_status']);
+            if (isset($dataSearch['district_status']) && $dataSearch['district_status'] > -1) {
+                $query->where('district_status', $dataSearch['district_status']);
             }
             $total = ($is_total) ? $query->count() : 0;
-            $query->orderBy('banner_id', 'desc');
+            $query->orderBy('district_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -49,14 +49,17 @@ class Banners extends BaseModel
     {
         try {
             $fieldInput = $this->checkFieldInTable($data);
-            $item = new Banners();
+            $item = new Districts();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
+                $item->user_id_creater = app(User::class)->user_id();
+                $item->user_name_creater = app(User::class)->user_name();
+                $item->created_at = getCurrentFull();
                 $item->save();
-                self::removeCache($item->banner_id, $item);
-                return $item->banner_id;
+                self::removeCache($item->district_id, $item);
+                return $item->district_id;
             }
             return false;
         } catch (PDOException $e) {
@@ -74,24 +77,15 @@ class Banners extends BaseModel
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
+            $item->user_id_update = app(User::class)->user_id();
+            $item->user_name_update = app(User::class)->user_name();
+            $item->updated_at = getCurrentFull();
             $item->update();
-            self::removeCache($item->banner_id, $item);
+            self::removeCache($item->district_id, $item);
             return true;
         } catch (PDOException $e) {
             throw new PDOException();
         }
-    }
-
-    public function getItemById($id)
-    {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_BANNER_ID . $id) : false;
-        if (!$data) {
-            $data = Banners::find($id);
-            if ($data) {
-                Cache::put(Memcache::CACHE_BANNER_ID . $id, $data, CACHE_THREE_MONTH);
-            }
-        }
-        return $data;
     }
 
     public function deleteItem($id)
@@ -110,10 +104,22 @@ class Banners extends BaseModel
         }
     }
 
+    public function getItemById($id)
+    {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_DISTRICTS_ID . $id) : false;
+        if (!$data) {
+            $data = Districts::find($id);
+            if ($data) {
+                Cache::put(Memcache::CACHE_DISTRICTS_ID . $id, $data, CACHE_THREE_MONTH);
+            }
+        }
+        return $data;
+    }
+
     public function removeCache($id = 0, $data)
     {
         if ($id > 0) {
-            Cache::forget(Memcache::CACHE_BANNER_ID . $id);
+            Cache::forget(Memcache::CACHE_DISTRICTS_ID . $id);
         }
         if ($data) {
 

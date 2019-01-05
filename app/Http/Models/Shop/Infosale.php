@@ -5,7 +5,7 @@
 * @Date      : 09/2018
 * @Version   : 1.0
 */
-namespace App\Http\Models\Admin;
+namespace App\Http\Models\Shop;
 
 use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\Cache;

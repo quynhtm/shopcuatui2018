@@ -90,6 +90,8 @@ class Provider extends BaseModel
     {
         try {
             $fieldInput = $this->checkFieldInTable($data);
+            if(empty($fieldInput))
+                return false;
             $member_id = app(User::class)->getMemberIdUser();
             $item = self::getItemById($id);
             if ($item && isset($item->member_id) && $item->member_id == $member_id) {
@@ -110,7 +112,7 @@ class Provider extends BaseModel
     public function getItemById($id)
     {
         $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PROVIDER_ID . $id) : false;
-        if ($data || $data->count() == 0) {
+        if (!$data) {
             $data = Provider::find($id);
             if ($data) {
                 Cache::put(Memcache::CACHE_PROVIDER_ID . $id, $data, CACHE_ONE_MONTH);
@@ -146,13 +148,11 @@ class Provider extends BaseModel
         Cache::forget(Memcache::CACHE_ALL_PROVIDER);
     }
 
-
-
-    public function getProviderShopByID($id, $member_id)
+    public function getProviderShopByID($id, $member_id = 0)
     {
         $provider = Provider::getItemById($id);
-        if (sizeof($provider) > 0) {
-            if ($provider->member_id == $member_id) {
+        if ($provider) {
+            if (isset($provider->member_id) && $provider->member_id == $member_id) {
                 return $provider;
             }
         }
@@ -161,8 +161,8 @@ class Provider extends BaseModel
 
     public function getProviderAll()
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_PROVIDER) : array();
-        if (sizeof($data) == 0) {
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_PROVIDER) : false;
+        if (!$data) {
             $provider = Provider::where('provider_id', '>', 0)->get();
             foreach ($provider as $itm) {
                 $data[$itm['provider_id']] = $itm['provider_name'];
@@ -176,8 +176,8 @@ class Provider extends BaseModel
 
     public function getListProviderByMemberId($member_id = 0)
     {
-        $provider = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_LIST_PROVIDER_BY_MEMBER_ID . $member_id) : array();
-        if (sizeof($provider) == 0) {
+        $provider = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_LIST_PROVIDER_BY_MEMBER_ID . $member_id) : false;
+        if (!$provider) {
             $data = ($member_id == 0) ? Provider::where('member_id', '>', $member_id)->get() : Provider::where('member_id', '=', $member_id)->get();
             if (count($data) > 0) {
                 foreach ($data as $itm) {

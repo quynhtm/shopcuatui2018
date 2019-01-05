@@ -10,26 +10,27 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
 
-class Banners extends BaseModel
+class Contact extends BaseModel
 {
     protected $table = TABLE_BANNER;
-    protected $primaryKey = 'banner_id';
+    protected $primaryKey = 'contact_id';
     public $timestamps = false;
-    protected $fillable = array('banner_name', 'banner_image', 'banner_link', 'position', 'url_image', 'banner_status', 'created_at', 'updated_at');
+    protected $fillable = array('contact_title', 'contact_content', 'contact_content_reply', 'contact_user_id_send', 'contact_user_name_send', 'contact_phone_send',
+        'contact_email_send', 'contact_type', 'contact_reason', 'contact_status', 'contact_time_creater', 'contact_user_id_update', 'contact_user_name_update', 'contact_time_update');
 
     //, 'position', 'url_image' sau banner_status
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {
-            $query = Banners::where('banner_id', '>', 0);
-            if (isset($dataSearch['banner_name']) && $dataSearch['banner_name'] != '') {
-                $query->where('banner_name', 'LIKE', '%' . $dataSearch['banner_name'] . '%');
+            $query = Contact::where('contact_id', '>', 0);
+            if (isset($dataSearch['contact_title']) && $dataSearch['contact_title'] != '') {
+                $query->where('contact_title', 'LIKE', '%' . $dataSearch['contact_title'] . '%');
             }
-            if (isset($dataSearch['banner_status']) && $dataSearch['banner_status'] > -1) {
-                $query->where('banner_status', $dataSearch['banner_status']);
+            if (isset($dataSearch['contact_status']) && $dataSearch['contact_status'] > -1) {
+                $query->where('contact_status', $dataSearch['contact_status']);
             }
             $total = ($is_total) ? $query->count() : 0;
-            $query->orderBy('banner_id', 'desc');
+            $query->orderBy('contact_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -49,14 +50,14 @@ class Banners extends BaseModel
     {
         try {
             $fieldInput = $this->checkFieldInTable($data);
-            $item = new Banners();
+            $item = new Contact();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
                 $item->save();
-                self::removeCache($item->banner_id, $item);
-                return $item->banner_id;
+                self::removeCache($item->contact_id, $item);
+                return $item->contact_id;
             }
             return false;
         } catch (PDOException $e) {
@@ -75,7 +76,7 @@ class Banners extends BaseModel
                 $item->$k = $v;
             }
             $item->update();
-            self::removeCache($item->banner_id, $item);
+            self::removeCache($item->contact_id, $item);
             return true;
         } catch (PDOException $e) {
             throw new PDOException();
@@ -84,11 +85,11 @@ class Banners extends BaseModel
 
     public function getItemById($id)
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_BANNER_ID . $id) : false;
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_CONTACT_ID . $id) : false;
         if (!$data) {
-            $data = Banners::find($id);
+            $data = Contact::find($id);
             if ($data) {
-                Cache::put(Memcache::CACHE_BANNER_ID . $id, $data, CACHE_THREE_MONTH);
+                Cache::put(Memcache::CACHE_CONTACT_ID . $id, $data, CACHE_THREE_MONTH);
             }
         }
         return $data;
@@ -113,7 +114,7 @@ class Banners extends BaseModel
     public function removeCache($id = 0, $data)
     {
         if ($id > 0) {
-            Cache::forget(Memcache::CACHE_BANNER_ID . $id);
+            Cache::forget(Memcache::CACHE_CONTACT_ID . $id);
         }
         if ($data) {
 
