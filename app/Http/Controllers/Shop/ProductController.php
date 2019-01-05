@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Admin\Product;
+use App\Http\Models\Shop\Product;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;

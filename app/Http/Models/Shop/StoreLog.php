@@ -3,36 +3,39 @@
  * QuynhTM
  */
 
-namespace App\Http\Models\Admin;
+namespace App\Http\Models\Shop;
 
 use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
 
-class ProductStorage extends BaseModel
+class StoreLog extends BaseModel
 {
     protected $table = TABLE_PRODUCT_STORAGE;
-    protected $primaryKey = 'storage_id';
+    protected $primaryKey = 'storage_log_id';
     public $timestamps = true;
-    protected $fillable = array('warehouse_id', 'member_id', 'product_id', 'total_item', 'total_hold',
-        'created_at','updated_at','user_id_creater','user_name_creater','user_id_update', 'user_name_update');
+    protected $fillable = array('storage_id', 'member_id', 'number_item', 'type_action', 'note',
+        'created_at','updated_at','user_id_creater','user_name_creater');
 
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {
-            $query = ProductStorage::where('storage_id', '>', 0);
+            $query = StoreLog::where('storage_log_id', '>', 0);
             if (isset($dataSearch['user_name_creater']) && $dataSearch['user_name_creater'] != '') {
                 $query->where('user_name_creater', 'LIKE', '%' . $dataSearch['user_name_creater'] . '%');
             }
-            if (isset($dataSearch['warehouse_id']) && $dataSearch['warehouse_id'] > -1) {
-                $query->where('warehouse_id', $dataSearch['warehouse_id']);
+            if (isset($dataSearch['storage_id']) && $dataSearch['storage_id'] > -1) {
+                $query->where('storage_id', $dataSearch['storage_id']);
             }
             if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > -1) {
                 $query->where('member_id', $dataSearch['member_id']);
             }
+            if (isset($dataSearch['type_action']) && $dataSearch['type_action'] > -1) {
+                $query->where('type_action', $dataSearch['type_action']);
+            }
             $total = ($is_total)?$query->count():0;
-            $query->orderBy('storage_id', 'desc');
+            $query->orderBy('storage_log_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -53,7 +56,7 @@ class ProductStorage extends BaseModel
         try {
             DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
-            $item = new ProductStorage();
+            $item = new StoreLog();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
@@ -64,8 +67,8 @@ class ProductStorage extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->storage_id, $item);
-            return $item->storage_id;
+            self::removeCache($item->storage_log_id, $item);
+            return $item->storage_log_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
@@ -81,12 +84,10 @@ class ProductStorage extends BaseModel
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
-            $item->user_id_update = app(User::class)->user_id();
-            $item->user_name_update = app(User::class)->user_name();
             $item->update();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->storage_id, $item);
+            self::removeCache($item->storage_log_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -117,7 +118,7 @@ class ProductStorage extends BaseModel
     public function getItemById($id) {
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_PRODUCT_STORAGE_ID.$id):false;
         if (!$data) {
-            $data = ProductStorage::find($id);
+            $data = StoreLog::find($id);
             if($data){
                 Cache::put(Memcache::CACHE_PRODUCT_STORAGE_ID.$id, $data, CACHE_THREE_MONTH);
             }

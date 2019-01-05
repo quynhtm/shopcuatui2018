@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Admin\Category;
+use App\Http\Models\Shop\Category;
 use App\Http\Models\Admin\User;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\FunctionLib;
