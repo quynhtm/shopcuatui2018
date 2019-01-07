@@ -111,7 +111,10 @@ var Admin = {
                 url_ajax = 'deletePermission';
             } else if (type == 5) {
                 url_ajax = 'banner/deleteBanner';
+            } else if (type == 6) {
+                url_ajax = 'contact/deleteContact';
             }
+
             if (url_ajax != '') {
                 $.ajax({
                     type: "post",

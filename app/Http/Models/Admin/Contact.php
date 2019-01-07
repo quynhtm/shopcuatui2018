@@ -12,13 +12,12 @@ use App\library\AdminFunction\Memcache;
 
 class Contact extends BaseModel
 {
-    protected $table = TABLE_BANNER;
+    protected $table = TABLE_CONTACT;
     protected $primaryKey = 'contact_id';
     public $timestamps = false;
     protected $fillable = array('contact_title', 'contact_content', 'contact_content_reply', 'contact_user_id_send', 'contact_user_name_send', 'contact_phone_send',
         'contact_email_send', 'contact_type', 'contact_reason', 'contact_status', 'contact_time_creater', 'contact_user_id_update', 'contact_user_name_update', 'contact_time_update');
 
-    //, 'position', 'url_image' sau banner_status
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {

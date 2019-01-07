@@ -87,11 +87,11 @@ define('PERMISS_BANNER_VIEW', 'bannerView');
 define('PERMISS_BANNER_CREATE', 'bannerCreate');
 define('PERMISS_BANNER_DELETE', 'bannerDelete');
 
-////Permiss Department ------
-//define('PERMISS_DEPARTMENT_FULL','departmentFull');
-//define('PERMISS_DEPARTMENT_VIEW','departmentView');
-//define('PERMISS_DEPARTMENT_CREATE','departmentCreate');
-//define('PERMISS_DEPARTMENT_DELETE','departmentDelete');
+//Permiss contact
+define('PERMISS_CONTACT_FULL', 'contactFull');
+define('PERMISS_CONTACT_VIEW', 'contactView');
+define('PERMISS_CONTACT_CREATE', 'contactCreate');
+define('PERMISS_CONTACT_DELETE', 'contactDelete');
 
 //Permiss product
 define('PERMISS_PRODUCT_FULL', 'productFull');
