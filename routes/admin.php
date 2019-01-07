@@ -76,3 +76,10 @@ Route::match(['GET','POST'],'contact',array('as' => 'admin.contactView','uses' =
 Route::get('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@getItem'));
 Route::post('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@postItem'));
 Route::post('contact/deleteContact', array('as' => 'admin.deleteContact','uses' => Admin.'\AdminContactController@deleteContact'));
+
+
+//*route province*/
+Route::match(['GET','POST'],'province',array('as' => 'admin.provinceView','uses' => Admin.'\AdminProvinceController@view'));
+Route::get('province/edit/{id?}', array('as' => 'admin.provinceEdit','uses' => Admin.'\AdminProvinceController@getItem'));
+Route::post('province/edit/{id?}', array('as' => 'admin.provinceEdit','uses' => Admin.'\AdminProvinceController@postItem'));
+Route::post('province/deleteProvince', array('as' => 'admin.deleteProvince','uses' => Admin.'\AdminProvinceController@deleteProvince'));

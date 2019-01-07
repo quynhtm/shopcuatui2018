@@ -113,6 +113,8 @@ var Admin = {
                 url_ajax = 'banner/deleteBanner';
             } else if (type == 6) {
                 url_ajax = 'contact/deleteContact';
+            } else if (type == 7) {
+                url_ajax = 'province/deleteProvince';
             }
 
             if (url_ajax != '') {

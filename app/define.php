@@ -117,3 +117,8 @@ define('PERMISS_CATEGORY_VIEW', 'categoryView');
 define('PERMISS_CATEGORY_CREATE', 'categoryCreate');
 define('PERMISS_CATEGORY_DELETE', 'categoryDelete');
 
+//province
+define('PERMISS_PROVINCE_FULL', 'contactFull');
+define('PERMISS_PROVINCE_VIEW', 'contactView');
+define('PERMISS_PROVINCE_CREATE', 'contactCreate');
+define('PERMISS_PROVINCE_DELETE', 'contactDelete');
