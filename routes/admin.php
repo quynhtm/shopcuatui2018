@@ -64,3 +64,15 @@ Route::match(['GET','POST'],'banner',array('as' => 'admin.bannerView','uses' => 
 Route::get('banner/edit/{id?}', array('as' => 'admin.bannerEdit','uses' => Admin.'\AdminBannersController@getItem'));
 Route::post('banner/edit/{id?}', array('as' => 'admin.bannerEdit','uses' => Admin.'\AdminBannersController@postItem'));
 Route::post('banner/deleteBanner', array('as' => 'admin.deleteBanner','uses' => Admin.'\AdminBannersController@deleteBanner'));//ajax
+
+//*route Department */
+Route::match(['GET','POST'],'department',array('as' => 'admin.departmentView','uses' => Admin.'\AdminDepartmentController@view'));
+Route::get('Department/edit/{id?}',array('as' => 'admin.departmentEdit','uses' => Admin.'\AdminDepartmentController@getItem'));
+Route::post('Department/edit/{id?}',array('as' => 'admin.departmentEdit','uses' => Admin.'\AdminDepartmentController@postItem'));
+Route::post('Department/deleteDepartment',array('as' => 'admin.deleteDepartment','uses' => Admin.'\AdminDepartmentController@deleteDepartment'));
+
+//*route contact */
+Route::match(['GET','POST'],'contact',array('as' => 'admin.contactView','uses' => Admin.'\AdminContactController@view'));
+Route::get('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@getItem'));
+Route::post('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@postItem'));
+Route::post('contact/deleteContact', array('as' => 'admin.deleteContact','uses' => Admin.'\AdminContactController@deleteContact'));

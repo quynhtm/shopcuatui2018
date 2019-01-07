@@ -9,7 +9,7 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="{{URL::route('admin.dashboard')}}">{{viewLanguage('Trang chủ')}}</a>
                 </li>
-                <li class="active">{{$pageAdminTitle}}</li>
+                <li class="active"> <a href="{{URL::route('shop.category')}}"> {{$pageAdminTitle}} </a></li>
                 <li class="active">@if($id > 0){{viewLanguage('Cập nhật')}}@else {{viewLanguage('Tạo mới')}} @endif</li>
             </ul>
         </div>
@@ -92,8 +92,9 @@
                         <div class="col-sm-6">
                             <div class="form-group ">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Meta keyword')}}</i></label>
-                                <input type="text" name="meta_keywords" id="name" class="form-control input-sm  " value="@if(isset($data['meta_keywords'])){!! $data['meta_keywords'] !!}@endif">
-                                    {{--@if(isset($data['meta_keywords'])){!! $data['meta_keywords'] !!}@endif--}}
+                                <textarea name="meta_keywords" id="name" class="form-control input-sm" cols="30" rows="5">
+                                    @if(isset($data['meta_keywords'])){!! $data['meta_keywords'] !!}@endif
+                                </textarea>
                             </div>
                         </div>
 
@@ -102,9 +103,9 @@
                         <div class="col-sm-6 ">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Meta description')}}</i></label>
-                                <input type="text" name="meta_description" id="name" class="form-control input-sm"
-                                       aria-current="" value="@if(isset($data['meta_description'])){!! $data['meta_description'] !!}@endif">
-                                    {{--@if(isset($data['meta_description'])){!! $data['meta_description'] !!}@endif--}}
+                                <textarea name="meta_description" id="name" class="form-control input-sm" cols="30" rows="5">
+                                    @if(isset($data['meta_description'])){!! $data['meta_description'] !!}@endif
+                                </textarea>
                             </div>
                         </div>
 

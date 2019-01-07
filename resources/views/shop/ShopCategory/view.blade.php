@@ -12,7 +12,7 @@
     </div>
     <div class="page-content">
         <div class="row">
-            <div class="col-xs-12">
+           <div class="col-xs-12">  {{--12 là số lớn nhất--}}
                 <div class="panel panel-info">
                     <form method="get" action="" role="form">
                         {{ csrf_field() }}
@@ -42,14 +42,14 @@
                 <br/>
                 <div class="line" id="element">
                     <table class="table table-bordered bg-head-table">
-                        <thead>
-                        <tr>
-                            <th class="text-center w10">{{viewLanguage('STT')}}</th>
-                            <th>{{viewLanguage('Tên danh mục')}}</th>
-                            <th>{{viewLanguage('Danh mục cha')}}</th>
-                            <th>{{viewLanguage('Ngày tạo')}}</th>
-                            <th>{{viewLanguage('Ngày cập nhật')}}</th>
-                            <th class="text-center">{{viewLanguage('Hoạt động')}}</th>
+                        <thead class="thin-border-bottom"  >
+                        <tr class="">
+                            <th class="text-center w10" width="4%">{{viewLanguage('STT')}}</th>
+                            <th width="20%">{{viewLanguage('Tên danh mục')}}</th>
+                            <th width="45%">{{viewLanguage('Danh mục cha')}}</th>
+                            <th width="12%">{{viewLanguage('Ngày tạo')}}</th>
+                            <th width="12%">{{viewLanguage('Ngày cập nhật')}}</th>
+                            <th class="text-center" width="7%">{{viewLanguage('Hoạt động')}}</th>
                         </tr>
                         </thead>
                         <tbody>
