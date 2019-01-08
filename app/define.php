@@ -128,3 +128,9 @@ define('PERMISS_DISTRICTS_FULL', 'districtsFull');
 define('PERMISS_DISTRICTS_VIEW', 'districtsView');
 define('PERMISS_DISTRICTS_CREATE', 'districtsCreate');
 define('PERMISS_DISTRICTS_DELETE', 'districtsDelete');
+
+//wards
+define('PERMISS_WARDS_FULL', 'wardsFull');
+define('PERMISS_WARDS_VIEW', 'wardsView');
+define('PERMISS_WARDS_CREATE', 'wardsCreate');
+define('PERMISS_WARDS_DELETE', 'wardsDelete');

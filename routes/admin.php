@@ -82,3 +82,8 @@ Route::get('districts/edit/{id?}', array('as' => 'admin.districtsEdit','uses' =>
 Route::post('districts/edit/{id?}', array('as' => 'admin.districtsEdit','uses' => Admin.'\AdminDistrictsController@postItem'));
 Route::post('districts/deleteDistricts', array('as' => 'admin.deleteDistricts','uses' => Admin.'\AdminDistrictsController@deleteDistricts'));
 
+//*route wards*/
+Route::match(['GET','POST'],'wards',array('as' => 'admin.wardsView','uses' => Admin.'\AdminWardsController@view'));
+Route::get('wards/edit/{id?}', array('as' => 'admin.wardsEdit','uses' => Admin.'\AdminWardsController@getItem'));
+Route::post('wards/edit/{id?}', array('as' => 'admin.wardsEdit','uses' => Admin.'\AdminWardsController@postItem'));
+Route::post('wards/deleteWards', array('as' => 'admin.deleteWards','uses' => Admin.'\AdminWardsController@deleteWards'));
