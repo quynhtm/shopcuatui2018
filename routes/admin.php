@@ -68,8 +68,6 @@ Route::post('banner/deleteBanner', array('as' => 'admin.deleteBanner','uses' => 
 //*route contact */
 Route::match(['GET','POST'],'contact',array('as' => 'admin.contactView','uses' => Admin.'\AdminContactController@view'));
 Route::get('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@getItem'));
-Route::post('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@postItem'));
-Route::post('contact/deleteContact', array('as' => 'admin.deleteContact','uses' => Admin.'\AdminContactController@deleteContact'));
 
 
 //*route province*/
@@ -77,3 +75,10 @@ Route::match(['GET','POST'],'province',array('as' => 'admin.provinceView','uses'
 Route::get('province/edit/{id?}', array('as' => 'admin.provinceEdit','uses' => Admin.'\AdminProvinceController@getItem'));
 Route::post('province/edit/{id?}', array('as' => 'admin.provinceEdit','uses' => Admin.'\AdminProvinceController@postItem'));
 Route::post('province/deleteProvince', array('as' => 'admin.deleteProvince','uses' => Admin.'\AdminProvinceController@deleteProvince'));
+
+//*route Districts*/
+Route::match(['GET','POST'],'districts',array('as' => 'admin.districtsView','uses' => Admin.'\AdminDistrictsController@view'));
+Route::get('districts/edit/{id?}', array('as' => 'admin.districtsEdit','uses' => Admin.'\AdminDistrictsController@getItem'));
+Route::post('districts/edit/{id?}', array('as' => 'admin.districtsEdit','uses' => Admin.'\AdminDistrictsController@postItem'));
+Route::post('districts/deleteDistricts', array('as' => 'admin.deleteDistricts','uses' => Admin.'\AdminDistrictsController@deleteDistricts'));
+

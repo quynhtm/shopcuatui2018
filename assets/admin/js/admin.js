@@ -115,6 +115,8 @@ var Admin = {
                 url_ajax = 'contact/deleteContact';
             } else if (type == 7) {
                 url_ajax = 'province/deleteProvince';
+            } else if (type == 8) {
+                url_ajax = 'districts/deleteDistricts';
             }
 
             if (url_ajax != '') {

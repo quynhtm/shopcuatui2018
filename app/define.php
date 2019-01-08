@@ -118,7 +118,13 @@ define('PERMISS_CATEGORY_CREATE', 'categoryCreate');
 define('PERMISS_CATEGORY_DELETE', 'categoryDelete');
 
 //province
-define('PERMISS_PROVINCE_FULL', 'contactFull');
-define('PERMISS_PROVINCE_VIEW', 'contactView');
-define('PERMISS_PROVINCE_CREATE', 'contactCreate');
-define('PERMISS_PROVINCE_DELETE', 'contactDelete');
+define('PERMISS_PROVINCE_FULL', 'provinceFull');
+define('PERMISS_PROVINCE_VIEW', 'provinceView');
+define('PERMISS_PROVINCE_CREATE', 'provinceCreate');
+define('PERMISS_PROVINCE_DELETE', 'provinceDelete');
+
+//districts
+define('PERMISS_DISTRICTS_FULL', 'districtsFull');
+define('PERMISS_DISTRICTS_VIEW', 'districtsView');
+define('PERMISS_DISTRICTS_CREATE', 'districtsCreate');
+define('PERMISS_DISTRICTS_DELETE', 'districtsDelete');
