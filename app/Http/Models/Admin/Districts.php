@@ -29,7 +29,9 @@ class Districts extends BaseModel
                 $query->where('district_status', $dataSearch['district_status']);
             }
             $total = ($is_total) ? $query->count() : 0;
-            $query->orderBy('district_id', 'desc');
+
+            $query->orderBy('district_province_id', 'asc');  //và những quận thuộc 1 tỉnh hiển thị liền nhau . thứ tự hiển thị tỉnh  trước khi
+            $query->orderBy('district_id', 'desc');          // hiển thị quận (mới thêm)
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -125,4 +127,15 @@ class Districts extends BaseModel
 
         }
     }
+
+    public function getListDistrictsNameById($id) { //
+        $data = array();
+        if(is_array($id)) //kiểm tra $id là 1 mảng
+        {
+            $data = (is_array($id)) ? Districts::whereIn('district_id',$id)->get(array('district_id','district_province_id','district_name')) : Districts::where('district_id',$id) -> get(array('district_id','district_province_id','district_name'));
+        // $data = $id là 1 mảng thì vào districts với district_id truyền biến theo dạng mảng với các biến ......
+        }
+        return $data;
+    }
+
 }

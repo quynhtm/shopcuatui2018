@@ -1,5 +1,5 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
-<?php use App\Library\AdminFunction\Define; ?> banner
+<?php use App\Library\AdminFunction\Define; ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
 <div class="main-content-inner">
@@ -21,7 +21,7 @@
                         {{ csrf_field() }}
                         <div class="panel-body">
                             <div class="form-group col-lg-3">
-                                <label for="name"><i>{{viewLanguage('Tên banner')}}</i></label>
+                                <label for="name"><i>{{viewLanguage('Tên Banner')}}</i></label>
                                 <input type="text" class="form-control input-sm" id="name" name="banner_name" placeholder="Tên banner" @if(isset($search['banner_name']))value="{{$search['banner_name']}}"@endif>
                             </div>
                             <div class="form-group col-lg-3">
@@ -50,20 +50,20 @@
                             <thead class="thin-border-bottom">
                             <tr class="">
                                 <th width="5%" class="text-center">{{viewLanguage('STT')}}</th>
-                                <th width="10%">{{viewLanguage('Image')}}</th>
+                                <th width="10%">{{viewLanguage('Ảnh')}}</th>
                                 <th width="20%">{{viewLanguage('Tên banner')}}</th>
-                                <th width="50%">{{viewLanguage('Url')}}</th>
-                                <th width="5%" class="text-center">{{viewLanguage('Trạng thái')}}</th>
+                                <th width="50%">{{viewLanguage('URL')}}</th>
+                                <th width="5%" class="text-center">{{viewLanguage('Trạng Thái')}}</th>
                                 <th width="10%" class="text-center">{{viewLanguage('Thao tác')}}</th>
 
                             </tr>
-
                             </thead>
+
                             <tbody>
                             @foreach ($data as $key => $item)
                                 <tr>
-                                    <td class="text-center middle">{{ $stt+1 }}</td>
-{{--image--}}                       <td><img src="{{Config::get('config.WEB_ROOT')}}/uploads/banner/{{$item->banner_image}}" height="70px" width="100px"></td>
+                                    <td class="text-center middle">{{ $stt+1 , $stt++ }}</td>
+                                    <td><img src="{{Config::get('config.WEB_ROOT')}}/uploads/banner/{{$item->banner_image}}" height="70px" width="100px"></td>
                                     <td>{{ $item['banner_name'] }}</td>
                                     <td>{{ $item['banner_link'] }}</td>
                                     <td class="text-center middle">

@@ -23,7 +23,7 @@
                             <div class="panel-body">
                                 <div class="form-group col-lg-3">
                                     <label for="name"><i>{{viewLanguage('Tên Tỉnh thành')}}</i></label>
-                                    <input type="text" class="form-control input-sm" id="name" name="province_name" placeholder="Tên banner" @if(isset($search['province_name']))value="{{$search['province_name']}}"@endif>
+                                    <input type="text" class="form-control input-sm" id="name" name="province_name" placeholder="Tên Tỉnh Thành" @if(isset($search['province_name']))value="{{$search['province_name']}}"@endif>
                                 </div>
                                 <div class="form-group col-lg-3">
                                     <label for="status" class="control-label">{{viewLanguage('Trạng thái')}}</label>
@@ -35,12 +35,12 @@
                             <div class="panel-footer text-right">
 
                                 {{--code add--}}
-                                @if($is_root || $permission_full || $permission_create)
-                                    <a class="btn btn-danger btn-sm" href="{{URL::route('admin.provinceEdit',array('province_id' => 0))}}">
-                                        <i class="ace-icon fa fa-plus-circle"></i>
-                                        {{viewLanguage('Thêm')}}
-                                    </a>
-                                @endif
+                                {{--@if($is_root || $permission_full || $permission_create)--}}
+                                    {{--<a class="btn btn-danger btn-sm" href="{{URL::route('admin.provinceEdit',array('province_id' => 0))}}">--}}
+                                        {{--<i class="ace-icon fa fa-plus-circle"></i>--}}
+                                        {{--{{viewLanguage('Thêm')}}--}}
+                                    {{--</a>--}}
+                                {{--@endif--}}
 
                                 <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> {{viewLanguage('search')}}</button>
                             </div>
@@ -63,7 +63,7 @@
                                 <tbody>
                                 @foreach ($data as $key => $item)
                                     <tr>
-                                        <td class="text-center middle">{{ $item['province_id'] }}</td>
+                                        <td class="text-center middle">{{$stt+1 , $stt++ }}</td>  {{--{{$item['province_id']}} hiển thị id của database--}}
                                         <td>{{ $item['province_name'] }}</td>
                                         <td class="text-center middle">
                                             @if($item['province_status'] == STATUS_SHOW)

@@ -16,7 +16,7 @@ class Province extends BaseModel
     protected $primaryKey = 'province_id';
     public $timestamps = false;
     protected $fillable = array('province_name', 'province_position', 'province_status', 'province_area',
-    'user_id_creater','user_name_creater','user_id_update','user_name_update', 'created_at', 'updated_at');
+        'user_id_creater', 'user_name_creater', 'user_id_update', 'user_name_update', 'created_at', 'updated_at');
 
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
@@ -29,6 +29,7 @@ class Province extends BaseModel
                 $query->where('province_status', $dataSearch['province_status']);
             }
             $total = ($is_total) ? $query->count() : 0;
+
             $query->orderBy('province_id', 'desc');
 
             //get field can lay du lieu
@@ -71,7 +72,7 @@ class Province extends BaseModel
     {
         try {
             $fieldInput = $this->checkFieldInTable($data);
-            if(empty($fieldInput))
+            if (empty($fieldInput))
                 return false;
             $item = self::getItemById($id);
             foreach ($fieldInput as $k => $v) {
@@ -124,5 +125,17 @@ class Province extends BaseModel
         if ($data) {
 
         }
+    }
+
+    public function getListProviceNameById($id)
+    {   // lấy tên thư mục cha
+        $data = array();
+        $result = Province::whereIn('province_id', $id)->get(array('province_id', 'province_name'));
+        if ($result) {
+            foreach ($result as $itm) {
+                $data[$itm->province_id] = $itm->province_name;
+            }
+        }
+        return $data;
     }
 }

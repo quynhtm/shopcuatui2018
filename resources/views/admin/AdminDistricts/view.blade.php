@@ -23,8 +23,9 @@
                             <div class="panel-body">
                                 <div class="form-group col-lg-3">
                                     <label for="name"><i>{{viewLanguage('Tên Quận Huyện')}}</i></label>
-                                    <input type="text" class="form-control input-sm" id="name" name="district_name" placeholder="Tên Quận Huyện" @if(isset($search['district_name']))value="{{$search['district_name']}}"@endif>
+                                    <input type="text" class="form-control input-sm" id="name" name="district_name" placeholder="Tên Quận Huyện" @if(isset($search['district_name'])) value="{{$search['district_name']}}"@endif>
                                 </div>
+
                                 <div class="form-group col-lg-3">
                                     <label for="status" class="control-label">{{viewLanguage('Trạng thái')}}</label>
                                     <select name="district_status" id="status" class="form-control input-sm">
@@ -45,7 +46,8 @@
                                 <thead class="thin-border-bottom">
                                 <tr class="">
                                     <th width="1%" class="text-center">{{viewLanguage('STT')}}</th>
-                                    <th width="20%">{{viewLanguage('Tên Quận Huyện')}}</th>
+                                    <th width="10%">{{viewLanguage('Tên Quận Huyện')}}</th>
+                                    <th width="10%">{{viewLanguage('Thuộc tỉnh')}}</th>
                                     <th width="1%" class="text-center">{{viewLanguage('Trạng thái')}}</th>
                                     <th width="2%" class="text-center">{{viewLanguage('Thao tác')}}</th>
                                 </tr>
@@ -56,6 +58,13 @@
                                     <tr>
                                         <td class="text-center middle">{{$stt+1 , $stt++ }}</td>
                                         <td>{{ $item['district_name'] }}</td>
+                                        <td>
+                                            @if(isset($arrInforProvice[$item['district_province_id']]))
+                                                <a href="{{URL::route('admin.provinceEdit',array('id' => $item['district_province_id']))}}" title="Sửa item">
+                                                    {{ $arrInforProvice[$item['district_province_id']]}}
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td class="text-center middle">
                                             @if($item['district_status'] == STATUS_SHOW)
                                                 <a href="javascript:void(0);" title="Hiện"><i class="fa fa-check fa-2x"></i></a>

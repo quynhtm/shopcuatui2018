@@ -32,12 +32,12 @@
                                 </div>
                             </div>
                             <div class="panel-footer text-right">
-                                @if($is_root || $permission_full || $permission_create)
-                                    <a class="btn btn-danger btn-sm" href="{{URL::route('admin.contactEdit',array('contact_id' => 0))}}">
-                                        <i class="ace-icon fa fa-plus-circle"></i>
-                                        {{viewLanguage('Thêm')}}
-                                    </a>
-                                @endif
+                                {{--@if($is_root || $permission_full || $permission_create)--}}
+                                    {{--<a class="btn btn-danger btn-sm" href="{{URL::route('admin.contactEdit',array('contact_id' => 0))}}">--}}
+                                        {{--<i class="ace-icon fa fa-plus-circle"></i>--}}
+                                        {{--{{viewLanguage('Thêm')}}--}}
+                                    {{--</a>--}}
+                                {{--@endif--}}
                                 <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> {{viewLanguage('search')}}</button>
                             </div>
                         </form>
@@ -63,7 +63,7 @@
                                 <tbody>
                                 @foreach ($data as $key => $item)
                                     <tr>
-                                        <td class="text-center middle">{{ $stt+1 }}</td>
+                                        <td class="text-center middle">{{ $item['contact_id'] }}</td>
                                         <td>{{ $item['contact_user_name_send'] }}</td>
                                         <td>{{ $item['contact_phone_send'] }}</td>
                                         <td>{{ $item['contact_email_send'] }}</td>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Admin\Districts;
+use App\Http\Models\Admin\Province;
 use App\Http\Models\Admin\Wards;
 use Illuminate\Support\Facades\Request;
 use App\Library\AdminFunction\CGlobal;
@@ -66,15 +68,63 @@ class AdminWardsController extends BaseAdminController
         $search['wards_status'] = (int)Request::get('wards_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-        $data = app(Wards::class)->searchByCondition($search, $limit, $offset);
-        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
+
+// hiển thị thông tin quận
+
+        $result = app(Wards::class)->searchByCondition($search, $limit, $offset);  //đổi $data thành $$result
+        $data = isset($result['data']) ? $result['data'] : array();
+
+        $arrDistrictsId = array();
+        $arrInforDistricts = array();
+        $arrProviceId =array();
+        $arrInforProvince = array();
+
+        if(sizeof($data) > 0){
+            foreach($data as $item){
+                $arrDistrictsId[$item['district_id']] = $item['district_id'];
+            }
+        }
+
+        //lấy dữ thông tin quận
+        if(!empty($arrDistrictsId)) {
+            $dataDistricts = app(Districts::class)->getListDistrictsNameById($arrDistrictsId);
+
+            if($dataDistricts){
+                $searchProvice = array();
+                foreach ($dataDistricts as $dis ){
+                    $arrInforDistricts[$dis->district_id] = $dis->district_name;
+                    $searchProvice[$dis->district_id] = $dis->district_province_id;
+                }
+
+                //lấy thông tin của tỉnh thành theo mảng id quận huyện
+                if(!empty($searchProvice)) //empty( kiểm tra rỗng) còn insset là biến này có tồn tại
+                {
+                    $dataProvince = app(Province::class)->getListProviceNameById($searchProvice);
+                    //$dataProvince là 1 mảng dữ liệu
+                    if($dataProvince){
+                        foreach ($searchProvice as $key_district_id=>$province_id){
+                            foreach ($dataProvince as $k_id=>$name_pro){
+                                if($province_id == $k_id){
+                                    $arrInforProvince[$key_district_id] = $name_pro;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        $paging = $result['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $result['total'], $limit, $search) : '';
+
         $this->_outDataView($search);
         return view('admin.AdminWards.view', array_merge([
-            'data' => $data['data'],
-            'search' => $search,
-            'total' => $data['total'],
-            'stt' => ($pageNo - 1) * $limit,
-            'paging' => $paging,
+           'data' => $result['data'],
+           'search' => $search,
+           'total' => $result['total'],
+           'stt' => ($pageNo - 1) * $limit,
+           'paging' =>$paging,
+           'arrInforDistricts' => $arrInforDistricts,
+           'arrInforProvince' => $arrInforProvince,
         ], $this->viewPermission, $this->viewOptionData));
     }
 

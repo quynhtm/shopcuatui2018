@@ -55,6 +55,7 @@ class AdminBannersController extends BaseAdminController
         if (!$this->checkMultiPermiss([PERMISS_BANNER_FULL, PERMISS_BANNER_VIEW])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
+
         $this->_getDataDefault(); //lấy dữ liệu mặc định
         $pageNo = (int)Request::get('page_no', 1);
         $sbmValue = Request::get('submit', 1);
@@ -102,7 +103,7 @@ class AdminBannersController extends BaseAdminController
 
         if(isset($_FILES['banner_image']) && count($_FILES['banner_image'])>0 && $_FILES['banner_image']['name'] != '') {
             $folder = 'banner';
-            $_max_file_size = 10* 1024* 1024;
+            $_max_file_size = 10 * 1024 * 1024;
             $_file_ext = 'jpg,jpeg,png,gif';
             $pathFileUpload = app(Upload::class)->uploadFile('banner_image', $_file_ext, $_max_file_size, $folder);
             $data['banner_image'] = trim($pathFileUpload) != ''? $pathFileUpload: '';

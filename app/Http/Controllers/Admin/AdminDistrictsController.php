@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\Districts;
+use App\Http\Models\Admin\Province;
 use Illuminate\Support\Facades\Request;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Redirect;
@@ -67,15 +68,33 @@ class AdminDistrictsController extends BaseAdminController
         $search['district_status'] = (int)Request::get('district_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-        $data = app(Districts::class)->searchByCondition($search, $limit, $offset);
-        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
+//hiện thị thông tin tỉnh
+        $result = app(Districts::class)->searchByCondition($search, $limit, $offset);  //đổi $data thành $$result
+
+        $data = isset($result['data']) ? $result['data'] : array();
+        $arrProviceId = array();
+        $arrInforProvice = array();
+        if(sizeof($data) > 0){
+            foreach($data as $item){
+                $arrProviceId[$item['district_province_id']] = $item['district_province_id'];
+            }
+        }
+
+        //lấy thông tin tỉnh thành cha
+        if(!empty($arrProviceId)){
+            $arrInforProvice = app(Province::class)->getListProviceNameById($arrProviceId);
+        }
+//
+
+        $paging = $result['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $result['total'], $limit, $search) : '';
         $this->_outDataView($search);
         return view('admin.AdminDistricts.view', array_merge([
-            'data' => $data['data'],
+            'data' => $result['data'],
             'search' => $search,
-            'total' => $data['total'],
+            'total' => $result['total'],
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
+            'arrInforProvice' => $arrInforProvice,   //
         ], $this->viewPermission, $this->viewOptionData));
     }
 
@@ -137,6 +156,7 @@ class AdminDistrictsController extends BaseAdminController
         }
         return Response::json($data);
     }
+
 
     private function _validData($data = array())
     {

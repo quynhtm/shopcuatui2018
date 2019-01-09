@@ -45,7 +45,9 @@
                                 <thead class="thin-border-bottom">
                                 <tr class="">
                                     <th width="1%" class="text-center">{{viewLanguage('STT')}}</th>
-                                    <th width="20%">{{viewLanguage('Tên Xã')}}</th>
+                                    <th width="10%">{{viewLanguage('Tên Xã')}}</th>
+                                    <th width="10%">{{viewLanguage('Tên Quận')}}</th>
+                                    <th width="10%">{{viewLanguage('Tên Tỉnh')}}</th>
                                     <th width="1%" class="text-center">{{viewLanguage('Trạng thái')}}</th>
                                     <th width="2%" class="text-center">{{viewLanguage('Thao tác')}}</th>
                                 </tr>
@@ -56,6 +58,23 @@
                                     <tr>
                                         <td class="text-center middle">{{$stt+1 , $stt++ }}</td>
                                         <td>{{ $item['wards_name'] }}</td>
+
+                                        <td> {{--Tên quận--}}
+                                            @if(isset($arrInforDistricts[$item['district_id']]))
+                                                <a href="{{URL::route('admin.districtsEdit',array('id' => $item['district_id'] ))}}" title="Sửa item">
+                                                    {{$arrInforDistricts[$item['district_id']]}}
+                                                </a>
+                                            @endif
+                                        </td>
+
+                                        <td> {{--Tên Tỉnh Province--}}
+                                            @if(isset($arrInforProvince[$item['district_id']]))
+                                                <a href="{{URL::route('admin.provinceEdit',array('id' => $item['district_province_id'] ))}}" title="Sửa item">
+                                                    {{$arrInforProvince[$item['district_id']]}}
+                                                </a>
+                                            @endif
+                                        </td>
+
                                         <td class="text-center middle">
                                             @if($item['wards_status'] == STATUS_SHOW)
                                                 <a href="javascript:void(0);" title="Hiện"><i class="fa fa-check fa-2x"></i></a>

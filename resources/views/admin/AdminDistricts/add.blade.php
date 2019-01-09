@@ -9,7 +9,7 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="{{URL::route('admin.dashboard')}}">{{viewLanguage('Trang chủ')}}</a>
                 </li>
-                <li><a href="{{URL::route('admin.districtsView')}}"> {{viewLanguage('Quản Lý Xã')}}</a></li>
+                <li><a href="{{URL::route('admin.districtsView')}}"> {{viewLanguage('Quản Lý Quận Huyện')}}</a></li>
                 <li class="active">@if($id > 0){{viewLanguage('Cập nhật')}}@else {{$pageTitle}} @endif</li>
             </ul><!-- /.breadcrumb -->
         </div>
@@ -30,7 +30,7 @@
 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="name" class="control-label">{{viewLanguage('Tên Xã')}}<span class="red"> (*) </span></label>
+                                <label for="name" class="control-label">{{viewLanguage('Tên Quận')}}<span class="red"> (*) </span></label>
                                 <input type="text" id="name" name="district_name"  class="form-control input-sm" value="@if(isset($data['district_name'])){{$data['district_name']}}@endif">
                             </div>
                         </div>
