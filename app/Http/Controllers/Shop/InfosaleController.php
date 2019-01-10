@@ -51,16 +51,16 @@ class InfosaleController extends BaseAdminController{
         $search['member_id'] = app(User::class)->getMemberIdUser();
         
         $search['field_get'] = 'infor_sale_id,infor_sale_uid,infor_sale_name,infor_sale_phone,infor_sale_mail,infor_sale_skype,infor_sale_address,infor_sale_sotaikhoan,infor_sale_vanchuyen,created_at,updated_at';
-        $data = app(Infosale::class)->searchByCondition($search, $limit, $offset, $total);
-        $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
+        $data = app(Infosale::class)->searchByCondition($search, $limit, $offset);
+        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'] , $limit, $search) : '';
 
         $this->_getDataDefault();
         $this->_outDataView($data);
 
         return view('shop.ShopInfosale.view', array_merge([
-            'data' => $data,
+            'data' => $data['data'],
             'search' => $search,
-            'total' => $total,
+            'total' => $data['total'],
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
         ], $this->viewPermission, $this->viewOptionData));
@@ -70,10 +70,10 @@ class InfosaleController extends BaseAdminController{
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
 
-        $member_id = app(User::class)->getMemberIdUser();
-        $exist = app(Infosale::class)->getItemByMemberId($member_id);
+        //$member_id = app(User::class)->getMemberIdUser();
+        //$exist = app(Infosale::class)->getItemByMemberId($id);
 
-        $id = (isset($exist) && $exist) ? $exist->infor_sale_id : 0;
+        //$id = (isset($exist) && $exist) ? $exist->infor_sale_id : 0;
         $data = (($id > 0)) ? app(Infosale::class)->getItemById($id) : [];
 
         $this->_getDataDefault();
@@ -100,6 +100,7 @@ class InfosaleController extends BaseAdminController{
             }else{
                 app(Infosale::class)->createItem($data);
             }
+
             return Redirect::route('shop.infosale');
         }
         return view('shop.ShopInfosale.add', array_merge([

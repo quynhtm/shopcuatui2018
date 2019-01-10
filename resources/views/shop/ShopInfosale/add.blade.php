@@ -9,7 +9,7 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">{{viewLanguage('Trang chủ')}}</a>
             </li>
-            <li class="active">{{$pageAdminTitle}}</li>
+            <li class="active"><a href="{{URL::route('shop.infosale')}}">{{$pageAdminTitle}}</a></li>
             <li class="active">@if($id > 0){{viewLanguage('Cập nhật')}}@else {{viewLanguage('Tạo mới')}} @endif</li>
         </ul>
     </div>

@@ -11,6 +11,7 @@ Route::post('department/post/{id?}', array('as' => 'shop.departmentGet','uses' =
 Route::get('department/delete',array('as' => 'shop.departmentDelete','uses' => Shop.'\DepartmentController@deleteItem'));
 Route::post('department/ajaxLoad', array('as' => 'shop.departmentAjax','uses' => Shop.'\DepartmentController@ajaxLoadForm'));
 
+//infosale
 Route::get('infosale', array('as' => 'shop.infosale','uses' => Shop.'\InfosaleController@view'));
 Route::get('infosale/get/{id?}', array('as' => 'shop.infosaleGet','uses' => Shop.'\InfosaleController@getItem'))->where('id', '[0-9]+');
 Route::post('infosale/get/{id?}', array('as' => 'shop.infosalePost','uses' => Shop.'\InfosaleController@postItem'))->where('id', '[0-9]+');

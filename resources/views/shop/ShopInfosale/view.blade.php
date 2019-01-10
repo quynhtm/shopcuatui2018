@@ -44,19 +44,19 @@
                     <table class="table table-bordered bg-head-table">
                         <thead>
                         <tr>
-                            <th class="text-center w10">{{viewLanguage('STT')}}</th>
-                            <th>{{viewLanguage('Tên người bán')}}</th>
-                            <th>{{viewLanguage('SĐT')}}</th>
-                            <th>{{viewLanguage('Ngày tạo')}}</th>
-                            <th>{{viewLanguage('Ngày cập nhật')}}</th>
-                            <th class="text-center">{{viewLanguage('Hoạt động')}}</th>
+                            <th class="text-center w10" >{{viewLanguage('STT')}}</th>
+                            <th >{{viewLanguage('Tên người bán')}}</th>
+                            <th >{{viewLanguage('SĐT')}}</th>
+                            <th >{{viewLanguage('Ngày tạo')}}</th>
+                            <th >{{viewLanguage('Ngày cập nhật')}}</th>
+                            <th class="text-center" width="7%" >{{viewLanguage('Hoạt động')}}</th>
                         </tr>
                         </thead>
                         <tbody>
                         @if(isset($data) && sizeof($data))
                             @foreach($data as $k=>$item)
                                 <tr>
-                                    <td class="text-center">{{$stt + $k + 1}}</td>
+                                    <td class="text-center">{{$stt + $k + 1}}</td>  {{--$stt + $k + 1--}}
                                     <td>{{$item->infor_sale_name}}</td>
                                     <td>{{$item->infor_sale_phone}}</td>
                                     <td>{{$item->created_at}}</td>
@@ -67,6 +67,7 @@
                                                 <i class="fa fa-edit fa-2x"></i>
                                             </a>
                                         @endif
+
                                         @if($is_root)
                                             <a href="javascript:void(0);" onclick="BE.deleteItem('{{$item->infor_sale_id}}', WEB_ROOT + '/manager/infosale/delete')" title="{{viewLanguage('Xóa')}}">
                                                 <i class="fa fa-trash fa-2x"></i>
