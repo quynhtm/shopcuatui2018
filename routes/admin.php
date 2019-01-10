@@ -87,3 +87,4 @@ Route::match(['GET','POST'],'wards',array('as' => 'admin.wardsView','uses' => Ad
 Route::get('wards/edit/{id?}', array('as' => 'admin.wardsEdit','uses' => Admin.'\AdminWardsController@getItem'));
 Route::post('wards/edit/{id?}', array('as' => 'admin.wardsEdit','uses' => Admin.'\AdminWardsController@postItem'));
 Route::post('wards/deleteWards', array('as' => 'admin.deleteWards','uses' => Admin.'\AdminWardsController@deleteWards'));
+

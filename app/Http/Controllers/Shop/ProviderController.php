@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Admin\Provider;
+use App\Http\Models\Shop\Provider;
 use App\Http\Models\Admin\User;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Redirect;
@@ -55,19 +55,21 @@ class ProviderController extends BaseAdminController{
 
         $search['provider_name'] = addslashes(Request::get('provider_name', ''));
         $search['provider_status'] = addslashes(Request::get('provider_status', STATUS_DEFAULT));
-        $search['member_id'] = app(User::class)->getMemberIdUser();
+/**/    $search['member_id'] = app(User::class)->getMemberIdUser();
+
         //$search['field_get'] = 'department_id,provider_name,department_order,provider_status,created_at,updated_at';
-        $data = app(Provider::class)->searchByCondition($search, $limit, $offset, $total);
-        $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
+
+        $data = app(Provider::class)->searchByCondition($search, $limit, $offset);
+        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
 
         $this->_getDataDefault();
         $this->_outDataView($data);
 
         $optionStatusSearch = getOption($this->arrStatus, $search['provider_status']);
         return view('shop.ShopProvider.view', array_merge([
-            'data' => $data,
+            'data' => $data['data'],
             'search' => $search,
-            'total' => $total,
+            'total' => $data['total'],
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
             'optionStatusSearch' => $optionStatusSearch,
