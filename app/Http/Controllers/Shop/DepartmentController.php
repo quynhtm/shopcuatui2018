@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
 use Illuminate\Support\Facades\URL;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 
 class DepartmentController extends BaseAdminController{
     private $error = array();
@@ -59,8 +60,8 @@ class DepartmentController extends BaseAdminController{
         $search['member_id'] = app(User::class)->getMemberIdUser();
 
         $search['field_get'] = 'department_id,department_name,department_order,department_status,created_at,updated_at';
-        $data = app(Department::class)->searchByCondition($search, $limit, $offset, $total);
-        $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
+        $data = app(Department::class)->searchByCondition($search, $limit, $offset);
+        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
 
         $this->_getDataDefault();
         $this->_outDataView($data);
@@ -68,9 +69,9 @@ class DepartmentController extends BaseAdminController{
         $optionStatusSearch = getOption($this->arrStatus, $search['department_status']);
 
         return view('shop.ShopDepartment.view', array_merge([
-            'data' => $data,
+            'data' => $data['data'],
             'search' => $search,
-            'total' => $total,
+            'total' => $data['total'],
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
             'optionStatusSearch' => $optionStatusSearch,

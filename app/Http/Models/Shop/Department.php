@@ -10,6 +10,7 @@ namespace App\Http\Models\Shop;
 
 use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Models\Admin\User;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
 
@@ -101,8 +102,8 @@ class Department extends BaseModel
     public function getItemById($id)
     {
         $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_DEPARTMENT_ID . $id) : false;
-        if ($data || $data->count() == 0) {
-            $data = Department::find($id);
+        if (!$data) {
+            $data = Department::where('department_id',$id)->first();
             if ($data) {
                 Cache::put(Memcache::CACHE_DEPARTMENT_ID . $id, $data, CACHE_ONE_MONTH);
             }

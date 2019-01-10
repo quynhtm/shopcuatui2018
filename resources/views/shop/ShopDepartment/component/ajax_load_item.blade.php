@@ -10,8 +10,8 @@
         </h4>
     </div>
     <div class="panel-body">
-        <form id="formAdd" method="post">
-            <input name="id_hiden" value="{{$data->department_id}}" class="form-control" id="id_hiden" type="hidden">
+        <form id="formAdd" method="post">  {{--value="{{$data->department_id}}"--}}
+            <input name="id_hiden" @if(isset($data->department_id))value="{{$data->department_id}}"@endif class="form-control" id="id_hiden" type="hidden">
             <div class="form-group">
                 <label for="define_name">{{viewLanguage('Tên kiểu chuyên mục')}}</label>
                 <input name="department_name" title="{{viewLanguage('Tên kiểu chuyên mục')}}" class="form-control input-required" id="department_name" type="text" @if(isset($data->department_name))value="{{$data->department_name}}"@endif>

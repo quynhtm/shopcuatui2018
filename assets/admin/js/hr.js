@@ -37,26 +37,34 @@ BE = {
             }
         });
     },
+
+    /*sửa*/
     deleteItem: function (id, url) {
-        var a = confirm(lng['txt_mss_confirm_delete']);
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        $("#loading").fadeIn().fadeOut(10);
-        if (a) {
+        if(confirm('Bạn có muốn xóa cái này không??')){
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // $("#loading").fadeIn().fadeOut(10);
             $.ajax({
                 type: 'get',
                 url: url,
                 data: {'id': id},
                 headers: {'X-CSRF-TOKEN': _token},
                 success: function (data) {
-                    if ((data.errors)) {
-                        alert(data.errors)
-                    } else {
+                    if(data.isIntOk == 1){
+                        alert('Xoa thanh cong');
                         window.location.reload();
                     }
+                    else{
+                        alert('xoa khong thanh cong');
+                    }
                 },
+                error: function (data) {
+                    console.log('Xóa không thành công')
+                }
             });
         }
     },
+    /*sửa*/
+
     getFormData: function (frmElements) {
         var out = {};
         var s_data = $(frmElements).serializeArray();

@@ -1,7 +1,6 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
 <?php use App\Library\AdminFunction\Define; ?>
 <?php use App\Library\AdminFunction\CGlobal; ?>
-
 @extends('admin.AdminLayouts.index')
 @section('content')
 <div class="main-content-inner">
@@ -55,20 +54,20 @@
                                 <th>{{viewLanguage('Ngày tạo')}}</th>
                                 <th>{{viewLanguage('Ngày cập nhật')}}</th>
                                 <th>{{viewLanguage('Trạng thái')}}</th>
-                                <th class="text-center">{{viewLanguage('Hoạt động')}}</th>
+                                <th class="text-center" width="9%">{{viewLanguage('Hoạt động')}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @if(isset($data) && sizeof($data))
                                 @foreach($data as $k=>$item)
-                                <tr>
-                                    <td class="text-center">{{$stt + $k + 1}}</td>
-                                    <td>{{$item->department_name}}</td>
-                                    <td>{{$item->department_order}}</td>
-                                    <td>{{$item->created_at}}</td>
-                                    <td>{{$item->updated_at}}</td>
-                                    <td>
-                                    @if($item->department_status == STATUS_SHOW)
+                                <tr align="center">
+                                    <td class="text-center" width="1%">{{$stt + $k + 1 }}</td>
+                                    <td>{{$item['department_name']}}</td>
+                                    <td width="3%">{{$item['department_order']}}</td>
+                                    <td>{{$item['created_at']}}</td>
+                                    <td>{{$item['updated_at']}}</td>
+                                    <td width="3%">
+                                    @if($item['department_status'] == STATUS_SHOW)
                                         <a href="javascript:void(0);" title="Hiện"><i class="fa fa-check fa-2x"></i></a>
                                     @else
                                         <a href="javascript:void(0);" style="color: red" title="Ẩn"><i class="fa fa-close fa-2x"></i></a>
@@ -76,9 +75,10 @@
                                     </td>
                                     <td class="text-center middle" align="center">
                                         @if($is_root || $permission_full || $permission_create)
-                                            <a class="editItem" onclick="BE.editItem('{{$item->department_id}}', WEB_ROOT + '/manager/department/ajaxLoad')" title="{{viewLanguage('Sửa')}}">
+                                            <a class="editItem" onclick="BE.editItem('{{$item->department_id}}', WEB_ROOT + '/manager/department/ajaxLoad' )" title="{{viewLanguage('Sửa')}}">
                                                 <i class="fa fa-edit fa-2x"></i>
                                             </a>
+                                            
                                         @endif
                                         @if($is_root || $permission_full || $permission_delete)
                                             <a href="javascript:void(0);" onclick="BE.deleteItem('{{$item->department_id}}', WEB_ROOT + '/manager/department/delete')" title="{{viewLanguage('Xóa')}}">
