@@ -18,13 +18,13 @@
                         {{ csrf_field() }}
                         <div class="panel-body">
                             <div class="form-group col-lg-3">
-                                <label><i>{{viewLanguage('Tên người bán')}}</i></label>
-                                <input type="text" class="form-control input-sm" name="infor_sale_name" placeholder="{{viewLanguage('Tên kiểu chuyên mục')}}" @if(isset($search['infor_sale_name']))value="{{$search['infor_sale_name']}}"@endif>
+                                <label><i>{{viewLanguage('Tên Sản Phẩm')}}</i></label>
+                                <input type="text" class="form-control input-sm" name="category_name" placeholder="{{viewLanguage('Tên kiểu chuyên mục')}}" @if(isset($search['category_name']))value="{{$search['category_name']}}"@endif>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <label><i>{{viewLanguage('SĐT')}}</i></label>
-                                <input type="text" class="form-control input-sm" name="infor_sale_phone" placeholder="{{viewLanguage('SĐT')}}" @if(isset($search['infor_sale_phone']))value="{{$search['infor_sale_phone']}}"@endif>
-                            </div>
+                            {{--<div class="form-group col-lg-3">--}}
+                                {{--<label><i>{{viewLanguage('SĐT')}}</i></label>--}}
+                                {{--<input type="text" class="form-control input-sm" name="infor_sale_phone" placeholder="{{viewLanguage('SĐT')}}" @if(isset($search['infor_sale_phone']))value="{{$search['infor_sale_phone']}}"@endif>--}}
+                            {{--</div>--}}
                         </div>
                         <div class="panel-footer text-right">
                             @if($is_root || $permission_full || $permission_create)

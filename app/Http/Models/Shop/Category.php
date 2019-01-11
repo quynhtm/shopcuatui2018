@@ -40,16 +40,18 @@ class Category extends BaseModel
             if (isset($dataSearch['category_type']) && $dataSearch['category_type'] > 0) {
                 $query->where('category_type', $dataSearch['category_type']);
             }
-            if (isset($dataSearch['string_depart_id']) && $dataSearch['string_depart_id'] != '') {
-                $query->whereIn('category_depart_id', explode(',', $dataSearch['string_depart_id']));
-            }
+
+//tại sao lại có câu hỏi biến khác nhau ?
+//            if (isset($dataSearch['string_depart_id']) && $dataSearch['string_depart_id'] != '') {
+//                $query->whereIn('category_depart_id', explode(',', $dataSearch['string_depart_id']));
+//            }
+
             if (isset($dataSearch['category_menu_right']) && $dataSearch['category_menu_right'] != -1) {
                 $query->where('category_menu_right', $dataSearch['category_menu_right']);
             }
 
             $total = ($is_total) ? $query->count() : 0;
-            $query->orderBy('category_id', 'desc');
-
+            $query->orderBy('category_id', 'desc'); // desc tăng - asc giảm
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
             if (!empty($fields)) {
                 $result = $query->take($limit)->skip($offset)->get($fields);
@@ -71,7 +73,7 @@ class Category extends BaseModel
             $item = new Category();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
-                    $item->$k = $v;
+                    $item-> $k = $v;
                 }
             }
 

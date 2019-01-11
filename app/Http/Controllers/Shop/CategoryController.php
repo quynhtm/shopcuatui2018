@@ -93,7 +93,6 @@ class CategoryController extends BaseAdminController{
                 $arrCategoryId[$item['category_parent_id']] = $item['category_parent_id'];
             }
         }
-
 //lấy thông tin tỉnh thành cha
         if(!empty($arrCategoryId)){
             $arrInforCategory = app(Category::class)->getListCategoryNameById($arrCategoryId);
