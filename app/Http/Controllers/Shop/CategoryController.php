@@ -72,6 +72,8 @@ class CategoryController extends BaseAdminController{
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
 
+
+
         $search['category_name'] = addslashes(Request::get('category_name', ''));
         $search['category_status'] = (int)Request::get('category_status',-1);
         $search['category_depart_id'] = (int)Request::get('category_depart_id',-1);
@@ -80,14 +82,30 @@ class CategoryController extends BaseAdminController{
         $search['member_id'] = app(User::class)->getMemberIdUser();
         
         $search['field_get'] = '';
-        $data = app(Category::class)->searchByCondition($search, $limit, $offset);
-        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
+        $data  = app(Category::class)->searchByCondition($search, $limit, $offset);
+//lấy dữ liệu để hiện cha.
+/**/    $arrCategoryId = array();
+/**/    $arrInforCategory= array();
+        $result = isset($data['data']) ? $data['data'] : array();
+
+        if(sizeof($result) > 0){
+            foreach($result as $item){
+                $arrCategoryId[$item['category_parent_id']] = $item['category_parent_id'];
+            }
+        }
+
+//lấy thông tin tỉnh thành cha
+        if(!empty($arrCategoryId)){
+            $arrInforCategory = app(Category::class)->getListCategoryNameById($arrCategoryId);
+            }
+
 
         if(!empty($dataSearch)){
             $data =  app(Category::class)->getTreeCategory($data);
             $data = !empty($data) ? $data : $dataSearch;
         }
 
+        $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';
         $this->_getDataDefault();
         $this->_outDataView($data);
 
@@ -97,6 +115,7 @@ class CategoryController extends BaseAdminController{
             'total' => $data['total'], //$data['total']
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
+            'arrInforCategory' => $arrInforCategory
         ], $this->viewPermission, $this->viewOptionData));
     }
     public function getItem($id){

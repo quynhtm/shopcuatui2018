@@ -11,8 +11,8 @@ namespace App\Http\Models\Shop;
 use App\Http\Models\BaseModel;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
+use App\Http\Models\Admin\User;
 
 class Category extends BaseModel
 {
@@ -197,16 +197,29 @@ class Category extends BaseModel
 
     public function getCategoryByDepartId($depart_id = 0)
     {
-        $data = array();
-        if ($depart_id > 0) {
-            $category = Category::where('category_depart_id', $depart_id)->orderBy('category_id', 'asc')->get();
-            foreach ($category as $itm) {
-                $data[$itm['category_id']] = $itm['category_name'];
-            }
-            return $data;
+    $data = array();
+    if ($depart_id > 0) {
+        $category = Category::where('category_depart_id', $depart_id)->orderBy('category_id', 'asc')->get();
+           foreach ($category as $itm) {
+               $data[$itm['category_id']] = $itm['category_name'];
+           }
+           return $data;
         }
-        return $data;
+    return $data;
     }
+
+/**/public function getListCategoryNameById($id)
+{   // lấy tên thư mục cha
+    $data = array();
+    $result = Category::whereIn('category_id', $id)->get(array('category_id', 'category_name'));
+    if ($result) {
+        foreach ($result as $itm) {
+            $data[$itm->category_id] = $itm->category_name;
+        }
+    }
+    return $data;
+}
+
 
     public function getDepartIdByCategoryId($category_id = 0)
     {
@@ -431,4 +444,5 @@ class Category extends BaseModel
             throw new PDOException();
         }
     }
+
 }

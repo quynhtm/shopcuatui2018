@@ -103,7 +103,7 @@ class Department extends BaseModel
     {
         $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_DEPARTMENT_ID . $id) : false;
         if (!$data) {
-            $data = Department::where('department_id',$id)->first();
+/*sửa*/        $data = Department::where('department_id',$id)->first();         /*find() k nhận được $ id  , chuyển sang dùng where để để nhận được id*/
             if ($data) {
                 Cache::put(Memcache::CACHE_DEPARTMENT_ID . $id, $data, CACHE_ONE_MONTH);
             }
