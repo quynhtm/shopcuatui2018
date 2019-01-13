@@ -67,7 +67,7 @@ class DepartmentController extends BaseAdminController{
         $this->_outDataView($data);
 
         $optionStatusSearch = getOption($this->arrStatus, $search['department_status']);
-
+        //vmDebug($data['data']->toArray());
         return view('shop.ShopDepartment.view', array_merge([
             'data' => $data['data'],
             'search' => $search,
@@ -114,9 +114,7 @@ class DepartmentController extends BaseAdminController{
         }
 
         $id = $_POST['id'];
-        $item = app(Department::class)->getItemById($id);
-        $member_id = app(User::class)->getMemberIdUser();
-        $data = ($item && isset($item->member_id) && $item->member_id != $member_id ) ? [] : $item;
+        $data = app(Department::class)->getItemById($id);
         $this->_getDataDefault();
 
         $optionStatus = getOption($this->arrStatus, isset($data['department_status']) ? $data['department_status'] : STATUS_SHOW);

@@ -69,7 +69,7 @@
                                     <td class="text-center middle" align="center">
                                         @if($is_root || $permission_full || $permission_create)
 
-                                            <a class="editItem" onclick="BE.editItem('{{$item->provider_id}}', WEB_ROOT + '/manager/provider/ajaxLoad')" title="{{viewLanguage('Sửa')}}">
+                                            <a class="editItem" onclick="BE.editItem({{$item->provider_id}}, WEB_ROOT + '/manager/provider/ajaxLoad')" title="{{viewLanguage('Sửa')}}">
                                                 <i class="fa fa-edit fa-2x"></i>
                                             </a>
                                         @endif

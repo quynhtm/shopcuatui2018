@@ -33,7 +33,7 @@
                                     {{viewLanguage('Thêm mới')}}
                                 </a>
                             @endif
-                            <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> {{viewLanguage('Tìm kiếm')}}</button>
+                            <button class="btn btn-primary btn-sm" type="submit" id="submit" name="submit" value="1"><i class="fa fa-search"></i> {{viewLanguage('Tìm kiếm')}}</button>
                         </div>
                     </form>
                 </div>

@@ -28,7 +28,6 @@ class Order extends BaseModel
     public function createItem($data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
             $item = new Order();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
@@ -36,15 +35,13 @@ class Order extends BaseModel
                     $item->$k = $v;
                 }
             }
-            $member_id = app(User::class)->getMemberIdUser();
-            $item->member_id = $member_id;
+            //$member_id = app(User::class)->getMemberIdUser();
+            //$item->member_id = $member_id;
             $item->save();
 
-            DB::connection()->getPdo()->commit();
             self::removeCache($item->order_id, $item);
             return $item->id;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
@@ -52,33 +49,30 @@ class Order extends BaseModel
     public function updateItem($id, $data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
-            $member_id = app(User::class)->getMemberIdUser();
+            //$member_id = app(User::class)->getMemberIdUser();
             $item = self::getItemById($id);
-            if ($item && isset($item->member_id) && $item->member_id == $member_id) {
+           // if ($item && isset($item->member_id) && $item->member_id == $member_id) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
-                $item->member_id = $member_id;
+                //$item->member_id = $member_id;
                 $item->update();
                 self::removeCache($item->order_id, $item);
-            }
-            DB::connection()->getPdo()->commit();
+            //}
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
 
     public function getItemById($id)
     {
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PROVIDER_ID . $id) : false;
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ORDER_ID . $id) : false;
         if ($data || $data->count() == 0) {
             $data = Order::find($id);
             if ($data) {
-                Cache::put(Memcache::CACHE_PROVIDER_ID . $id, $data, CACHE_ONE_MONTH);
+                Cache::put(Memcache::CACHE_ORDER_ID . $id, $data, CACHE_ONE_MONTH);
             }
         }
         return $data;
@@ -88,16 +82,13 @@ class Order extends BaseModel
     {
         if ($id <= 0) return false;
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $item = $dataOld = self::getItemById($id);
             if ($item) {
                 $item->delete();
             }
-            DB::connection()->getPdo()->commit();
             self::removeCache($id, $dataOld);
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
             return false;
         }
@@ -106,12 +97,10 @@ class Order extends BaseModel
     public function removeCache($id = 0, $data)
     {
         if ($id > 0) {
-            Cache::forget(Memcache::CACHE_PROVIDER_ID . $id);
+            Cache::forget(Memcache::CACHE_ORDER_ID . $id);
         }
         if ($data) {
-            Cache::forget(Memcache::CACHE_LIST_PROVIDER_BY_MEMBER_ID . $data->member_id);
         }
-        Cache::forget(Memcache::CACHE_ALL_PROVIDER);
     }
 
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
@@ -121,22 +110,7 @@ class Order extends BaseModel
             if (isset($dataSearch['provider_name']) && $dataSearch['provider_name'] != '') {
                 $query->where('provider_name', 'LIKE', '%' . $dataSearch['provider_name'] . '%');
             }
-            if (isset($dataSearch['provider_phone']) && $dataSearch['provider_phone'] != '') {
-                $query->where('provider_phone', 'LIKE', '%' . $dataSearch['provider_phone'] . '%');
-            }
-            if (isset($dataSearch['provider_email']) && $dataSearch['provider_email'] != '') {
-                $query->where('provider_email', 'LIKE', '%' . $dataSearch['provider_email'] . '%');
-            }
-            if (isset($dataSearch['provider_status']) && $dataSearch['provider_status'] != -1) {
-                $query->where('provider_status', $dataSearch['provider_status']);
-            }
-            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] != -1) {
-                if ($dataSearch['member_id'] == 0) {
-                    $query->where('member_id', '>=', $dataSearch['member_id']);
-                } else {
-                    $query->where('member_id', $dataSearch['member_id']);
-                }
-            }
+
             if (isset($dataSearch['order_id']) && $dataSearch['order_id'] > 0) {
                 $query->where('order_id', $dataSearch['order_id']);
             }
@@ -144,7 +118,7 @@ class Order extends BaseModel
                 $query->where('member_id', $dataSearch['member_id']);
             }
             $total = $query->count();
-            $query->orderBy('provider_status', 'desc');
+            $query->orderBy('order_status', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();

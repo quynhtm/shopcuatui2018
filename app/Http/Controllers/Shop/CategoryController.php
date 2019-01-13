@@ -68,11 +68,10 @@ class CategoryController extends BaseAdminController{
         }
 
         $pageNo = (int)Request::get('page_no', 1);
+        $submit = (int)Request::get('submit', 0);
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
-
-
 
         $search['category_name'] = addslashes(Request::get('category_name', ''));
         $search['category_status'] = (int)Request::get('category_status',-1);
@@ -82,6 +81,9 @@ class CategoryController extends BaseAdminController{
         $search['member_id'] = app(User::class)->getMemberIdUser();
         
         $search['field_get'] = '';
+        if($submit == 1){
+
+        }
         $data  = app(Category::class)->searchByCondition($search, $limit, $offset);
 //lấy dữ liệu để hiện cha.
 /**/    $arrCategoryId = array();

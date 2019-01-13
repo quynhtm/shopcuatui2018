@@ -58,7 +58,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if(isset($data) && sizeof($data))
+                            @if(isset($data))
                                 @foreach($data as $k=>$item)
                                 <tr align="center">
                                     <td class="text-center" width="1%">{{$stt + $k + 1 }}</td>

@@ -80,8 +80,8 @@ class Product extends BaseModel
     public function getProductForSite($dataSearch = array(), $limit =0, $offset = 0, &$total){
         try{
             $query = Product::where('product_id','>',0);
-            $query->where('product_status','=',CGlobal::status_show);
-            $query->where('is_block','=',CGlobal::PRODUCT_NOT_BLOCK);
+            $query->where('product_status','=',1);
+            //$query->where('is_block','=',CGlobal::PRODUCT_NOT_BLOCK);
             //Duy add: get list product in array id
             if (isset($dataSearch['product_id'])) {
                 if (is_array($dataSearch['product_id'])) {
@@ -248,9 +248,8 @@ class Product extends BaseModel
     public function createItem($data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
-            $item = new Banners();
+            $item = new Product();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
@@ -258,11 +257,9 @@ class Product extends BaseModel
             }
             $item->save();
 
-            DB::connection()->getPdo()->commit();
             self::removeCache($item->product_id, $item);
             return $item->id;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
@@ -270,18 +267,15 @@ class Product extends BaseModel
     public function updateItem($id, $data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
             $item = self::getItemById($id);
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
             $item->update();
-            DB::connection()->getPdo()->commit();
             self::removeCache($item->product_id, $item);
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
@@ -289,7 +283,7 @@ class Product extends BaseModel
     public function getItemById($id) {
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
         if (sizeof($data) == 0) {
-            $data = Banners::find($id);
+            $data = Product::find($id);
             if($data){
                 Cache::put(Memcache::CACHE_PRODUCT_ID.$id, $data, CACHE_ONE_MONTH);
             }
