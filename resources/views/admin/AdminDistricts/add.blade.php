@@ -38,6 +38,16 @@
                         <div class="clearfix"></div>
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label for="name" class="control-label">{{viewLanguage('Tỉnh thành')}}</label>
+                                <select name="district_status" id="status" class="form-control input-sm">
+                                    {!! $optionProvince !!}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label for="name" class="control-label">{{viewLanguage('Trạng thái')}}</label>
                                 <select name="district_status" id="status" class="form-control input-sm">
                                     {!! $optionStatus !!}}

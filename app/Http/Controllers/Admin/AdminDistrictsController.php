@@ -16,9 +16,11 @@ class AdminDistrictsController extends BaseAdminController
 {
     private $error = array();
     private $arrStatus = array();
+    private $arrProvince = array();
     private $arrMenuParent = array();
     private $viewOptionData = array();
     private $viewPermission = array();
+
 
     public function __construct()   //hàm tạo
     {
@@ -44,8 +46,12 @@ class AdminDistrictsController extends BaseAdminController
     public function _outDataView($data)
     {
         $optionStatus = getOption($this->arrStatus, isset($data['district_status']) ? $data['district_status'] : STATUS_SHOW);
+        $optionProvince = getOption(app(Province::class)->getAllProvince(),isset($data['district_province_id']) ? $data['district_province_id'] : PROVINCE_SHOW );
+
+
         return $this->viewOptionData = [
             'optionStatus' => $optionStatus,
+            'optionProvince' => $optionProvince,
             'pageTitle' => CGlobal::$pageAdminTitle,//thêm biến
         ];
     }
@@ -64,30 +70,38 @@ class AdminDistrictsController extends BaseAdminController
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
 
+        $arrProviceId = array();// chua nhung id cua tinh thanh ma search theo name
+
         $search['district_name'] = addslashes(Request::get('district_name', ''));
-        $search['district_status'] = (int)Request::get('district_status', -1);
+/**/    $search['province_name'] = addslashes(Request::get('province_name', ''));
+        if($search['province_name'] !== ''){
+            $province_by_name = app(Province::class)->searchByCondition($search,70,0,false); // nếu total là false thì n sẽ k đếm dữ liệu trong model nữa
+            if(count($province_by_name['data']) > 0){
+                foreach ($province_by_name['data'] as $key => $value){
+                    $arrProviceId[$value->province_id] = $value->province_id;
+                }
+            }
+        }
+        if(count($arrProviceId) > 0){
+            $search['district_province_id'] = $arrProviceId;
+        }
+        $arrInforProvice = app(Province::class)->getAllProvince();// lay het cac tinh
+/**/    $search['district_status'] = (int)Request::get('district_status', -1);
+
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
 //hiện thị thông tin tỉnh
         $result = app(Districts::class)->searchByCondition($search, $limit, $offset);  //đổi $data thành $$result
 
-        $data = isset($result['data']) ? $result['data'] : array();
-        $arrProviceId = array();
-        $arrInforProvice = array();
-        if(sizeof($data) > 0){
-            foreach($data as $item){
-                $arrProviceId[$item['district_province_id']] = $item['district_province_id'];
-            }
-        }
+//        $data = isset($result['data']) ? $result['data'] : array();
+
 
         //lấy thông tin tỉnh thành cha
-        if(!empty($arrProviceId)){
-            $arrInforProvice = app(Province::class)->getListProviceNameById($arrProviceId);
-        }
-//
+
 
         $paging = $result['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $result['total'], $limit, $search) : '';
         $this->_outDataView($search);
+
         return view('admin.AdminDistricts.view', array_merge([
             'data' => $result['data'],
             'search' => $search,
@@ -163,6 +177,9 @@ class AdminDistrictsController extends BaseAdminController
         if (!empty($data)) {
             if (isset($data['district_name']) && trim($data['district_name']) == '') {
                 $this->error[] = 'Tên không được bỏ trống';
+            }
+            if (isset($data['district_status']) && trim($data['district_status']) == '') {
+                $this->error[] = 'Trạng thái không được bỏ trống';
             }
         }
         return true;

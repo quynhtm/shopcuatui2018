@@ -28,6 +28,14 @@ class Districts extends BaseModel
             if (isset($dataSearch['district_status']) && $dataSearch['district_status'] > -1) {
                 $query->where('district_status', $dataSearch['district_status']);
             }
+/**/        if (isset($dataSearch['district_province_id']) && $dataSearch['district_province_id'] != "" && !is_array($dataSearch['district_province_id'])){
+                $query->where('district_province_id' , $dataSearch['district_province_id']);
+            }
+/**/        if (isset($dataSearch['district_province_id'])&& is_array($dataSearch['district_province_id'])){
+                $query->whereIn('district_province_id' , $dataSearch['district_province_id']);
+            }
+
+
             $total = ($is_total) ? $query->count() : 0;
 
             $query->orderBy('district_province_id', 'asc');  //và những quận thuộc 1 tỉnh hiển thị liền nhau . thứ tự hiển thị tỉnh  trước khi
