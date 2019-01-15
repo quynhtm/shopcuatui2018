@@ -56,48 +56,43 @@ class AdminDistrictsController extends BaseAdminController
         ];
     }
 
-    public function view()     //hiển thị
+    public function view()
     {
         //Check phan quyen.
         if (!$this->checkMultiPermiss([PERMISS_DISTRICTS_FULL, PERMISS_DISTRICTS_VIEW])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
 
-        $this->_getDataDefault(); //lấy dữ liệu mặc định
+        $this->_getDataDefault();
         $pageNo = (int)Request::get('page_no', 1);
         $sbmValue = Request::get('submit', 1);
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
+        $arrProvinceId = array();// chua nhung id cua tinh thanh ma search theo name
 
-        $arrProviceId = array();// chua nhung id cua tinh thanh ma search theo name
-
+//tìm kiếm theo tỉnh thành và add tỉnh thành theo option
         $search['district_name'] = addslashes(Request::get('district_name', ''));
-/**/    $search['province_name'] = addslashes(Request::get('province_name', ''));
+        $search['province_name'] = addslashes(Request::get('province_name', ''));   // addslashes bỏ ký tự đặc biệt
+        $search['district_status'] = (int)Request::get('district_status', -1);
+
         if($search['province_name'] !== ''){
             $province_by_name = app(Province::class)->searchByCondition($search,70,0,false); // nếu total là false thì n sẽ k đếm dữ liệu trong model nữa
             if(count($province_by_name['data']) > 0){
                 foreach ($province_by_name['data'] as $key => $value){
-                    $arrProviceId[$value->province_id] = $value->province_id;
+                    $arrProvinceId[$value->province_id] = $value->province_id;  // cho nó bằng chính nó để tránh bị trùng . để luôn luôn chỉ có 1 id duy nhất k xảy ra hiện tượng id trùng nhau
                 }
             }
         }
-        if(count($arrProviceId) > 0){
-            $search['district_province_id'] = $arrProviceId;
+        if(count($arrProvinceId) > 0){
+            $search['district_province_id'] = $arrProvinceId;
         }
-        $arrInforProvice = app(Province::class)->getAllProvince();// lay het cac tinh
-/**/    $search['district_status'] = (int)Request::get('district_status', -1);
-
+        $arrInforProvice = app(Province::class)->getAllProvince();
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-//hiện thị thông tin tỉnh
-        $result = app(Districts::class)->searchByCondition($search, $limit, $offset);  //đổi $data thành $$result
 
+        $result = app(Districts::class)->searchByCondition($search, $limit, $offset);
 //        $data = isset($result['data']) ? $result['data'] : array();
-
-
-        //lấy thông tin tỉnh thành cha
-
 
         $paging = $result['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $result['total'], $limit, $search) : '';
         $this->_outDataView($search);
@@ -108,7 +103,7 @@ class AdminDistrictsController extends BaseAdminController
             'total' => $result['total'],
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
-            'arrInforProvice' => $arrInforProvice,   //
+            'arrInforProvice' => $arrInforProvice,
         ], $this->viewPermission, $this->viewOptionData));
     }
 

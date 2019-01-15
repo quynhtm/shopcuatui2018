@@ -62,10 +62,25 @@ class AdminContactController extends BaseAdminController
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
+        $arrcontactName = $arrcontactPhone = $arrcontactEmail = array();
 
         $search['contact_title'] = addslashes(Request::get('contact_title', ''));
         $search['contact_status'] = (int)Request::get('contact_status', -1);
+
+        $search['contact_user_name_send'] = addslashes(Request::get('contact_user_name_send', ''));
+        $search['contact_phone_send'] = addslashes(Request::get('contact_phone_send', ''));
+        $search['contact_email_send'] = addslashes(Request::get('contact_email_send', ''));
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
+
+        if(count($arrcontactName) > 0){
+            $search['contact_user_name_send'] = $arrcontactName;
+        }
+        if(count($arrcontactPhone) > 0){
+            $search['contact_phone_send'] = $arrcontactPhone;
+        }
+        if(count($arrcontactEmail) > 0){
+            $search['contact_email_send'] = $arrcontactEmail;
+        }
 
         $data = app(Contact::class)->searchByCondition($search, $limit, $offset);
         $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';

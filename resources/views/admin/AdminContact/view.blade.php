@@ -9,7 +9,7 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
                 </li>
-                <li class="active">{{$pageTitle}}</li>
+                <li class="active"><a href="{{URL::route('admin.contactView')}}">{{$pageTitle}}</a></li>
             </ul>
         </div>
 
@@ -20,10 +20,21 @@
                         <form method="Post" action="" role="form">
                             {{ csrf_field() }}
                             <div class="panel-body">
+
                                 <div class="form-group col-lg-3">
                                     <label for="name"><i>{{viewLanguage('Tên liên hệ')}}</i></label>
-                                    <input type="text" class="form-control input-sm" id="name" name="contact_user_name_send" placeholder="Liên lạc" @if(isset($search['contact_user_name_send']))value="{{$search['contact_user_name_send']}}"@endif>
+                                    <input type="text" class="form-control input-sm" id="name" name="contact_user_name_send" placeholder="Tên" @if(isset($search['contact_user_name_send']))value="{{$search['contact_user_name_send']}}"@endif>
                                 </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="name"><i>{{viewLanguage('Số điện thoại')}}</i></label>
+                                    <input type="text" class="form-control input-sm" id="name" name="contact_phone_send" placeholder="Số điện thoại" @if(isset($search['contact_phone_send']))value="{{$search['contact_phone_send']}}"@endif>
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <label for="name"><i>{{viewLanguage('Email')}}</i></label>
+                                    <input type="text" class="form-control input-sm" id="name" name="contact_email_send" placeholder="Email" @if(isset($search['contact_email_send']))value="{{$search['contact_email_send']}}"@endif>
+                                </div>
+
                                 <div class="form-group col-lg-3">
                                     <label for="status" class="control-label">{{viewLanguage('Trạng thái')}}</label>
                                     <select name="contact_status" id="status" class="form-control input-sm">

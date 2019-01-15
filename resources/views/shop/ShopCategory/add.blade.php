@@ -99,7 +99,6 @@
                         </div>
 
 
-                        <div class="clearfix"></div>
                         <div class="col-sm-6 ">
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Meta description')}}</i></label>

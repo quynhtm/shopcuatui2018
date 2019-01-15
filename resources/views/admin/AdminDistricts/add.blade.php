@@ -39,7 +39,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name" class="control-label">{{viewLanguage('Tỉnh thành')}}</label>
-                                <select name="district_status" id="status" class="form-control input-sm">
+                                <select name="province_name" id="status" class="form-control input-sm">
                                     {!! $optionProvince !!}}
                                 </select>
                             </div>

@@ -28,18 +28,19 @@ class Districts extends BaseModel
             if (isset($dataSearch['district_status']) && $dataSearch['district_status'] > -1) {
                 $query->where('district_status', $dataSearch['district_status']);
             }
-/**/        if (isset($dataSearch['district_province_id']) && $dataSearch['district_province_id'] != "" && !is_array($dataSearch['district_province_id'])){
+            if (isset($dataSearch['district_province_id']) && $dataSearch['district_province_id'] != "" && !is_array($dataSearch['district_province_id'])){
                 $query->where('district_province_id' , $dataSearch['district_province_id']);
             }
-/**/        if (isset($dataSearch['district_province_id'])&& is_array($dataSearch['district_province_id'])){
+            if (isset($dataSearch['district_province_id'])&& is_array($dataSearch['district_province_id'])){
                 $query->whereIn('district_province_id' , $dataSearch['district_province_id']);
             }
 
-
+//where : điều kiện dùng cho 1 giá trị - VD: SELECT * FROM `shop_districts` WHERE district_name = 5 --- WhereIN: điều kiện cho nhiều giá trị dùng cho mảng . VD :SELECT * FROM `shop_districts` WHERE district_name = (5,6,7)
+//total là để đếm số dữ liệu hiện có
             $total = ($is_total) ? $query->count() : 0;
 
-            $query->orderBy('district_province_id', 'asc');  //và những quận thuộc 1 tỉnh hiển thị liền nhau . thứ tự hiển thị tỉnh  trước khi
-            $query->orderBy('district_id', 'desc');          // hiển thị quận (mới thêm)
+            $query->orderBy('district_province_id', 'asc');
+            $query->orderBy('district_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -138,12 +139,22 @@ class Districts extends BaseModel
 
     public function getListDistrictsNameById($id) { //
         $data = array();
-        if(is_array($id)) //kiểm tra $id là 1 mảng
+        if(is_array($id))
         {
             $data = (is_array($id)) ? Districts::whereIn('district_id',$id)->get(array('district_id','district_province_id','district_name')) : Districts::where('district_id',$id) -> get(array('district_id','district_province_id','district_name'));
-        // $data = $id là 1 mảng thì vào districts với district_id truyền biến theo dạng mảng với các biến ......
         }
         return $data;
     }
 
+    public function getAllDistricts(){
+        $data = array();
+        $result_districts = Districts::all();
+
+        if ($result_districts) {
+            foreach ($result_districts as $a) {
+                $data[$a->district_id] = $a->district_name;
+            }
+        }
+        return $data;
+    }
 }
