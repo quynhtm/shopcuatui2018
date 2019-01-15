@@ -18,12 +18,18 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="panel panel-info">
-                        <form method="Post" action="" role="form">
+                        {{--<form method="Post" action="" role="form">--}}
+                        {!!Form::open(array('method' => 'POST', 'role'=>'form')) !!}
                             {{ csrf_field() }}
                             <div class="panel-body">
                                 <div class="form-group col-lg-3">
                                     <label for="name"><i>{{viewLanguage('Tên Quận Huyện')}}</i></label>
                                     <input type="text" class="form-control input-sm" id="name" name="district_name" placeholder="Tên Quận Huyện" @if(isset($search['district_name'])) value="{{$search['district_name']}}"@endif>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="name"><i>{{viewLanguage('Tên Tỉnh')}}</i></label>
+                                    <input type="text" class="form-control input-sm" id="name" name="province_name" placeholder="Tên Tỉnh" @if(isset($search['province_name'])) value="{{$search['province_name']}}"@endif>
                                 </div>
 
                                 <div class="form-group col-lg-3">
@@ -36,7 +42,8 @@
                             <div class="panel-footer text-right">
                                 <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> {{viewLanguage('search')}}</button>
                             </div>
-                        </form>
+                        {!! Form::close() !!}
+                        {{--</form>--}}
                     </div>
                     @if(sizeof($data) > 0)
                         <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> item @endif </div>
@@ -58,6 +65,7 @@
                                     <tr>
                                         <td class="text-center middle">{{$stt+1 , $stt++ }}</td>
                                         <td>{{ $item['district_name'] }}</td>
+
                                         <td>
                                             @if(isset($arrInforProvice[$item['district_province_id']]))
                                                 <a href="{{URL::route('admin.provinceEdit',array('id' => $item['district_province_id']))}}" title="Sửa item">
@@ -65,6 +73,7 @@
                                                 </a>
                                             @endif
                                         </td>
+
                                         <td class="text-center middle">
                                             @if($item['district_status'] == STATUS_SHOW)
                                                 <a href="javascript:void(0);" title="Hiện"><i class="fa fa-check fa-2x"></i></a>

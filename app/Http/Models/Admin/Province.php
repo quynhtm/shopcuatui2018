@@ -138,4 +138,16 @@ class Province extends BaseModel
         }
         return $data;
     }
+
+    public function getAllProvince()
+    {
+        $data = array();
+        $result = Province::all();
+        if ($result) {
+            foreach ($result as $itm) {
+                $data[$itm->province_id] = $itm->province_name;
+            }
+        }
+        return $data;
+    }
 }
