@@ -28,6 +28,17 @@ class Contact extends BaseModel
             if (isset($dataSearch['contact_status']) && $dataSearch['contact_status'] > -1) {
                 $query->where('contact_status', $dataSearch['contact_status']);
             }
+
+            if (isset($dataSearch['contact_user_name_send']) && $dataSearch['contact_user_name_send'] != '') {
+                $query->where('contact_user_name_send', 'LIKE', '%' . $dataSearch['contact_user_name_send'] . '%');
+            }
+            if (isset($dataSearch['contact_phone_send']) && $dataSearch['contact_phone_send'] != '') {
+                $query->where('contact_phone_send', 'LIKE', '%' . $dataSearch['contact_phone_send'] . '%');
+            }
+            if (isset($dataSearch['contact_email_send']) && $dataSearch['contact_email_send'] != '') {
+                $query->where('contact_email_send', 'LIKE', '%' . $dataSearch['contact_email_send'] . '%');
+            }
+
             $total = ($is_total) ? $query->count() : 0;
             $query->orderBy('contact_id', 'desc');
 

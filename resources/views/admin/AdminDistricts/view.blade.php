@@ -31,6 +31,12 @@
                                     <label for="name"><i>{{viewLanguage('Tên Tỉnh')}}</i></label>
                                     <input type="text" class="form-control input-sm" id="name" name="province_name" placeholder="Tên Tỉnh" @if(isset($search['province_name'])) value="{{$search['province_name']}}"@endif>
                                 </div>
+                                {{--<div class="form-group col-lg-3">--}}
+                                    {{--<label for="name" class="control-label">{{viewLanguage('Tên Tỉnh')}}</label>--}}
+                                    {{--<select name="province_name" id="name" class="form-control input-sm">--}}
+                                        {{--{!! $optionProvince !!}}--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
 
                                 <div class="form-group col-lg-3">
                                     <label for="status" class="control-label">{{viewLanguage('Trạng thái')}}</label>

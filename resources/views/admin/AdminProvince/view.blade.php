@@ -25,6 +25,7 @@
                                     <label for="name"><i>{{viewLanguage('Tên Tỉnh thành')}}</i></label>
                                     <input type="text" class="form-control input-sm" id="name" name="province_name" placeholder="Tên Tỉnh Thành" @if(isset($search['province_name']))value="{{$search['province_name']}}"@endif>
                                 </div>
+
                                 <div class="form-group col-lg-3">
                                     <label for="status" class="control-label">{{viewLanguage('Trạng thái')}}</label>
                                     <select name="province_status" id="status" class="form-control input-sm">

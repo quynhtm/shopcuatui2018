@@ -22,19 +22,19 @@ class AdminProvinceController extends BaseAdminController
 
     public function __construct()   //hàm tạo
     {
-        parent::__construct();  //gọi đến hàm __construct mà hàm này kế thừa và hàm __construct này ở trong baseAdminController - hàm parent ngoài gọi để kế thừa ,mở rộng hàm cha còn có thể dùng để ghi đè lên hàm cha
-        CGlobal::$pageAdminTitle = 'Quản Lý Tỉnh thành';  // ghi đè lên biến $pageAdminTitle ở model CGlobal
+        parent::__construct();
+        CGlobal::$pageAdminTitle = 'Quản Lý Tỉnh thành';
     }
 
-    public function _getDataDefault() // khai báo dữ liệu mặc định
+    public function _getDataDefault()
     {
-        $this->arrStatus = array(   // khai báo mảng arrStatus
-            STATUS_BLOCK => viewLanguage('status_choose', $this->languageSite),  //nếu nhấn vào nút(this) trạng thái thì chọn
-            STATUS_SHOW =>  viewLanguage('status_show', $this->languageSite),    // trạng thái hiển thị
-            STATUS_HIDE =>  viewLanguage('status_hidden', $this->languageSite)); // trạng thái ẩn
+        $this->arrStatus = array(
+            STATUS_BLOCK => viewLanguage('status_choose', $this->languageSite),
+            STATUS_SHOW =>  viewLanguage('status_show', $this->languageSite),
+            STATUS_HIDE =>  viewLanguage('status_hidden', $this->languageSite));
 
-        //out put permiss -- đặt ra cho phép
-        $this->viewPermission = [  // cấp quyền cho người dùng
+        //out put permiss
+        $this->viewPermission = [
             'is_root' => $this->is_root,
             'permission_full' => $this->checkPermiss(PERMISS_PROVINCE_FULL),
             'permission_create' => $this->checkPermiss(PERMISS_PROVINCE_CREATE),
@@ -44,20 +44,21 @@ class AdminProvinceController extends BaseAdminController
     public function _outDataView($data)
     {
         $optionStatus = getOption($this->arrStatus, isset($data['province_status']) ? $data['province_status'] : STATUS_SHOW);
+//        $optionProvince =getOption(app(Province::class)->getAllProvince(), isset($data['province_name']) ? $data['province_name'] : PROVINCE_SHOW);
         return $this->viewOptionData = [
             'optionStatus' => $optionStatus,
-            'pageTitle' => CGlobal::$pageAdminTitle,//thêm biến
+            'pageTitle' => CGlobal::$pageAdminTitle,
         ];
     }
 
-    public function view()     //hiển thị
+    public function view()
     {
         //Check phan quyen.
         if (!$this->checkMultiPermiss([PERMISS_PROVINCE_FULL, PERMISS_PROVINCE_VIEW])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
 
-        $this->_getDataDefault(); //lấy dữ liệu mặc định
+        $this->_getDataDefault();
         $pageNo = (int)Request::get('page_no', 1);
         $sbmValue = Request::get('submit', 1);
         $limit = LIMIT_RECORD_30;
@@ -88,7 +89,7 @@ class AdminProvinceController extends BaseAdminController
         $data = (($id > 0)) ? app(Province::class)->getItemById($id) : [];
         $this->_getDataDefault();
         $this->_outDataView($data);
-/*add*/ return view('admin.AdminProvince.add', array_merge([
+        return view('admin.AdminProvince.add', array_merge([
             'data' => $data,
             'id' => $id,
         ], $this->viewPermission, $this->viewOptionData));
@@ -119,7 +120,7 @@ class AdminProvinceController extends BaseAdminController
         }
         $this->_getDataDefault();
         $this->_outDataView($data);
-/*add*/ return view('admin.AdminProvince.add', array_merge([
+        return view('admin.AdminProvince.add', array_merge([
             'data' => $data,
             'id' => $id,
             'error' => $this->error,
