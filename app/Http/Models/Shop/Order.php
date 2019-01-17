@@ -5,6 +5,7 @@
 
 namespace App\Http\Models\Shop;
 
+use App\Http\Models\Admin\User;
 use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -103,7 +104,7 @@ class Order extends BaseModel
         }
     }
 
-    public function removeCache($id = 0, $data)
+    public function removeCache( $id = 0 , $data)
     {
         if ($id > 0) {
             Cache::forget(Memcache::CACHE_PROVIDER_ID . $id);
@@ -114,37 +115,65 @@ class Order extends BaseModel
         Cache::forget(Memcache::CACHE_ALL_PROVIDER);
     }
 
-    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
+    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)
     {
         try {
             $query = Order::where('order_id', '>', 0);
-            if (isset($dataSearch['provider_name']) && $dataSearch['provider_name'] != '') {
-                $query->where('provider_name', 'LIKE', '%' . $dataSearch['provider_name'] . '%');
+            if (isset($dataSearch['order_product_id']) && $dataSearch['order_product_id'] != '') {
+                $query->where('order_product_id', 'LIKE', '%' . $dataSearch['order_product_id'] . '%');
             }
-            if (isset($dataSearch['provider_phone']) && $dataSearch['provider_phone'] != '') {
-                $query->where('provider_phone', 'LIKE', '%' . $dataSearch['provider_phone'] . '%');
+            if (isset($dataSearch['order_total_buy']) && $dataSearch['order_total_buy'] != '') {
+                $query->where('order_total_buy', 'LIKE', '%' . $dataSearch['order_total_buy'] . '%');
             }
-            if (isset($dataSearch['provider_email']) && $dataSearch['provider_email'] != '') {
-                $query->where('provider_email', 'LIKE', '%' . $dataSearch['provider_email'] . '%');
+            if (isset($dataSearch['order_note']) && $dataSearch['order_note'] != '') {
+                $query->where('order_note', 'LIKE', '%' . $dataSearch['order_note'] . '%');
             }
-            if (isset($dataSearch['provider_status']) && $dataSearch['provider_status'] != -1) {
-                $query->where('provider_status', $dataSearch['provider_status']);
+            if (isset($dataSearch['order_money_ship']) && $dataSearch['order_money_ship'] != '') {
+                $query->where('order_money_ship', 'LIKE', '%' . $dataSearch['order_money_ship'] . '%');
             }
-            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] != -1) {
-                if ($dataSearch['member_id'] == 0) {
-                    $query->where('member_id', '>=', $dataSearch['member_id']);
-                } else {
-                    $query->where('member_id', $dataSearch['member_id']);
-                }
+            if (isset($dataSearch['order_total_money']) && $dataSearch['order_total_money'] != '') {
+                $query->where('order_total_money', 'LIKE', '%' . $dataSearch['order_total_money'] . '%');
             }
+            if (isset($dataSearch['order_product_name']) && $dataSearch['order_product_name'] != '') {
+                $query->where('order_product_name', 'LIKE', '%' . $dataSearch['order_product_name'] . '%');
+            }
+            if (isset($dataSearch['order_customer_name']) && $dataSearch['order_customer_name'] != '') {
+                $query->where('order_customer_name', 'LIKE', '%' . $dataSearch['order_customer_name'] . '%');
+            } //provider_name - provider_email - provider_phone - provider_status
+            if (isset($dataSearch['order_customer_phone']) && $dataSearch['order_customer_phone'] != '') {
+                $query->where('order_customer_phone', 'LIKE', '%' . $dataSearch['order_customer_phone'] . '%');
+            }
+            if (isset($dataSearch['order_customer_email']) && $dataSearch['order_customer_email'] != '') {
+                $query->where('order_customer_email', 'LIKE', '%' . $dataSearch['order_customer_email'] . '%');
+            }
+            if (isset($dataSearch['order_customer_address']) && $dataSearch['order_customer_address'] != '') {
+                $query->where('order_customer_address', 'LIKE', '%' . $dataSearch['order_customer_address'] . '%');
+            }
+            if (isset($dataSearch['order_customer_note']) && $dataSearch['order_customer_note'] != '') {
+                $query->where('order_customer_note', 'LIKE', '%' . $dataSearch['order_customer_note'] . '%');
+            }
+            if (isset($dataSearch['order_type']) && $dataSearch['order_type'] != '') {
+                $query->where('order_type', 'LIKE', '%' . $dataSearch['order_type'] . '%');
+            }
+            if (isset($dataSearch['order_status']) && $dataSearch['order_status'] != -1) {
+                $query->where('order_status', $dataSearch['order_status']);
+            }
+//            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] != -1) {
+//                if ($dataSearch['member_id'] == 0) {
+//                    $query->where('member_id', '>=', $dataSearch['member_id']);
+//                } else {
+//                    $query->where('member_id', $dataSearch['member_id']);
+//                }
+//            }
             if (isset($dataSearch['order_id']) && $dataSearch['order_id'] > 0) {
                 $query->where('order_id', $dataSearch['order_id']);
             }
-            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > 0) {
-                $query->where('member_id', $dataSearch['member_id']);
-            }
-            $total = $query->count();
-            $query->orderBy('provider_status', 'desc');
+//            if (isset($dataSearch['member_id']) && $dataSearch['member_id'] > 0) {
+//                $query->where('member_id', $dataSearch['member_id']);
+//            }
+
+            $total = $is_total ? $query->count() : 0;
+            $query->orderBy('order_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -153,7 +182,7 @@ class Order extends BaseModel
             } else {
                 $result = $query->take($limit)->skip($offset)->get();
             }
-            return $result;
+            return ['data' => $result ,'total' => $total ];
 
         } catch (PDOException $e) {
             throw new PDOException();
@@ -174,10 +203,10 @@ class Order extends BaseModel
     public function getOrderAll()
     {
         $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_ALL_PROVIDER) : array();
-        if (sizeof($data) == 0) {
-            $provider = Order::where('order_id', '>', 0)->get();
+        if (sizeof($data) == 0) {  //sizeof($data) == 0
+            $provider = Order::whereIn('order_id', '>', 0)->get();
             foreach ($provider as $itm) {
-                $data[$itm['order_id']] = $itm['provider_name'];
+                $data[$itm['order_id']] = $itm['order_customer_name'];
             }
             if (!empty($data) && Memcache::CACHE_ON) {
                 Cache::put(Memcache::CACHE_ALL_PROVIDER, $data, CACHE_ONE_MONTH);
@@ -189,7 +218,7 @@ class Order extends BaseModel
     public function getListOrderByMemberId($member_id = 0)
     {
         $provider = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_LIST_PROVIDER_BY_MEMBER_ID . $member_id) : array();
-        if (sizeof($provider) == 0) {
+        if (sizeof($provider) == 0) {  //sizeof($provider) == 0
             $data = ($member_id == 0) ? Order::where('member_id', '>', $member_id)->get() : Order::where('member_id', '=', $member_id)->get();
             if (count($data) > 0) {
                 foreach ($data as $itm) {

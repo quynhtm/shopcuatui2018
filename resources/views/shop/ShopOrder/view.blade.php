@@ -1,3 +1,8 @@
+<?php use App\Library\AdminFunction\FunctionLib; ?>
+<?php use App\Library\AdminFunction\Define; ?>
+<?php use App\Library\AdminFunction\CGlobal; ?>
+@extends('admin.AdminLayouts.index')
+@section('content')
 <div class="main-content-inner">
     <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
         <ul class="breadcrumb">
@@ -34,18 +39,18 @@
                             <input type="text" class="form-control input-sm" id="order_customer_email" name="order_customer_email" placeholder="Email khách hàng" @if(isset($search['order_customer_email']))value="{{$search['order_customer_email']}}"@endif>
                         </div>
 
-                        <div class="form-group col-lg-3">
-                            <label for="name" class="control-label">Đặt hàng từ ngày </label>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="time_start_time" name="time_start_time"  data-date-format="dd-mm-yyyy" value="@if(isset($data['time_start_time'])){{date('d-m-Y',$data['time_start_time'])}}@endif">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="name" class="control-label">đến ngày</label>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="time_end_time" name="time_end_time"  data-date-format="dd-mm-yyyy" value="@if(isset($data['time_end_time'])){{date('d-m-Y',$data['time_end_time'])}}@endif">
-                            </div>
-                        </div>
+                        {{--<div class="form-group col-lg-3">--}}
+                            {{--<label for="name" class="control-label">Đặt hàng từ ngày </label>--}}
+                            {{--<div class="form-group">--}}
+                                {{--<input type="text" class="form-control" id="time_start_time" name="time_start_time"  data-date-format="dd-mm-yyyy" value="@if(isset($data['time_start_time'])){{date('d-m-Y',$data['time_start_time'])}}@endif">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="form-group col-lg-3">--}}
+                            {{--<label for="name" class="control-label">đến ngày</label>--}}
+                            {{--<div class="form-group">--}}
+                                {{--<input type="text" class="form-control" id="time_end_time" name="time_end_time"  data-date-format="dd-mm-yyyy" value="@if(isset($data['time_end_time'])){{date('d-m-Y',$data['time_end_time'])}}@endif">--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
                         <div class="form-group col-lg-3">
                             <label for="order_status">Trạng thái</label>
@@ -55,7 +60,7 @@
                         </div>
                         <div class="form-group col-lg-12 text-right">
                             @if($is_root || $permission_full ==1 || $permission_create == 1)
-                                <a class="btn btn-success btn-sm" href="{{URL::route('admin.addOrder')}}">
+                                <a class="btn btn-success btn-sm" href="{{URL::route('shop.order')}}"> {{--shop.addOrder--}}
                                     <i class="ace-icon fa fa-plus-circle"></i>
                                     Bán hàng tại shop
                                 </a>
@@ -65,7 +70,7 @@
                     </div>
                     {{ Form::close() }}
                 </div>
-                @if(sizeof($data) > 0)
+                @if((!$data) > 0) {{--sizeof($data) > 0--}}
                     <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> đơn hàng @endif </div>
                     <br>
                     <table class="table table-bordered table-hover">
@@ -90,7 +95,7 @@
                                 <td>
                                     Mã ĐH: <b>{{ $item->order_id }}</b>
                                     <br/>Mã SP: <b>{{ $item->order_product_id }}</b>
-                                    <br/>Tổng SL: <b>{{ $item->order_total_buy }}</b> sp
+                                    <br/>Tổng SL: <b>{{ $item->order_total_buy }}</b> SP
                                     @if($item->order_note != '')
                                         <br/>Note ĐH:<span class="red">{{$item->order_note}}</span>
                                     @endif
@@ -182,10 +187,10 @@
 
                                 <td class="text-center text-middle">
                                     @if($is_root || $permission_full || $permission_view_detail)
-                                        <a href="{{URL::route('admin.detailOrder',array('order_id' => $item->order_id))}}" title="Chi tiết đơn hàng"><i class="fa fa-file-text-o fa-2x"></i></a>
+                                        <a href="{{URL::route('shop.order',array('order_id' => $item->order_id))}}" title="Chi tiết đơn hàng"><i class="fa fa-file-text-o fa-2x"></i></a>   {{--shop.detailOrder--}}
                                     @endif
                                     @if($is_root || $permission_full || $permission_edit ==1  )
-                                        &nbsp;&nbsp;<a href="{{URL::route('admin.addOrder',array('order_id' => $item->order_id))}}" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
+                                        &nbsp;&nbsp;<a href="{{URL::route('shop.order',array('order_id' => $item->order_id))}}" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>        {{--shop.detailOrder--}}
                                     @endif
                                     @if($item->order_status != CGlobal::order_status_succes)
                                         @if($is_root || $permission_full || $permission_delete)
@@ -214,7 +219,7 @@
         <!-- /.row -->
     </div><!-- /.page-content -->
 </div>
-
+@stop
 <script>
     $(document).ready(function(){
         var checkin = $('#time_start_time').datepicker({ });
