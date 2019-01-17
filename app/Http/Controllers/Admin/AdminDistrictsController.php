@@ -16,7 +16,6 @@ class AdminDistrictsController extends BaseAdminController
 {
     private $error = array();
     private $arrStatus = array();
-    private $arrProvince = array();
     private $arrMenuParent = array();
     private $viewOptionData = array();
     private $viewPermission = array();
@@ -48,11 +47,10 @@ class AdminDistrictsController extends BaseAdminController
         $optionStatus = getOption($this->arrStatus, isset($data['district_status']) ? $data['district_status'] : STATUS_SHOW);
         $optionProvince = getOption(app(Province::class)->getAllProvince(),isset($data['district_province_id']) ? $data['district_province_id'] : PROVINCE_SHOW );
 
-
         return $this->viewOptionData = [
             'optionStatus' => $optionStatus,
             'optionProvince' => $optionProvince,
-            'pageTitle' => CGlobal::$pageAdminTitle,//thêm biến
+            'pageTitle' => CGlobal::$pageAdminTitle,
         ];
     }
 
@@ -90,7 +88,6 @@ class AdminDistrictsController extends BaseAdminController
         $arrInforProvice = app(Province::class)->getAllProvince();
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-
         $result = app(Districts::class)->searchByCondition($search, $limit, $offset);
 //        $data = isset($result['data']) ? $result['data'] : array();
 
@@ -115,7 +112,7 @@ class AdminDistrictsController extends BaseAdminController
         $data = (($id > 0)) ? app(Districts::class)->getItemById($id) : [];
         $this->_getDataDefault();
         $this->_outDataView($data);
-        /*add*/ return view('admin.AdminDistricts.add', array_merge([
+        return view('admin.AdminDistricts.add', array_merge([
         'data' => $data,
         'id' => $id,
     ], $this->viewPermission, $this->viewOptionData));
@@ -146,14 +143,14 @@ class AdminDistrictsController extends BaseAdminController
         }
         $this->_getDataDefault();
         $this->_outDataView($data);
-        /*add*/ return view('admin.AdminDistricts.add', array_merge([
+        return view('admin.AdminDistricts.add', array_merge([
         'data' => $data,
         'id' => $id,
         'error' => $this->error,
     ], $this->viewPermission, $this->viewOptionData));
     }
 
-    public function deleteDistricts()  // lưu ý hàm
+    public function deleteDistricts()
     {
         $data = array('isIntOk' => 0);
         if (!$this->checkMultiPermiss([PERMISS_DISTRICTS_FULL, PERMISS_DISTRICTS_DELETE])) {

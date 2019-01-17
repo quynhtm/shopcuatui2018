@@ -11,7 +11,9 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">{{viewLanguage('Trang chủ')}}</a>
             </li>
-            <li class="active">{{$pageAdminTitle}}</li>
+            <li class="active">
+                <a href="{{URL::route('shop.provider')}}">{{$pageAdminTitle}}</a>
+            </li>
         </ul>
     </div>
     <div class="page-content">

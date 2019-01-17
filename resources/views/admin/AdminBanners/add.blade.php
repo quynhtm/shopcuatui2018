@@ -55,12 +55,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="sort" class="control-label">{{viewLanguage('Thứ tự hiển thị')}}</label>
-                            <input type="text" id="sort" name="position"  class="form-control input-sm" value="@if(isset($data['position'])){{$data['position']}}@endif">
-                        </div>
-                    </div>
+                    {{--<div class="col-sm-6">--}}
+                        {{--<div class="form-group">--}}
+                            {{--<label for="sort" class="control-label">{{viewLanguage('Thứ tự hiển thị')}}</label>--}}
+                            {{--<input type="text" id="sort" name="position"  class="form-control input-sm" value="@if(isset($data['position'])){{$data['position']}}@endif">--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <div class="clearfix"></div>
                     <div class="form-group col-sm-12 text-left">
                         <a class="btn btn-warning" href="{{URL::route('admin.bannerView')}}"><i class="fa fa-reply"></i> {{viewLanguage('back')}}</a>

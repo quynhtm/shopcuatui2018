@@ -7,7 +7,9 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">{{viewLanguage('Trang chủ')}}</a>
             </li>
-            <li class="active">{{$pageAdminTitle}}</li>
+            <li class="active">
+                <a href="{{URL::route('shop.category')}}">{{$pageAdminTitle}}</a>
+            </li>
         </ul>
     </div>
     <div class="page-content">
@@ -58,14 +60,6 @@
                                 <tr @if($item['category_parent_id'] == 0) style="background-color:#d6f6f6" @endif >
                                     <td class="text-center">{{$stt +$k + 1 }}</td>
                                     <td>{{ $item['category_name']}}</td>
-                                    {{--<td>--}}
-                                        {{--@if($item->category_parent_id==0)--}}
-                                            {{--<b>{{ $item->padding_left.$item->category_name }}</b>--}}
-                                        {{--@else--}}
-                                            {{--{{ $item->padding_left.$item->category_name }}--}}
-                                        {{--@endif--}}
-                                        {{--@if($is_boss)[<b>{{ $item->category_id }}</b>]@endif--}}
-                                    {{--</td>--}}
                                     <td>
                                         @if(isset($arrInforCategory[$item['category_parent_id']]))
                                             <a href="{{URL::route('shop.categoryGet',array('id' => $item['category_parent_id']))}}" title="Sửa item">

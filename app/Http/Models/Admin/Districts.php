@@ -146,13 +146,13 @@ class Districts extends BaseModel
         return $data;
     }
 
-    public function getAllDistricts(){
+    public function getAllDistricts()
+    {
         $data = array();
-        $result_districts = Districts::all();
-
-        if ($result_districts) {
-            foreach ($result_districts as $a) {
-                $data[$a->district_id] = $a->district_name;
+        $result = Districts::all();
+        if ($result) {
+            foreach ($result as $itm) {
+                $data[$itm->district_id] = $itm->district_name;
             }
         }
         return $data;

@@ -1,4 +1,5 @@
 <?php
+/*Hiển thị tốt tỉnh thành và quận huyện  15/1/2019 -- time : 3:09*/
 
 namespace App\Http\Controllers\Admin;
 
@@ -44,40 +45,54 @@ class AdminWardsController extends BaseAdminController
     public function _outDataView($data)
     {
         $optionStatus = getOption($this->arrStatus, isset($data['wards_status']) ? $data['wards_status'] : STATUS_SHOW);
+        $optionDistrict = getOption(app(Districts::class)->getAllDistricts(),isset($data['district_id']) ? $data['district_id'] : DISTRICTS_SHOW );
+
         return $this->viewOptionData = [
             'optionStatus' => $optionStatus,
-            'pageTitle' => CGlobal::$pageAdminTitle,//thêm biến
+            'optionDistrict' => $optionDistrict,
+            'pageTitle' => CGlobal::$pageAdminTitle,
         ];
     }
 
-    public function view()     //hiển thị
+    public function view()
     {
         //Check phan quyen.
         if (!$this->checkMultiPermiss([PERMISS_WARDS_FULL, PERMISS_WARDS_VIEW])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
 
-        $this->_getDataDefault(); //lấy dữ liệu mặc định
+        $this->_getDataDefault();
         $pageNo = (int)Request::get('page_no', 1);
         $sbmValue = Request::get('submit', 1);
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
 
+        $arrDistrictsId = array();
+        $arrInforDistricts = array();
+        $arrInforProvince = array();
+
         $search['wards_name'] = addslashes(Request::get('wards_name', ''));
         $search['wards_status'] = (int)Request::get('wards_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
+/**/    $search['district_name'] = addslashes(Request::get('district_name', ''));
+        if($search['district_name'] !== ''){
+            $districts_by_name = app(Districts::class)->searchByCondition($search,100,0,false); // nếu total là false thì n sẽ k đếm dữ liệu trong model nữa
+            if(count($districts_by_name['data']) > 0){
+                foreach ($districts_by_name['data'] as $key => $value){
+                    $arrDistrictsId[$value->district_id] = $value->district_id;  // cho nó bằng chính nó để tránh bị trùng . để luôn luôn chỉ có 1 id duy nhất k xảy ra hiện tượng id trùng nhau
+                }
+            }
+        }
+        if(count($arrDistrictsId) > 0){
+            $search['district_id'] = $arrDistrictsId;
+        }
+        $arrInforDistricts = app(Districts::class)->getAllDistricts();
 
 // hiển thị thông tin quận
-
         $result = app(Wards::class)->searchByCondition($search, $limit, $offset);  //đổi $data thành $$result
         $data = isset($result['data']) ? $result['data'] : array();
-
-        $arrDistrictsId = array();
-        $arrInforDistricts = array();
-        $arrProviceId =array();
-        $arrInforProvince = array();
 
         if(sizeof($data) > 0){
             foreach($data as $item){
@@ -110,7 +125,6 @@ class AdminWardsController extends BaseAdminController
                             }
                         }
                     }
-
                 }
             }
         }
@@ -118,13 +132,13 @@ class AdminWardsController extends BaseAdminController
 
         $this->_outDataView($search);
         return view('admin.AdminWards.view', array_merge([
-           'data' => $result['data'],
-           'search' => $search,
-           'total' => $result['total'],
-           'stt' => ($pageNo - 1) * $limit,
-           'paging' =>$paging,
-           'arrInforDistricts' => $arrInforDistricts,
-           'arrInforProvince' => $arrInforProvince,
+            'data' => $result['data'],
+            'search' => $search,
+            'total' => $result['total'],
+            'stt' => ($pageNo - 1) * $limit,
+            'paging' =>$paging,
+            'arrInforDistricts' => $arrInforDistricts,
+            'arrInforProvince' => $arrInforProvince,
         ], $this->viewPermission, $this->viewOptionData));
     }
 
@@ -136,7 +150,7 @@ class AdminWardsController extends BaseAdminController
         $data = (($id > 0)) ? app(Wards::class)->getItemById($id) : [];
         $this->_getDataDefault();
         $this->_outDataView($data);
-        /*add*/ return view('admin.AdminWards.add', array_merge([
+        return view('admin.AdminWards.add', array_merge([
         'data' => $data,
         'id' => $id,
     ], $this->viewPermission, $this->viewOptionData));
@@ -167,7 +181,7 @@ class AdminWardsController extends BaseAdminController
         }
         $this->_getDataDefault();
         $this->_outDataView($data);
-        /*add*/ return view('admin.AdminWards.add', array_merge([
+        return view('admin.AdminWards.add', array_merge([
         'data' => $data,
         'id' => $id,
         'error' => $this->error,

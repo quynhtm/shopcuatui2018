@@ -6,6 +6,7 @@
 namespace App\Http\Models\Shop;
 
 use App\Http\Models\BaseModel;
+use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
@@ -14,7 +15,7 @@ class Product extends BaseModel
 {
     protected $table = TABLE_PRODUCT;
     protected $primaryKey = 'product_id';
-    public $timestamps = true;
+    public $timestamps = false;
 
     //cac truong trong DB
     protected $fillable = array('product_id','product_code', 'product_name', 'category_name', 'depart_id','category_id','provider_id',
@@ -77,7 +78,7 @@ class Product extends BaseModel
         return array();
     }
 
-    public function getProductForSite($dataSearch = array(), $limit =0, $offset = 0, &$total){
+    public function getProductForSite($dataSearch = array(), $limit =0, $offset = 0, &$total= true){
         try{
             $query = Product::where('product_id','>',0);
             $query->where('product_status','=',CGlobal::status_show);
@@ -158,7 +159,7 @@ class Product extends BaseModel
         }
     }
 
-    public function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
+    public function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total = true){
         try{
             $query = Product::where('product_id','>',0);
             if (isset($dataSearch['product_name']) && $dataSearch['product_name'] != '') {
@@ -215,7 +216,7 @@ class Product extends BaseModel
             if (isset($dataSearch['product_is_hot']) && $dataSearch['product_is_hot'] > 0) {
                 $query->where('product_is_hot', $dataSearch['product_is_hot']);
             }
-            //lay theo id SP truyen vào và sap xep theo vi tri đã truyề vào
+            //lay theo id SP truyen vào và sap xep theo vi tri đã truyền vào
             if(isset($dataSearch['str_product_id']) && $dataSearch['str_product_id'] != ''){
                 $arrProductId = explode(',', trim($dataSearch['str_product_id']));
                 $query->whereIn('product_id', $arrProductId);
@@ -250,17 +251,16 @@ class Product extends BaseModel
         try {
             DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
-            $item = new Banners();
+            $item = new Product();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
             }
             $item->save();
-
             DB::connection()->getPdo()->commit();
             self::removeCache($item->product_id, $item);
-            return $item->id;
+            return $item->product_id;//id
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
@@ -287,9 +287,19 @@ class Product extends BaseModel
     }
 
     public function getItemById($id) {
-        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
-        if (sizeof($data) == 0) {
-            $data = Banners::find($id);
+/* code cũ  . nếu tồn tại $data thì chạy vào trong if nếu không thì return . code đúng là nếu không có biến (!$data) thì mới chạy vào if còn có dữ liệu thì return luôn
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
+        if ($data)){
+            $data = Product::find($id);
+            if($data){
+                Cache::put(Memcache::CACHE_PRODUCT_ID.$id, $data, CACHE_ONE_MONTH);
+            }
+        }
+        return $data;
+*/
+        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
+        if (!isset($data->product_id)){
+            $data = Product::find($id);
             if($data){
                 Cache::put(Memcache::CACHE_PRODUCT_ID.$id, $data, CACHE_ONE_MONTH);
             }

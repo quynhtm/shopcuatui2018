@@ -28,6 +28,13 @@ class Wards extends BaseModel
             if (isset($dataSearch['district_status']) && $dataSearch['district_status'] > -1) {
                 $query->where('district_status', $dataSearch['district_status']);
             }
+/**/        if (isset($dataSearch['district_id']) && $dataSearch['district_id'] != "" && !is_array($dataSearch['district_id'])) {
+                $query->where('district_id', $dataSearch['district_id']);
+            }
+/**/        if (isset($dataSearch['district_id']) && is_array($dataSearch['district_id'])){
+                $query->whereIn('district_id',$dataSearch['district_id']);
+            }
+
             $total = ($is_total) ? $query->count() : 0;
             $query->orderBy('wards_id', 'desc');
 
@@ -125,4 +132,5 @@ class Wards extends BaseModel
 
         }
     }
+
 }

@@ -15,6 +15,7 @@ define('VIETNAM_LANGUAGE', 1);
 define('ENGLISH_LANGUAGE', 2);
 
 define('PROVINCE_SHOW' , 9);
+define('DISTRICTS_SHOW' , 9);
 
 define('STATUS_HIDE', 0);
 define('STATUS_SHOW', 1);
@@ -112,6 +113,12 @@ define('PERMISS_INFOSALE_FULL', 'infosaleFull');
 define('PERMISS_INFOSALE_VIEW', 'infosaleView');
 define('PERMISS_INFOSALE_CREATE', 'infosaleCreate');
 define('PERMISS_INFOSALE_DELETE', 'infosaleDelete');
+
+//order
+define('PERMISS_ORDER_FULL', 'orderFull');
+define('PERMISS_ORDER_VIEW', 'orderView');
+define('PERMISS_ORDER_CREATE', 'orderCreate');
+define('PERMISS_ORDER_DELETE', 'orderDelete');
 
 //Category
 define('PERMISS_CATEGORY_FULL', 'categoryFull');

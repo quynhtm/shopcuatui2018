@@ -25,6 +25,17 @@
                                     <label for="name"><i>{{viewLanguage('Tên Xã')}}</i></label>
                                     <input type="text" class="form-control input-sm" id="name" name="wards_name" placeholder="Tên Xã" @if(isset($search['wards_name']))value="{{$search['wards_name']}}"@endif>
                                 </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="name"><i>{{viewLanguage('Tên Quận')}}</i></label>
+                                    <input type="text" class="form-control input-sm" id="name" name="districts_name" placeholder="Tên Quận" @if(isset($search['districts_name']))value="{{$search['districts_name']}}"@endif>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="name"><i>{{viewLanguage('Tên Tỉnh')}}</i></label>
+                                    <input type="text" class="form-control input-sm" id="name" name="province_name" placeholder="Tên Tỉnh" @if(isset($search['province_name']))value="{{$search['province_name']}}"@endif>
+                                </div>
+
                                 <div class="form-group col-lg-3">
                                     <label for="status" class="control-label">{{viewLanguage('Trạng thái')}}</label>
                                     <select name="wards_status" id="status" class="form-control input-sm">

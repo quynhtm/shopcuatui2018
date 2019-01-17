@@ -68,6 +68,8 @@ Route::post('banner/deleteBanner', array('as' => 'admin.deleteBanner','uses' => 
 //*route contact */
 Route::match(['GET','POST'],'contact',array('as' => 'admin.contactView','uses' => Admin.'\AdminContactController@view'));
 Route::get('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@getItem'));
+Route::post('contact/edit/{id?}', array('as' => 'admin.contactEdit','uses' => Admin.'\AdminContactController@postItem'));
+Route::post('contact/deleteContact', array('as' => 'admin.deleteContact','uses' => Admin.'\AdminContactController@deleteContact'));//ajax
 
 
 //*route province*/

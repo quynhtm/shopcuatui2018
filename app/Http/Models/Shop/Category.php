@@ -40,12 +40,10 @@ class Category extends BaseModel
             if (isset($dataSearch['category_type']) && $dataSearch['category_type'] > 0) {
                 $query->where('category_type', $dataSearch['category_type']);
             }
-
 //tại sao lại có câu hỏi biến khác nhau ?
 //            if (isset($dataSearch['string_depart_id']) && $dataSearch['string_depart_id'] != '') {
 //                $query->whereIn('category_depart_id', explode(',', $dataSearch['string_depart_id']));
 //            }
-
             if (isset($dataSearch['category_menu_right']) && $dataSearch['category_menu_right'] != -1) {
                 $query->where('category_menu_right', $dataSearch['category_menu_right']);
             }
@@ -65,7 +63,6 @@ class Category extends BaseModel
             throw new PDOException();
         }
     }
-
     public function createItem($data)
     {
         try {
@@ -106,7 +103,6 @@ class Category extends BaseModel
             throw new PDOException();
         }
     }
-
 /*lý do phải sửa sizeof($data) -> chuyển thành (!$data)  và Array()-> chuyển thành (false)  --- ở phần getItembyId($id)
  * vì mỗi bản php có 1 cách viết , hỗ trợ khác nhau nên ở đây ta phải chuyển thành như vậy
  */
@@ -167,7 +163,6 @@ class Category extends BaseModel
         }
         return $data;
     }
-
     public function getCategoryNameByID($id)
     {
         $category = Category::getByID($id);
@@ -210,7 +205,7 @@ class Category extends BaseModel
     return $data;
     }
 
-/**/public function getListCategoryNameById($id)
+    public function getListCategoryNameById($id)
 {   // lấy tên thư mục cha
     $data = array();
     $result = Category::whereIn('category_id', $id)->get(array('category_id', 'category_name'));
@@ -221,7 +216,6 @@ class Category extends BaseModel
     }
     return $data;
 }
-
 
     public function getDepartIdByCategoryId($category_id = 0)
     {

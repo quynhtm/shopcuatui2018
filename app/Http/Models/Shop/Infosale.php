@@ -22,7 +22,7 @@ class Infosale extends BaseModel{
         'infor_sale_mail', 'infor_sale_skype', 'infor_sale_address', 'infor_sale_sotaikhoan',
         'infor_sale_vanchuyen', 'created_at', 'updated_at');
 
-/**/public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total=true){
+    public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total=true){
         try {
             $query = Infosale::where('infor_sale_id', '>', 0);
             if (isset($dataSearch['infor_sale_name']) && $dataSearch['infor_sale_name'] != '') {
@@ -40,7 +40,7 @@ class Infosale extends BaseModel{
             if (isset($dataSearch['infor_sale_phone']) && $dataSearch['infor_sale_phone'] != '') {
                 $query->where('infor_sale_phone', 'LIKE', '%' . $dataSearch['infor_sale_phone'] . '%');
             }
-/**/        $total = ($is_total) ? $query->count() : 0;               //$total = $query->count();
+            $total = ($is_total) ? $query->count() : 0;               //$total = $query->count();
             $query->orderBy('infor_sale_id', 'desc');
 
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
@@ -49,7 +49,7 @@ class Infosale extends BaseModel{
             } else {
                 $result = $query->take($limit)->skip($offset)->get();
             }
-/**/        return ['data' => $result, 'total' => $total];    //return $result;
+            return ['data' => $result, 'total' => $total];    //return $result;
 
         } catch (PDOException $e) {
             throw new PDOException();
@@ -101,7 +101,7 @@ class Infosale extends BaseModel{
     }
     public function getItemById($id){
         $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_INFOR_SALE_ID.$id): false;
-        if ($data ) { //if ($data || $data->count() == 0)
+        if (!isset($data->infor_sale_id)) {
             $data = Infosale::find($id);
             if($data){
                 Cache::put(Memcache::CACHE_INFOR_SALE_ID.$id, $data, CACHE_ONE_MONTH);
@@ -113,12 +113,12 @@ class Infosale extends BaseModel{
         if ($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $item = $dataOld= self::getItemById($id);
+            $item = self::getItemById($id);
             if ($item) {
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($id, $dataOld);
+            self::removeCache($id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();

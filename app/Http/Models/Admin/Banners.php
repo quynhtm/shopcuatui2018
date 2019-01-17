@@ -15,7 +15,7 @@ class Banners extends BaseModel
     protected $table = TABLE_BANNER;
     protected $primaryKey = 'banner_id';
     public $timestamps = false;
-    protected $fillable = array('banner_name', 'banner_image', 'banner_link', 'position', 'url_image', 'banner_status', 'created_at', 'updated_at');
+    protected $fillable = array('banner_name', 'banner_image','banner_link' , 'banner_status', 'created_at', 'updated_at');
 
     //, 'position', 'url_image' sau banner_status
     public function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, $is_total = true)

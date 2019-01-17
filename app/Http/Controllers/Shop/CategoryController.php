@@ -48,7 +48,6 @@ class CategoryController extends BaseAdminController{
         ];
     }
     public function _outDataView($data){
-
         $optionStatus = getOption($this->arrStatus, isset($data['category_status']) ? $data['category_status'] : STATUS_HIDE);
         $optionMenu = getOption($this->arrMenu, isset($data['category_menu_status']) ? $data['category_menu_status'] : STATUS_HIDE);
         $optionMenuRight = getOption($this->arrMenuRight, isset($data['category_menu_right']) ? $data['category_menu_right'] : STATUS_HIDE);
@@ -61,7 +60,6 @@ class CategoryController extends BaseAdminController{
             'optionMenuRight' => $optionMenuRight,
         ];
     }
-
     public function view(){
         if (!$this->checkMultiPermiss([PERMISS_CATEGORY_FULL, PERMISS_CATEGORY_VIEW])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
@@ -72,20 +70,17 @@ class CategoryController extends BaseAdminController{
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
 
-
-
         $search['category_name'] = addslashes(Request::get('category_name', ''));
         $search['category_status'] = (int)Request::get('category_status',-1);
         $search['category_depart_id'] = (int)Request::get('category_depart_id',-1);
         $search['category_type'] = (int)Request::get('category_type',-1);
         $search['category_menu_right'] = (int)Request::get('category_menu_right',-1);
         $search['member_id'] = app(User::class)->getMemberIdUser();
-        
         $search['field_get'] = '';
         $data  = app(Category::class)->searchByCondition($search, $limit, $offset);
 //lấy dữ liệu để hiện cha.
-/**/    $arrCategoryId = array();
-/**/    $arrInforCategory= array();
+        $arrCategoryId = array();
+        $arrInforCategory= array();
         $result = isset($data['data']) ? $data['data'] : array();
 
         if(sizeof($result) > 0){
@@ -97,7 +92,6 @@ class CategoryController extends BaseAdminController{
         if(!empty($arrCategoryId)){
             $arrInforCategory = app(Category::class)->getListCategoryNameById($arrCategoryId);
             }
-
 
         if(!empty($dataSearch)){
             $data =  app(Category::class)->getTreeCategory($data);

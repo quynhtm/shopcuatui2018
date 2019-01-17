@@ -53,15 +53,18 @@ class ProductController extends BaseAdminController
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
+   //     $arrProductName = array();
         $total = 0;
 
-        $search['name'] = addslashes(Request::get('name', ''));
-        $search['status'] = (int)Request::get('status', -1);
+        $search['product_name'] = addslashes(Request::get('product_name', ''));
+        $search['product_price_sell'] = addslashes(Request::get('product_price_sell', ''));
+        $search['product_price_input'] = addslashes(Request::get('product_price_input', ''));
+        $search['product_status'] = (int)Request::get('product_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-        $data = app(Product::class)->searchByCondition($search, $limit, $offset, $total);
-        $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total, $limit, $search) : '';
-        $optionStatus = getOption($this->arrStatus, $search['status']);
+        $data = app(Product::class)->searchByCondition($search, $limit, $offset , $total);
+        $paging = $total > 0 ? Pagging::getNewPager(3, $pageNo, $total , $limit, $search) : '';
+        $optionStatus = getOption($this->arrStatus, $search['product_status']);
 
         return view('shop.ShopProduct.view', array_merge([
             'data' => $data,
@@ -87,15 +90,17 @@ class ProductController extends BaseAdminController
         ], $this->viewPermission, $this->viewOptionData));
     }
 
-    public function postItem($id)
+    public function postItem($id=0)
     {
         if (!$this->checkMultiPermiss([PERMISS_PRODUCT_FULL, PERMISS_PRODUCT_CREATE])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
+
         if ($this->_validData($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
+
             if ($id > 0) {
                 //cap nhat
                 if (app(Product::class)->updateItem($id, $data)) {
@@ -119,19 +124,19 @@ class ProductController extends BaseAdminController
 
     public function _outDataView($data)
     {
-        $optionStatus = getOption($this->arrStatus, isset($data['status']) ? $data['status'] : STATUS_SHOW);
+        $optionStatus = getOption($this->arrStatus, isset($data['product_status']) ? $data['product_status'] : STATUS_SHOW);
         return $this->viewOptionData = [
             'optionStatus' => $optionStatus,
         ];
     }
 
-    public function deleteBanner()
+    public function deleteProduct()
     {
         $data = array('isIntOk' => 0);
         if (!$this->checkMultiPermiss([PERMISS_PRODUCT_FULL, PERMISS_PRODUCT_DELETE])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
-        $id = (int)Request::get('id', 0);
+        $id = (int)Request::get('id', 0 );
         if ($id > 0 && app(Product::class)->deleteItem($id)) {
             $data['isIntOk'] = 1;
         }
@@ -141,7 +146,7 @@ class ProductController extends BaseAdminController
     private function _validData($data = array())
     {
         if (!empty($data)) {
-            if (isset($data['banner_name']) && trim($data['banner_name']) == '') {
+            if (isset($data['product_name']) && trim($data['product_name']) == '') {
                 $this->error[] = 'Null';
             }
         }

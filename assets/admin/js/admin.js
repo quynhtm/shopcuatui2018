@@ -117,10 +117,12 @@ var Admin = {
                 url_ajax = 'province/deleteProvince';
             } else if (type == 8) {
                 url_ajax = 'districts/deleteDistricts';
-            } else if (type ==10) {
+            } else if (type == 10) {
                 url_ajax = 'wards/deleteWards';
+            }else if (type == 11) {
+                url_ajax = 'order/deleteOrder';
+                url_ajax = 'product/deleteProduct';
             }
-
             if (url_ajax != '') {
                 $.ajax({
                     type: "post",
