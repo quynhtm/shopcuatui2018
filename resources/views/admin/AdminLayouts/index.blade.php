@@ -35,6 +35,7 @@
 
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin_css.css')}}"/>
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/vaymuon.min.css')}}"/>
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/style_mFanhhiep.css')}}"/>
     <!-- inline styles related to this page -->
 
     <!-- ace settings handler -->
@@ -79,6 +80,7 @@
     <script src="{{URL::asset('assets/lib/upload/jquery.uploadfile.js')}}"></script>
     <script src="{{URL::asset('assets/admin/js/baseUpload.js')}}"></script>
     <script src="{{URL::asset('assets/lib/jAlert/jquery.alerts.js')}}"></script>
+
 
 
     {!!CGlobal::$extraHeaderCSS!!}
@@ -273,6 +275,7 @@
         </div>
 
         @yield('content')
+{{----}}@yield('css') {{--mới thêm cho file add của product --}}
     </div>
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-info">
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-300"></i>

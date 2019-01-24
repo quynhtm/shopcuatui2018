@@ -10,6 +10,7 @@ use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Memcache;
+use Illuminate\Support\Facades\Request;
 
 class Product extends BaseModel
 {
@@ -18,14 +19,13 @@ class Product extends BaseModel
     public $timestamps = false;
 
     //cac truong trong DB
-    protected $fillable = array('product_id','product_code', 'product_name', 'category_name', 'depart_id','category_id','provider_id',
-        'product_price_sell', 'product_price_market', 'product_price_input', 'product_price_provider_sell','product_type_price','product_selloff',
-        'product_is_hot', 'product_sort_desc', 'product_content','product_image','product_image_hover','product_image_other',
-        'product_order', 'quality_input','quality_out','product_status','is_block','is_sale',
-        'user_shop_id', 'user_shop_name', 'is_shop','province_id',
+    protected $fillable = array('product_id','product_code', 'product_name', 'category_name', 'depart_id','category_id',
+         'provider_id', 'product_price_sell', 'product_price_market', 'product_price_input', 'product_price_provider_sell',
+        'product_type_price','product_selloff', 'product_is_hot', 'product_sort_desc', 'product_content','product_image',
+        'product_image_hover','product_image_other', 'product_order', 'quality_input','quality_out','product_status',
+        'is_block','is_sale', 'user_shop_id', 'user_shop_name', 'is_shop','province_id',
         'created_at','user_id_creater','user_name_creater',
         'updated_at','user_id_update','user_name_update', 'product_note');
-
 
     /**
      * @param $shop_id
@@ -78,11 +78,11 @@ class Product extends BaseModel
         return array();
     }
 
-    public function getProductForSite($dataSearch = array(), $limit =0, $offset = 0, &$total= true){
+    public function getProductForSite($dataSearch = array(), $limit =0, $offset = 0, &$total=true){
         try{
             $query = Product::where('product_id','>',0);
-            $query->where('product_status','=',CGlobal::status_show);
-            $query->where('is_block','=',CGlobal::PRODUCT_NOT_BLOCK);
+            $query->where('product_status','=',1);
+            //$query->where('is_block','=',CGlobal::PRODUCT_NOT_BLOCK);
             //Duy add: get list product in array id
             if (isset($dataSearch['product_id'])) {
                 if (is_array($dataSearch['product_id'])) {
@@ -96,7 +96,7 @@ class Product extends BaseModel
                 $query->where('product_name','LIKE', '%' . $dataSearch['product_name'] . '%');
             }
             if (isset($dataSearch['category_id'])) {
-                if (is_array($dataSearch['category_id'])) {//tim theo m?ng id danh muc
+                if (is_array($dataSearch['category_id'])) {//tim theo mảng id danh muc
                     $query->whereIn('category_id', $dataSearch['category_id']);
                 }
                 elseif ((int)$dataSearch['category_id'] > 0) {//theo id danh muc
@@ -127,7 +127,7 @@ class Product extends BaseModel
             if (isset($dataSearch['shop_province']) && $dataSearch['shop_province'] != -1) {
                 $query->where('shop_province','=', $dataSearch['shop_province']);
             }
-            //l?y kh�c shop id n�y
+            //lấy khác shop_id này
             if (isset($dataSearch['shop_id_other']) && $dataSearch['shop_id_other'] > 0) {
                 $query->where('user_shop_id','<>', $dataSearch['shop_id_other']);
             }
@@ -159,7 +159,7 @@ class Product extends BaseModel
         }
     }
 
-    public function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total = true){
+    public function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total=true){
         try{
             $query = Product::where('product_id','>',0);
             if (isset($dataSearch['product_name']) && $dataSearch['product_name'] != '') {
@@ -246,10 +246,45 @@ class Product extends BaseModel
         }
     }
 
+    public function getAllDataFromCategory($dataProductCategory = array()){
+        if ($dataProductCategory ? $dataProductCategory : []){
+            $arrProductCategory = [];
+            if ($dataProductCategory->count() > 0){
+                foreach ($dataProductCategory as $item) {
+                    $arrProductCategory[$item->category_id] = $item->category_name;
+                }
+            }
+            return $arrProductCategory;
+        }
+    }
+
+    public function getAllDataFromDepart($dataProductDepart = array()){
+        if ($dataProductDepart ? $dataProductDepart : []){
+            $arrProductDepart = [];
+            if ($dataProductDepart->count() > 0){
+                foreach ($dataProductDepart as $item) {
+                    $arrProductDepart[$item->department_id] = $item->department_name;
+                }
+            }
+            return $arrProductDepart;
+        }
+    }
+
+    public function getAllDataFromProvider($dataProductProvider = array()){
+        if($dataProductProvider ? $dataProductProvider : []){
+            $arrProductProvider = [];
+            if ($dataProductProvider->count() > 0){
+                foreach ($dataProductProvider as $item) {
+                    $arrProductProvider[$item->provider_id] = $item->provider_name;
+                }
+            }
+            return $arrProductProvider;
+        }
+    }
+
     public function createItem($data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
             $item = new Product();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
@@ -258,11 +293,10 @@ class Product extends BaseModel
                 }
             }
             $item->save();
-            DB::connection()->getPdo()->commit();
+
             self::removeCache($item->product_id, $item);
-            return $item->product_id;//id
+            return $item->product_id;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
@@ -270,35 +304,22 @@ class Product extends BaseModel
     public function updateItem($id, $data)
     {
         try {
-            DB::connection()->getPdo()->beginTransaction();
             $fieldInput = $this->checkFieldInTable($data);
             $item = self::getItemById($id);
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
             $item->update();
-            DB::connection()->getPdo()->commit();
             self::removeCache($item->product_id, $item);
             return true;
         } catch (PDOException $e) {
-            DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
 
     public function getItemById($id) {
-/* code cũ  . nếu tồn tại $data thì chạy vào trong if nếu không thì return . code đúng là nếu không có biến (!$data) thì mới chạy vào if còn có dữ liệu thì return luôn
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
-        if ($data)){
-            $data = Product::find($id);
-            if($data){
-                Cache::put(Memcache::CACHE_PRODUCT_ID.$id, $data, CACHE_ONE_MONTH);
-            }
-        }
-        return $data;
-*/
-        $data = (Memcache::CACHE_ON) ? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
-        if (!isset($data->product_id)){
+        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
+        if (!isset($data->product_id)) {
             $data = Product::find($id);
             if($data){
                 Cache::put(Memcache::CACHE_PRODUCT_ID.$id, $data, CACHE_ONE_MONTH);
@@ -332,4 +353,5 @@ class Product extends BaseModel
             Cache::forget(Memcache::CACHE_PRODUCT_ID.$id);
         }
     }
+
 }

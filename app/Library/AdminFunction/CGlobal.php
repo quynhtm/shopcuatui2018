@@ -59,6 +59,7 @@ class CGlobal
             1 => 'Setting',
         ];
 
+    const PRODUCT_NOT_BLOCK = 1;
     const member_type_vip = 1;
     const member_type_A = 2;
     const member_type_B = 3;

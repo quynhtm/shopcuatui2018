@@ -14,8 +14,8 @@ define('LIMIT_RECORD_30', 30);
 define('VIETNAM_LANGUAGE', 1);
 define('ENGLISH_LANGUAGE', 2);
 
-define('PROVINCE_SHOW' , 9);
-define('DISTRICTS_SHOW' , 9);
+define('PROVINCE_SHOW' , 1);
+define('DISTRICTS_SHOW' , 2);
 
 define('STATUS_HIDE', 0);
 define('STATUS_SHOW', 1);

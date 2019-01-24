@@ -23,7 +23,6 @@ Route::get('order/get/{id?}', array('as' => 'shop.orderGet','uses' => Shop.'\Ord
 Route::post('order/get/{id?}', array('as' => 'shop.orderPost','uses' => Shop.'\OrderController@postItem'))->where('id', '[0-9]+');
 Route::get('order/delete',array('as' => 'shop.orderDelete','uses' => Shop.'\OrderController@deleteItem'));
 
-
 //*thông tin Product */
 Route::match(['GET','POST'],'product',array('as' => 'shop.productView','uses' => Shop.'\ProductController@view'));
 Route::get('product/edit/{id?}', array('as' => 'shop.productEdit','uses' => Shop.'\ProductController@getItem'));
