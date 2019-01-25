@@ -21,13 +21,13 @@ class AdminDistrictsController extends BaseAdminController
     private $viewPermission = array();
 
 
-    public function __construct()   //hàm tạo
+    public function __construct()
     {
         parent::__construct();
         CGlobal::$pageAdminTitle = 'Quản Lý Quận Huyện';
     }
 
-    public function _getDataDefault() // khai báo dữ liệu mặc định
+    public function _getDataDefault()
     {
         $this->arrStatus = array(
             STATUS_BLOCK => viewLanguage('status_choose', $this->languageSite),
@@ -71,7 +71,7 @@ class AdminDistrictsController extends BaseAdminController
 
 //tìm kiếm theo tỉnh thành và add tỉnh thành theo option
         $search['district_name'] = addslashes(Request::get('district_name', ''));
-        $search['province_name'] = addslashes(Request::get('province_name', ''));   // addslashes bỏ ký tự đặc biệt
+        $search['province_name'] = addslashes(Request::get('province_name', ''));
         $search['district_status'] = (int)Request::get('district_status', -1);
 
         if($search['province_name'] !== ''){

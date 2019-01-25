@@ -5,7 +5,7 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">Home</a>
             </li>
-            <li><a href="{{URL::route('admin.managerOrderView')}}"> Danh sách đơn hàng</a></li>
+            <li><a href="{{URL::route('shop.order')}}"> Danh sách đơn hàng</a></li>
             <li class="active">Thông tin đơn hàng</li>
         </ul><!-- /.breadcrumb -->
     </div>
@@ -74,7 +74,7 @@
                                 <label class="col-lg-4 text-right">Đơn hàng từ:</label>
                                 <div class="col-lg-8">
                                     <select name="order_type" id="order_type" class="form-control input-sm">
-                                        {{$optionTypeOder}}
+                                        {{--{{$optionTypeOder}}--}}
                                     </select>
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                                 <label class="col-lg-4 text-right">Trạng thái ĐH:</label>
                                 <div class="col-lg-8">
                                     <select name="order_status" id="order_status" class="form-control input-sm">
-                                        {{$optionStatusOder}}
+                                        {{--{{$optionStatusOder}}--}}
                                     </select>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                                 <label class="col-lg-4 text-right">Tình trạng hàng:</label>
                                 <div class="col-lg-8">
                                     <select name="order_is_cod" id="order_is_cod" class="form-control input-sm">
-                                        {{$optionCodOder}}
+{{--                                        {{$optionCodOder}}--}}
                                     </select>
                                 </div>
                             </div>

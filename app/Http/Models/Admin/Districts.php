@@ -35,8 +35,9 @@ class Districts extends BaseModel
                 $query->whereIn('district_province_id' , $dataSearch['district_province_id']);
             }
 
-//where : điều kiện dùng cho 1 giá trị - VD: SELECT * FROM `shop_districts` WHERE district_name = 5 --- WhereIN: điều kiện cho nhiều giá trị dùng cho mảng . VD :SELECT * FROM `shop_districts` WHERE district_name = (5,6,7)
-//total là để đếm số dữ liệu hiện có
+/*where : điều kiện dùng cho 1 giá trị - VD: SELECT * FROM `shop_districts` WHERE district_name = 5 --- WhereIN: điều kiện cho nhiều giá trị dùng cho mảng . VD :SELECT * FROM `shop_districts` WHERE district_name = (5,6,7)
+total là để đếm số dữ liệu hiện có*/
+
             $total = ($is_total) ? $query->count() : 0;
 
             $query->orderBy('district_province_id', 'asc');
@@ -137,7 +138,7 @@ class Districts extends BaseModel
         }
     }
 
-    public function getListDistrictsNameById($id) { //
+    public function getListDistrictsNameById($id) {
         $data = array();
         if(is_array($id))
         {

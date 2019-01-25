@@ -63,19 +63,8 @@ class OrderController extends BaseAdminController
 
         $search['order_id'] = addslashes(Request::get('order_id', ''));
         $search['order_product_id'] = addslashes(Request::get('order_product_id', ''));
-        $search['order_total_buy'] = addslashes(Request::get('order_total_buy', ''));
-        $search['order_note'] = addslashes(Request::get('order_note', ''));
-        $search['order_money_ship'] = addslashes(Request::get('order_money_ship', ''));
-        $search['order_total_money'] = addslashes(Request::get('order_total_money', ''));
         $search['order_product_name'] = addslashes(Request::get('order_product_name', ''));
-        $search['order_customer_name'] = addslashes(Request::get('order_customer_name', ''));
-        $search['order_customer_phone'] = addslashes(Request::get('order_customer_phone', ''));
-        $search['order_customer_email'] = addslashes(Request::get('order_customer_email', ''));
-        $search['order_customer_address'] = addslashes(Request::get('order_customer_address', ''));
-        $search['order_customer_note'] = addslashes(Request::get('order_customer_note', ''));
         $search['order_type'] = addslashes(Request::get('order_type', ''));
-        $search['time_start_time'] = addslashes(Request::get('time_start_time', ''));
-        $search['time_end_time'] = addslashes(Request::get('time_end_time', ''));
         $search['order_status'] = (int)Request::get('order_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 

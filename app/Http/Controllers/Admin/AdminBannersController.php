@@ -19,21 +19,21 @@ class AdminBannersController extends BaseAdminController
     private $viewOptionData = array();
     private $viewPermission = array();
 
-    public function __construct()   //hàm tạo
+    public function __construct()
     {
-        parent::__construct();  //gọi đến hàm __construct mà hàm này kế thừa và hàm __construct này ở trong baseAdminController - hàm parent ngoài gọi để kế thừa ,mở rộng hàm cha còn có thể dùng để ghi đè lên hàm cha
-        CGlobal::$pageAdminTitle = 'Quản lý Banner quảng cáo mới';  // ghi đè lên biến $pageAdminTitle ở model CGlobal
+        parent::__construct();
+        CGlobal::$pageAdminTitle = 'Quản lý Banner quảng cáo mới';
     }
 
-    public function _getDataDefault() // khai báo dữ liệu mặc định
+    public function _getDataDefault()
     {
-        $this->arrStatus = array(   // khai báo mảng arrStatus
-            STATUS_BLOCK => viewLanguage('status_choose', $this->languageSite),  //nếu nhấn vào nút(this) trạng thái thì chọn
-            STATUS_SHOW =>  viewLanguage('status_show', $this->languageSite),    // trạng thái hiển thị
-            STATUS_HIDE =>  viewLanguage('status_hidden', $this->languageSite)); // trạng thái ẩn
+        $this->arrStatus = array(
+            STATUS_BLOCK => viewLanguage('status_choose', $this->languageSite),
+            STATUS_SHOW =>  viewLanguage('status_show', $this->languageSite),
+            STATUS_HIDE =>  viewLanguage('status_hidden', $this->languageSite));
 
-        //out put permiss -- đặt ra cho phép
-        $this->viewPermission = [  // cấp quyền cho người dùng
+        //out put permiss
+        $this->viewPermission = [
             'is_root' => $this->is_root,
             'permission_full' => $this->checkPermiss(PERMISS_BANNER_FULL),
             'permission_create' => $this->checkPermiss(PERMISS_BANNER_CREATE),
@@ -45,7 +45,7 @@ class AdminBannersController extends BaseAdminController
         $optionStatus = getOption($this->arrStatus, isset($data['banner_status']) ? $data['banner_status'] : STATUS_SHOW);
         return $this->viewOptionData = [
             'optionStatus' => $optionStatus,
-            'pageTitle' => CGlobal::$pageAdminTitle,//thêm biến
+            'pageTitle' => CGlobal::$pageAdminTitle,
         ];
     }
 
@@ -56,7 +56,7 @@ class AdminBannersController extends BaseAdminController
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
 
-        $this->_getDataDefault(); //lấy dữ liệu mặc định
+        $this->_getDataDefault();
         $pageNo = (int)Request::get('page_no', 1);
         $sbmValue = Request::get('submit', 1);
         $limit = LIMIT_RECORD_30;

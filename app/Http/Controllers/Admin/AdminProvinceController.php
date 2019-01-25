@@ -20,7 +20,7 @@ class AdminProvinceController extends BaseAdminController
     private $viewOptionData = array();
     private $viewPermission = array();
 
-    public function __construct()   //hàm tạo
+    public function __construct()
     {
         parent::__construct();
         CGlobal::$pageAdminTitle = 'Quản Lý Tỉnh thành';

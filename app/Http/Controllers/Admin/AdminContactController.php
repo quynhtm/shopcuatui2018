@@ -20,9 +20,9 @@ class AdminContactController extends BaseAdminController
     private $viewOptionData = array();
     private $viewPermission = array();
 
-    public function __construct()   //hàm tạo
+    public function __construct()
     {
-        parent::__construct();  //gọi đến hàm __construct mà hàm này kế thừa và hàm __construct này ở trong baseAdminController - hàm parent ngoài gọi để kế thừa ,mở rộng hàm cha còn có thể dùng để ghi đè lên hàm cha
+        parent::__construct();
         CGlobal::$pageAdminTitle = 'Quản lý liên hệ';
     }
 
@@ -34,7 +34,7 @@ class AdminContactController extends BaseAdminController
             STATUS_HIDE =>  viewLanguage('status_hidden', $this->languageSite));
 
         //out put permiss
-        $this->viewPermission = [  // cấp quyền cho người dùng
+        $this->viewPermission = [
             'is_root' => $this->is_root,
             'permission_full' => $this->checkPermiss(PERMISS_CONTACT_FULL),
             'permission_create' => $this->checkPermiss(PERMISS_CONTACT_CREATE),
@@ -50,19 +50,18 @@ class AdminContactController extends BaseAdminController
         ];
     }
 
-    public function view()     //hiển thị
+    public function view()
     {
         //Check phan quyen.
         if (!$this->checkMultiPermiss([PERMISS_CONTACT_FULL, PERMISS_CONTACT_VIEW])) {
             return Redirect::route('admin.dashboard', array('error' => ERROR_PERMISSION));
         }
-        $this->_getDataDefault(); //lấy dữ liệu mặc định
+        $this->_getDataDefault();
         $pageNo = (int)Request::get('page_no', 1);
         $sbmValue = Request::get('submit', 1);
         $limit = LIMIT_RECORD_30;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
-        $arrcontactName = $arrcontactPhone = $arrcontactEmail = array();
 
         $search['contact_title'] = addslashes(Request::get('contact_title', ''));
         $search['contact_status'] = (int)Request::get('contact_status', -1);
@@ -71,16 +70,6 @@ class AdminContactController extends BaseAdminController
         $search['contact_phone_send'] = addslashes(Request::get('contact_phone_send', ''));
         $search['contact_email_send'] = addslashes(Request::get('contact_email_send', ''));
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
-
-        if(count($arrcontactName) > 0){
-            $search['contact_user_name_send'] = $arrcontactName;
-        }
-        if(count($arrcontactPhone) > 0){
-            $search['contact_phone_send'] = $arrcontactPhone;
-        }
-        if(count($arrcontactEmail) > 0){
-            $search['contact_email_send'] = $arrcontactEmail;
-        }
 
         $data = app(Contact::class)->searchByCondition($search, $limit, $offset);
         $paging = $data['total'] > 0 ? Pagging::getNewPager(3, $pageNo, $data['total'], $limit, $search) : '';

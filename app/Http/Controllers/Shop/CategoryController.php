@@ -105,7 +105,7 @@ class CategoryController extends BaseAdminController{
         return view('shop.ShopCategory.view', array_merge([
             'data' => $data['data'],
             'search' => $search,
-            'total' => $data['total'], //$data['total']
+            'total' => $data['total'],
             'stt' => ($pageNo - 1) * $limit,
             'paging' => $paging,
             'arrInforCategory' => $arrInforCategory

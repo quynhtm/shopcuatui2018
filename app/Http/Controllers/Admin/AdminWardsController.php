@@ -69,14 +69,13 @@ class AdminWardsController extends BaseAdminController
         $search = $data = array();
 
         $arrDistrictsId = array();
-        $arrInforDistricts = array();
         $arrInforProvince = array();
 
         $search['wards_name'] = addslashes(Request::get('wards_name', ''));
         $search['wards_status'] = (int)Request::get('wards_status', -1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-/**/    $search['district_name'] = addslashes(Request::get('district_name', ''));
+        $search['district_name'] = addslashes(Request::get('district_name', ''));
         if($search['district_name'] !== ''){
             $districts_by_name = app(Districts::class)->searchByCondition($search,100,0,false); // nếu total là false thì n sẽ k đếm dữ liệu trong model nữa
             if(count($districts_by_name['data']) > 0){
@@ -100,7 +99,7 @@ class AdminWardsController extends BaseAdminController
             }
         }
 
-        //lấy dữ thông tin quận
+//lấy dữ thông tin quận
         if(!empty($arrDistrictsId)) {
             $dataDistricts = app(Districts::class)->getListDistrictsNameById($arrDistrictsId);
 
@@ -111,11 +110,10 @@ class AdminWardsController extends BaseAdminController
                     $searchProvice[$dis->district_id] = $dis->district_province_id;
                 }
 
-                //lấy thông tin của tỉnh thành theo mảng id quận huyện
-                if(!empty($searchProvice)) //empty( kiểm tra rỗng) còn insset là biến này có tồn tại
+//lấy thông tin của tỉnh thành theo mảng id quận huyện
+                if(!empty($searchProvice))
                 {
                     $dataProvince = app(Province::class)->getListProviceNameById($searchProvice);
-                    //$dataProvince là 1 mảng dữ liệu
                     if($dataProvince){
                         foreach ($searchProvice as $key_district_id=>$province_id){
                             foreach ($dataProvince as $k_id=>$name_pro){
