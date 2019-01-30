@@ -258,6 +258,19 @@ class Product extends BaseModel
         }
     }
 
+    public function getAllDataFromProduct($dataProduct = array()){
+        if ($dataProduct ? $dataProduct : []){
+            $arrProduct = [];
+            if ($dataProduct -> count() > 0){
+                foreach ($dataProduct as $item) {
+                    $arrProduct[$item->product_id] = $item->product_name;
+                    $arrProductId[$item->product_type] = $item->category_name;
+                }
+            }
+            return $arrProduct;
+        }
+    }
+
     public function getAllDataFromDepart($dataProductDepart = array()){
         if ($dataProductDepart ? $dataProductDepart : []){
             $arrProductDepart = [];
@@ -292,6 +305,11 @@ class Product extends BaseModel
                     $item->$k = $v;
                 }
             }
+            if (is_int($data) && count($data)){
+                foreach($data as $key => $value){
+                    $item->keyType = $v;
+                }
+            }
             $item->save();
 
             self::removeCache($item->product_id, $item);
@@ -319,6 +337,7 @@ class Product extends BaseModel
 
     public function getItemById($id) {
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_PRODUCT_ID.$id): [];
+        if (sizeof($data) == 0) {
         if (!isset($data->product_id)) {
             $data = Product::find($id);
             if($data){
@@ -326,7 +345,7 @@ class Product extends BaseModel
             }
         }
         return $data;
-    }
+    }}
 
     public function deleteItem($id)
     {

@@ -45,7 +45,33 @@
         }
 
     </style>
+
+    <script>
+        $(document) .ready(function(){
+            $("#uploadimg").click(function(){
+                $(#chonfile).append("<input type=\"file\" class=\"upload\" multiple />");
+            })
+        });
+    </script>
+
 @endsection
+<?php
+        if (isset($_POST['submit'])){
+            $img_upload=array();
+
+            foreach ($_FILES['img']['product_name'] as $key => $value){
+                $image_name = $_FILES['img']['product_name'][$key];
+                $tmp_name = $_FILES['img']['tmp_name'][$key];
+                $starget_dir = "upload/";
+                $starget_file = $starget_dir.$image_name;
+
+                if(move_uploaded_file($tmp_name ,$starget_file)){
+                    $img_upload[] = $image_name;
+                }
+                return $image_name ;
+            }
+        }
+?>
 <div class="main-content-inner">
     <div class="breadcrumbs breadcrumbs-fixed top_nav" id="breadcrumbs">
         <ul class="breadcrumb">
@@ -73,7 +99,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="name" class="control-label">{{viewLanguage('Tên sản phẩm')}}<span class="red"> (*) </span></label>
-{{--product_name--}}        <input type="text" id="name" name="product_name"  class="form-control input-sm" value="@if(isset($data['product_name'])){{$data['product_name']}}@endif">
+                                    <input type="text" id="name" name="product_name"  class="form-control input-sm" value="@if(isset($data['product_name'])){{$data['product_name']}}@endif">
                             </div>
                         </div>
 
@@ -108,7 +134,7 @@
                             <div class="form-group">
                                 <label for="name" class="control-label">{{viewLanguage('Kiểu hiển thị giá')}}</label>
                                 <select name="product_type_price" id="name" class="form-control input-sm">
-{{--product_type_price--}}          {!! $optionProductPrice !!}
+                                      {!! $optionProductPrice !!}
                                 </select>
                             </div>
                         </div>
@@ -117,14 +143,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name" class="control-label">{{viewLanguage('Trạng thái')}}</label>
-                                <select name="status" id="status" class="form-control input-sm">
-{{--product_status--}}              {!! $optionStatus !!}}
+                                <select name="status" id="name" class="form-control input-sm">
+                                      {!! $optionStatus !!}}
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-{{--product_price_sell--}}  <label for="name" class="control-label">{{viewLanguage('Giá bán')}}</label>
+                                  <label for="name" class="control-label">{{viewLanguage('Giá bán')}}</label>
                                 <input type="text" id="name" name="product_price_sell"  class="form-control input-sm" value="@if(isset($data['product_price_sell'])){{$data['product_price_sell']}}@endif">
                             </div>
                         </div>
@@ -134,13 +160,13 @@
                             <div class="form-group">
                                 <label for="name" class="control-label">{{viewLanguage('Tình trạng hàng ')}}</label>
                                 <select name="is_sale" id="name" class="form-control input-sm">
-{{--is_sale--}}                     {!! $optionProducSale !!}
+                                     {!! $optionProducSale !!}
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-{{--product_price_input--}} <label for="name" class="control-label">{{viewLanguage('Giá nhập')}}</label>
+                                 <label for="name" class="control-label">{{viewLanguage('Giá nhập')}}</label>
                                 <input type="text" id="name" name="product_price_input"  class="form-control input-sm" value="@if(isset($data['product_price_input'])){{$data['product_price_input']}}@endif">
                             </div>
                         </div>
@@ -150,13 +176,13 @@
                             <div class="form-group">
                                 <label for="name" class="control-label">{{viewLanguage('Nhà cung cấp')}}</label>
                                 <select name="provider_id" id="name" class="form-control input-sm">
-{{--provider_id--}}                          {!! $optionProvider !!}
+                                      {!! $optionProvider !!}
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-{{--product_price_market--}}<label for="name" class="control-label">{{viewLanguage('Giá thị trường')}}</label>
+                            <label for="name" class="control-label">{{viewLanguage('Giá thị trường')}}</label>
                                 <input type="text" id="name" name="product_price_market"  class="form-control input-sm" value="@if(isset($data['product_price_market'])){{$data['product_price_market']}}@endif">
                             </div>
                         </div>
@@ -166,16 +192,16 @@
                             <div class="form-group ">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Thông tin khuyến mại')}}</i></label>
                                 <textarea name="product_selloff" id="name" class="form-control input-sm" cols="30" rows="5">
-{{--product_selloff--}}       @if(isset($data['product_selloff'])){!! $data['product_selloff'] !!}@endif
-                            </textarea>
+                                    @if(isset($data['product_selloff'])){!! $data['product_selloff'] !!}@endif
+                                </textarea>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group ">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Ghi chú nhập hàng')}}</i></label>
                                 <textarea name="product_content" id="name" class="form-control input-sm" cols="30" rows="5">
-{{--product_content--}}            @if(isset($data['product_content'])){!! $data['product_content'] !!}@endif
-                            </textarea>
+                                    @if(isset($data['product_content'])){!! $data['product_content'] !!}@endif
+                                </textarea>
                             </div>
                         </div>
 
@@ -184,83 +210,91 @@
                             <div class="form-group">
                                 <label for="name" class="control-label"><i>{{viewLanguage('Mô tả ngắn')}}</i></label>
                                 <textarea name="product_sort_desc" id="name" class="form-control input-sm" cols="30" rows="5">
-{{--product_sort_desc--}}         @if(isset($data['product_sort_desc'])){!! $data['product_sort_desc'] !!}@endif
-                            </textarea>
+                                    @if(isset($data['product_sort_desc'])){!! $data['product_sort_desc'] !!}@endif
+                                </textarea>
                             </div>
                         </div>
 
-                        <div class="clearfix"></div>
+                        {{--<div class="clearfix"></div>--}}
                         {{--<div class="form-group col-sm-12 text-left">--}}
                             {{--<a class="btn btn-warning" href="{{URL::route('shop.productView')}}"><i class="fa fa-reply"></i> {{viewLanguage('back')}}</a>--}}
                             {{--<button  class="btn btn-primary"><i class="fa fa-floppy-o"></i> {{viewLanguage('save')}}</button>--}}
                         {{--</div>--}}
                         <input type="hidden" id="id_hiden" name="id_hiden" value="{{$id}}"/>
                     </div>
-                    <div style="float: right; width: 50%">
-                        <div class="form-group col-sm-12 text-left marginTop20">
-                            <div class="fileUpload btn btn-primary">
+{{--Thêm nhiều file cùng lúc--}}
+                    {{--<form class="fileUpload btn btn-primary" id="upload" method="post" action="{{URL::route('shop.productView')}}" enctype="multipart/form-data">--}}
+                        {{--<span>Upload Ảnh SP</span>--}}
+                        {{--<input type="file" name="upload" multiple />--}}
+                        {{--<ul id="fileList">--}}
+                            {{--<!-- The file list will be shown here -->--}}
+                        {{--</ul>--}}
+                    {{--</form>--}}
+                    <form action=" {{URL::route('shop.productView')}}" id="upload" method="post" enctype="multipart/form-data">
+                           <div class="fileUpload btn btn-primary" >
                                 <span>Upload Ảnh SP</span>
-                                <input type="file" class="upload" />
+                                <input type="file" class="upload" multiple name="img" />
                             </div>
                             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                             <a class="btn btn-warning" href="{{URL::route('shop.productView')}}"><i class="fa fa-reply"></i> {{viewLanguage('back')}}</a>
-                            <button  class="btn btn-primary"><i class="fa fa-floppy-o"></i> {{viewLanguage('save')}}</button>
-                        </div>
+                            <button  class="btn btn-primary" name="submit"><i class="fa fa-floppy-o"></i> {{viewLanguage('save')}}</button>
 
-                        <div class="col-xs-12">
-                           <div class="row" align="center">
-                                <div class="col-xs-6 col-md-3 thumbnail-img">
-                                    <a href="#" class="thumbnail">
-                                        <img src="..." alt="...">
-                                    </a>
-                                    {{--dùng code html--}}
-                                    {{--<ul style="list-style-type:none;">--}}
-                                        {{--<li><input type="checkbox" name="">aaa</li>--}}
-                                        {{--<li><input type="checkbox" name="">bb</li>--}}
-                                        {{--<li><a href="">xóa ảnh</a></li>--}}
-                                    {{--</ul>--}}
-                                    <div class="css_radio" >
-                                        <span><input  type="radio" name="product_image">Ảnh Đại Diện</span>
-                                        <span><input type="radio" name="product_image">Ảnh Hover</span>
-                                        <center><a href="">xóa ảnh</a></center>
-                                    </div>
-
-                                </div>
-                                <div class="col-xs-6 col-md-3 thumbnail-img">
-                                    <a href="" class="thumbnail">
-                                        <img src="..." alt="...">
-                                    </a>
-                                    <div class="css_radio">
-                                        <span><input type="radio" name="product_image">Ảnh Đại Diện</span>
-                                        <span><input type="radio" name="product_image">Ảnh Hover</span>
-                                        <center><a href="">xóa ảnh</a></center>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-md-3 thumbnail-img">
-                                    <a href="#" class="thumbnail">
-                                        <img src="..." alt="...">
-                                    </a>
-                                    <div class="css_radio">
-                                        <span><input type="radio" name="product_image">Ảnh Đại Diện</span>
-                                        <span><input type="radio" name="product_image">Ảnh Hover</span>
-                                        <center><a href="">xóa ảnh</a></center>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-md-3 thumbnail-img">
+                            <div class="col-xs-6">
+                        <div class="row" align="center">
+                            <div class="col-xs-6 col-md-3 thumbnail-img">
                                 <a href="#" class="thumbnail">
                                     <img src="..." alt="...">
                                 </a>
-                                    <div class="css_radio">
-                                        <span><input type="radio" name="product_image">Ảnh Đại Diện</span>
-                                        <span><input type="radio" name="product_image">Ảnh Hover</span>
-                                        <center><a href="" >xóa ảnh</a></center>
-                                    </div>
+                                {{--dùng code html--}}
+                                {{--<ul style="list-style-type:none;">--}}
+                                {{--<li><input type="checkbox" name="">aaa</li>--}}
+                                {{--<li><input type="checkbox" name="">bb</li>--}}
+                                {{--<li><a href="">xóa ảnh</a></li>--}}
+                                {{--</ul>--}}
+                                <div class="css_radio" >
+                                    <span><input  type="radio" name="product_image">Ảnh Đại Diện</span>
+                                    <span><input type="radio" name="product_image">Ảnh Hover</span>
+                                    <center><a href="">xóa ảnh</a></center>
+                                </div>
+
                             </div>
-                           </div>
+                            <div class="col-xs-6 col-md-3 thumbnail-img">
+                                <a href="" class="thumbnail">
+                                    <img src="..." alt="...">
+                                </a>
+                                <div class="css_radio">
+                                    <span><input type="radio" name="product_image">Ảnh Đại Diện</span>
+                                    <span><input type="radio" name="product_image">Ảnh Hover</span>
+                                    <center><a href="">xóa ảnh</a></center>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-3 thumbnail-img">
+                                <a href="#" class="thumbnail">
+                                    <img src="..." alt="...">
+                                </a>
+                                <div class="css_radio">
+                                    <span><input type="radio" name="product_image">Ảnh Đại Diện</span>
+                                    <span><input type="radio" name="product_image">Ảnh Hover</span>
+                                    <center><a href="">xóa ảnh</a></center>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-3 thumbnail-img">
+                                <a href="#" class="thumbnail">
+                                    <img src="..." alt="...">
+                                </a>
+                                <div class="css_radio">
+                                    <span><input type="radio" name="product_image">Ảnh Đại Diện</span>
+                                    <span><input type="radio" name="product_image">Ảnh Hover</span>
+                                    <center><a href="" >xóa ảnh</a></center>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    </form>
+
+            </div>
                     {{ Form::close() }}
                 </div>
             </div>
