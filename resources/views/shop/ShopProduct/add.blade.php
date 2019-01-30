@@ -46,32 +46,8 @@
 
     </style>
 
-    <script>
-        $(document) .ready(function(){
-            $("#uploadimg").click(function(){
-                $(#chonfile).append("<input type=\"file\" class=\"upload\" multiple />");
-            })
-        });
-    </script>
 
 @endsection
-<?php
-        if (isset($_POST['submit'])){
-            $img_upload=array();
-
-            foreach ($_FILES['img']['product_name'] as $key => $value){
-                $image_name = $_FILES['img']['product_name'][$key];
-                $tmp_name = $_FILES['img']['tmp_name'][$key];
-                $starget_dir = "upload/";
-                $starget_file = $starget_dir.$image_name;
-
-                if(move_uploaded_file($tmp_name ,$starget_file)){
-                    $img_upload[] = $image_name;
-                }
-                return $image_name ;
-            }
-        }
-?>
 <div class="main-content-inner">
     <div class="breadcrumbs breadcrumbs-fixed top_nav" id="breadcrumbs">
         <ul class="breadcrumb">
